@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static "shop/css/main.css" %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        {% block css_links %}
+        {% endblock css_links %}
+        <title>Document</title>
+    </head>
+    <body>
+        
+    <header class="header">
+
+            <nav class="sidebar">
+                <div class="categories"><i class="bi bi-x-lg close-sidebar"></i></div>
+                <ul>
+                    <li class="category main-category">
+                        <a href="product_list.html">Makeup <i class="bi bi-chevron-down"></i></a>
+                        <ul class="subcategories">
+                            <li class="category">
+                                <a href="#">Face <i class="bi bi-chevron-down"></i></a>
+                                <ul class="subcategories">
+                                    <li class="category"><a href="">BB Cream</a></li>
+                                    <li class="category"><a href="">Concealer</a></li>
+                                </ul>
+                            </li>
+                            <li class="category"><a href="">Brows</a></li>
+                        </ul>
+                    </li>
+                    <li class="category main-category">
+                        <a href="">Face Care <i class="bi bi-chevron-down"></i></a>
+                        <ul class="subcategories">
+                            <li class="category"><a href="">Toners</a></li>
+                            <li class="category"><a href="">Foam Cleansers</a></li>
+                            <li class="category"><a href="">Cleansing Oil</a></li>
+                        </ul>
+                    </li>
+                    <li class="category main-category">
+                        <a href="">Body Care <i class="bi bi-chevron-down"></i></a>
+                        <ul class="subcategories">
+                            <li class="category"><a href="">Creams</a></li>
+                            <li class="category"><a href="">Cleansers</a></li>
+                        </ul>
+                    </li>
+                    <li class="category main-category">
+                        <a href="">Hair Care <i class="bi bi-chevron-down"></i></a>
+                        <ul class="subcategories">
+                            <li class="category">
+                                <a href="">Shampoos</a>
+                            </li>
+                            <li class="category">
+                                <a href="">Conditioners</a>
+                            </li>
+                            <li class="category">
+                                <a href="">Hair Masks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="category main-category">
+                        <a href="brands.html">Brands <i class="bi bi-chevron-down"></i></a>
+                        <ul class="subcategories">
+                            <li class="category">
+                                <a href="">Shampoos</a>
+                            </li>
+                            <li class="category">
+                                <a href="">Conditioners</a>
+                            </li>
+                            <li class="category">
+                                <a href="">Hair Masks</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="nav-container">
+
+                <div class="nav-toggle" aria-label="open navigation">
+                    <span class="hamburger"><i class="bi bi-list"></i></span>
+                </div>
+
+                <div class="logo"><a href="main.html">Éclat Essentials</a></div>
+                
+
+                <div class="nav-items">
+                    <li class="nav-item person">
+                        {% if user.is_authenticated %}
+                        <a href="account.html" class="nav-link"><i class="bi bi-person-fill"></i></a>
+                        {% else %}
+                        <p class="nav-link not-signed-in"><i class="bi bi-person-fill"></i></p>
+                        <div class="login">
+                            <div class="close-login-container">
+                                Sign In to your account
+                                <i class="bi bi-x-lg close-login"></i>
+                            </div>
+                            <form action="" class="account-form">
+                                <div class="form-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" required>
+                                </div>
+                                
+                                <a class="reset-password">Forgot password?</a>
+                                <button class='login-button' type="submit">Log in</button>
+                                
+                            </form>
+
+                            <a href="register.html" class="register-link">Register</a>
+                        </div>
+                        {% endif %}
+                    </li> 
+                    <li class="nav-item favourites">
+                        <a href="account.html?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
+                        <span class='badge'>
+                            2
+                        </span>
+                    </li> 
+                    <li class="nav-item cart">
+                        <a href="cart.html" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
+                        <span class='badge'>
+                            2
+                        </span>
+                    </li> 
+                </div>
+
+            </div>
+        
+    
+    </header>
+
+    <img class='main-image' src="uploads/skincare.jpg">
+
+
+    <section>
+        <div class="search-container">
+            <form action="/search" method="GET" class="form">
+                <input type="text" placeholder="Search items" name="query" class="search-input">
+                <div class="btn-wrapper">
+                    <button type="submit" class="search-button">Search</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+    {% block content %}
+    {% endblock content %}
+
+    <button id="back-to-top" class="back-to-top"><i class="bi bi-chevron-double-up"></i></button>
+        
+    <footer class="footer">
+
+        <div class="logo"><a href="main.html">Éclat <span>Essentials</span></a></div>
+                
+                
+        
+        
+        <div class="footer-sec get-in-touch">
+            <div class="list-items">
+                <li class="footer-list"><a href="contact.html">Contact Us</a></li>
+                <li class="footer-list"><a href="q-a.html">Help</a></li>
+            </div>
+        </div>
+
+        <div class="footer-sec socials">
+            <li class="footer-list instagram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-instagram"></i></a></li>
+            <li class="footer-list telegram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-telegram"></i></a></li>
+        </div>
+        
+        <div class="footer-sec contacts">
+            <div class="list-items">
+                <li class="footer-list phone-number"><i class="bi bi-telephone"></i> 555-555-55-55</li>
+                <li class="footer-list email"><i class="bi bi-envelope"></i> example@gmail.com</li>
+            </div>
+           
+        </div>
+
+        <!-- <div class="footer-sec subscribe list-items">
+            <div class="subscribe-container">
+                <p class="footer-list">Підписатись на оновлення та новини</p>
+                <form action="" class="form">
+                    <input type="email" name="" id="" placeholder="Введіть e-mail...">
+                    <div class="btn">
+                        <button type="submit">Підписатись</button>
+                    </div>
+                </form>
+            </div>
+        </div> -->
+
+    </footer>
+
+
+    <script src="{% static "shop/js/main.js" %}"></script>
+    <script src="{% static "shop/js/back-to-top-button.js" %}"></script>
+
+    {% block js_scripts %}{% endblock js_scripts %}
+        
+</body>
+</html>
