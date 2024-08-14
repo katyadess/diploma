@@ -1,0 +1,2 @@
+1. Formatting tel, city and street inputs
+Add autofill for city and street
