@@ -4,6 +4,8 @@
     <div class="products">
         <h2>New Arrivals</h2>
         <div class="items">
+            {% for product in products %}
+            {% endfor %}
             <a href="product_details.html">
                 <div class="card">
                     <div class="imgBx">
@@ -143,437 +145,148 @@
             </a>
         </div>
     </div>
-    <div class="products">
-        <h2>Face Care</h2>
-        <div class="product-categories">
-            <a class="category-link" href="">
-                <div class="img-container">
-                    <img src="https://nypost.com/wp-content/uploads/sites/2/2022/02/Best-Toners.jpg?quality=75&strip=all" alt="">
-                </div>
-                <p>Toners</p>
-            </a>
-            <a class="category-link" href="">
-                <div class="img-container">
-                    <img src="https://manyo.us/cdn/shop/files/Screenshot2023-10-05at1.12.45PM_800x.png?v=1714167634" alt="">
-                </div>
-                <p>Cleansing Oil</p>
-            </a>
-            <a class="category-link" href="">
-                <div class="img-container">
-                    <img src="https://d2hy56m2o6qi9y.cloudfront.net/wp-content/uploads/2022/11/15143707/collage-Foam-cleansers.jpg" alt="">
-                </div>
-                <p>Foaming Cleansers</p>
-            </a>
-            <a class="category-link" href="">
-                <div class="img-container">
-                    <img src="https://assets.teenvogue.com/photos/5fda0ae9110bfd377047dd23/1:1/w_1200,h_1200,c_limit/Comm_FaceMoisturizers_Dec14_PROMO.jpg" alt="">
-                </div>
-                <p>Moisturisers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://www.eatingwell.com/thmb/O8TSgJ340zBGxrlzWKFhspVubAc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sunscreen-a60e772638fa41b2a5955bd306e68b31.jpg" alt="">
-                </div>
-                <p>SPF</p>
-            </a>
-        </div>
-        <div class="items">
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/sunscreen_eucerin.jpg" alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Sunscreen Eucerin SPF50</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+    {% for category in categories %}
+        {% if not category.parent %}
+            <div class="products">
+                <h2>{{category.name}}</h2>
+                <div class="product-categories">
+                    {% for subcategory in category.subcategories.all %}
+                        <a class="category-link" href="">
+                            <div class="img-container">
+                                <img src="{{subcategory.category_image.url}}" alt="">
                             </div>
-                            <p class="price">$15.45</p>
-                        </div>
-                    </div>
+                            <p>{{subcategory.name}}</p>
+                        </a>
+                    {% endfor %}
                 </div>
-            </a>
+                <div class="items">
+                    <a href="">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="../../images/sunscreen_eucerin.jpg" alt="kiko_milano_lipgloss">
+                            </div>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>Sunscreen Eucerin SPF50</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                </div>
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="price">$15.45</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
 
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/dokdo-foam-cleanser.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                    <a href="">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="../../images/dokdo-foam-cleanser.jpg " alt="kiko_milano_lipgloss">
                             </div>
-                            <p class="price">$12.67</p>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                </div>
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="price">$12.67</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </a>
+                    </a>
 
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/the_ordinary_ascorbic_acid_powder.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Jerden Proff Flax Seed Oil</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                    <a href="">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="../../images/the_ordinary_ascorbic_acid_powder.jpg " alt="kiko_milano_lipgloss">
                             </div>
-                            <p class="price">$8.45</p>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>Jerden Proff Flax Seed Oil</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                </div>
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="price">$8.45</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </a>
+                    </a>
 
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/biotrade_acne_out.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Biotrade Acne Out Hydro Active</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                    <a href="">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="../../images/biotrade_acne_out.jpg " alt="kiko_milano_lipgloss">
                             </div>
-                            <p class="price">$11.00</p>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>Biotrade Acne Out Hydro Active</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                </div>
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="price">$11.00</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </a>
+                    </a>
 
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/avene_cream.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Loreal Paris Concealer Infaillible</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                    <a href="">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="../../images/avene_cream.jpg " alt="kiko_milano_lipgloss">
                             </div>
-                            <p class="price">$15.99</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">See more</button>
-            </a>
-        </div>
-    </div>
-    <div class="products">
-        <h2>Hair Care</h2>
-        <div class="product-categories">
-            <a href="">
-                <div class="img-container">
-                    <img src="https://nypost.com/wp-content/uploads/sites/2/2022/02/Best-Toners.jpg?quality=75&strip=all" alt="">
-                </div>
-                <p>Toners</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://manyo.us/cdn/shop/files/Screenshot2023-10-05at1.12.45PM_800x.png?v=1714167634" alt="">
-                </div>
-                <p>Cleansing Oil</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://d2hy56m2o6qi9y.cloudfront.net/wp-content/uploads/2022/11/15143707/collage-Foam-cleansers.jpg" alt="">
-                </div>
-                <p>Foaming Cleansers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://assets.teenvogue.com/photos/5fda0ae9110bfd377047dd23/1:1/w_1200,h_1200,c_limit/Comm_FaceMoisturizers_Dec14_PROMO.jpg" alt="">
-                </div>
-                <p>Moisturisers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://www.eatingwell.com/thmb/O8TSgJ340zBGxrlzWKFhspVubAc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sunscreen-a60e772638fa41b2a5955bd306e68b31.jpg" alt="">
-                </div>
-                <p>SPF</p>
-            </a>
-        </div>
-        <div class="items">
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/flax_seed_oil_jerden_proff.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>kiko Milano Lip Gloss</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>Loreal Paris Concealer Infaillible</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                </div>
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <p class="price">$15.99</p>
+                                </div>
                             </div>
-                            <p class="price">$15.45</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/good_society_arteko_shampoo.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$12.67</p>
-                        </div>
-                    </div>
+                <div class="btn">
+                    <a href="">
+                        <button type="submit">See more</button>
+                    </a>
                 </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/real_shea_butter.jpg" alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Jerden Proff Flax Seed Oil</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$8.45</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">See more</button>
-            </a>
-        </div>
-    </div>
-    <div class="products">
-        <h2>Body Care</h2>
-        <div class="product-categories">
-            <a href="">
-                <div class="img-container">
-                    <img src="https://nypost.com/wp-content/uploads/sites/2/2022/02/Best-Toners.jpg?quality=75&strip=all" alt="">
-                </div>
-                <p>Toners</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://manyo.us/cdn/shop/files/Screenshot2023-10-05at1.12.45PM_800x.png?v=1714167634" alt="">
-                </div>
-                <p>Cleansing Oil</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://d2hy56m2o6qi9y.cloudfront.net/wp-content/uploads/2022/11/15143707/collage-Foam-cleansers.jpg" alt="">
-                </div>
-                <p>Foaming Cleansers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://assets.teenvogue.com/photos/5fda0ae9110bfd377047dd23/1:1/w_1200,h_1200,c_limit/Comm_FaceMoisturizers_Dec14_PROMO.jpg" alt="">
-                </div>
-                <p>Moisturisers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://www.eatingwell.com/thmb/O8TSgJ340zBGxrlzWKFhspVubAc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sunscreen-a60e772638fa41b2a5955bd306e68b31.jpg" alt="">
-                </div>
-                <p>SPF</p>
-            </a>
-        </div>
-        <div class="items">
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/garnier_superfood_body_cream.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>kiko Milano Lip Gloss</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$15.45</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-           
-        </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">See more</button>
-            </a>
-        </div>
-    </div>
-    <div class="products">
-        <h2>MakeUp</h2>
-        <div class="product-categories">
-            <a href="">
-                <div class="img-container">
-                    <img src="https://nypost.com/wp-content/uploads/sites/2/2022/02/Best-Toners.jpg?quality=75&strip=all" alt="">
-                </div>
-                <p>Toners</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://manyo.us/cdn/shop/files/Screenshot2023-10-05at1.12.45PM_800x.png?v=1714167634" alt="">
-                </div>
-                <p>Cleansing Oil</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://d2hy56m2o6qi9y.cloudfront.net/wp-content/uploads/2022/11/15143707/collage-Foam-cleansers.jpg" alt="">
-                </div>
-                <p>Foaming Cleansers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://assets.teenvogue.com/photos/5fda0ae9110bfd377047dd23/1:1/w_1200,h_1200,c_limit/Comm_FaceMoisturizers_Dec14_PROMO.jpg" alt="">
-                </div>
-                <p>Moisturisers</p>
-            </a>
-            <a href="">
-                <div class="img-container">
-                    <img src="https://www.eatingwell.com/thmb/O8TSgJ340zBGxrlzWKFhspVubAc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/sunscreen-a60e772638fa41b2a5955bd306e68b31.jpg" alt="">
-                </div>
-                <p>SPF</p>
-            </a>
-        </div>
-        <div class="items">
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/kiko_milano_lipgloss.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>kiko Milano Lip Gloss</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$15.45</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/loreal_paris_concealer_infaillible.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$12.67</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">See more</button>
-            </a>
-        </div>
-    </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 </div>
 {% endblock content %}

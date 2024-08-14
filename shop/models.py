@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
+    category_image = models.ImageField(upload_to='categories', null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
 
     class Meta:
