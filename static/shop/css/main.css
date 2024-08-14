@@ -8,7 +8,7 @@
     --fs-subscribe-btn: .7rem;
     --fs-placeholder: .7rem;
 
-}
+} 
 
 
 
@@ -569,12 +569,40 @@ nav ul ul ul li a {
     color: #fff;
 }
 
-/* .subscribe-container {
+.subscribe-container {
     display: flex;
     flex-direction: column;
     gap: 1em;
     width: 100%; 
-} */
+}
+
+.subscribe-form {
+    padding: 32px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.subscribe-form input {
+    border: none;
+    background: white;
+    padding-bottom: 12px;
+    border-bottom: 1px solid black;
+    margin-bottom: 16px;
+    font-size: var(--fs-list-items);
+}
+
+.subscribe-form input:focus, .subscribe-form input:hover {
+    border-bottom: 1px solid blueviolet;
+}
+
+.subscribe-form .subscribe-button {
+    background: black;
+    font-size: var(--fs-list-items);
+    color: white;
+    padding: 12px;
+    border: none;
+}
 
 .form {
     display: flex;
@@ -768,11 +796,6 @@ li.nav-item.favourites {
         width: 35vw;
        
     }
-
-    .footer {
-        align-items:center;
-        flex-direction: row;
-    }
     
     .footer-sec {
         display: flex;
@@ -828,21 +851,29 @@ li.nav-item.favourites {
 
 }
 
+@media (min-width: 1000px) {
+}
+
 @media (min-width: 1200px) {
     :root {
         --fs-logo: 2rem;
         --fs-ham: 2.1rem;
         --fs-nav: 1.2rem;
-       
+        
         --fs-socials: 2rem;
         --fs-list-items: 1.1rem;
-
+        
         
         --fs-section-btn: 1.3rem;
-       
+        
         --fs-subscribe-btn: 1.2rem;
         --fs-placeholder: 1.1rem;
-
+        
+    }
+    
+    .footer {
+        align-items:center;
+        flex-direction: row;
     }
 
     .sidebar {
