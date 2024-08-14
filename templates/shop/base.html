@@ -88,10 +88,10 @@
                 <div class="nav-items">
                     <li class="nav-item person">
                         {% if user.is_authenticated %}
-                        <a href="account.html" class="nav-link"><i class="bi bi-person-fill"></i></a>
+                            <a href="account.html" class="nav-link"><i class="bi bi-person-fill"></i></a>
                         {% else %}
-                        <p class="nav-link not-signed-in"><i class="bi bi-person-fill"></i></p>
-                        <div class="login">
+                            <p class="nav-link not-signed-in"><i class="bi bi-person-fill"></i></p>
+                            <div class="login">
                             <div class="close-login-container">
                                 Sign In to your account
                                 <i class="bi bi-x-lg close-login"></i>
@@ -112,7 +112,7 @@
                             </form>
 
                             <a href="register.html" class="register-link">Register</a>
-                        </div>
+                            </div>
                         {% endif %}
                     </li> 
                     <li class="nav-item favourites">

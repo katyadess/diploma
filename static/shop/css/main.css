@@ -52,6 +52,14 @@ img {
     transition: transform 0.3s ease;
 }
 
+.sidebar {
+    overflow: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
 .sidebar.open {
     transform: translateX(0);
 }
@@ -77,6 +85,7 @@ nav ul {
     background-color: #1b1b1b;
     height: 100%;
     width: 100%;
+    margin-bottom: 2em;
 
 }
 
