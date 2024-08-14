@@ -67,7 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processors.cart',
+                # 'cart.context_processors.cart',
             ],
         },
     },
@@ -143,4 +143,4 @@ LOGOUT_URL = 'shop_logout'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
-CART_SESSION_ID = 'cart'
+# CART_SESSION_ID = 'cart'
