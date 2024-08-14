@@ -17,60 +17,37 @@
             <nav class="sidebar">
                 <div class="categories"><i class="bi bi-x-lg close-sidebar"></i></div>
                 <ul>
-                    <li class="category main-category">
-                        <a href="product_list.html">Makeup <i class="bi bi-chevron-down"></i></a>
-                        <ul class="subcategories">
-                            <li class="category">
-                                <a href="#">Face <i class="bi bi-chevron-down"></i></a>
-                                <ul class="subcategories">
-                                    <li class="category"><a href="">BB Cream</a></li>
-                                    <li class="category"><a href="">Concealer</a></li>
-                                </ul>
+                    {% for category in categories %}
+                        {% if not category.parent %} 
+                            <li class="category main-category">
+                                <a href="{{category.get_absolute_url}}">{{category.name}} {% if category.subcategories.all %}<i class="bi bi-chevron-down"></i>{% endif %}</a>
+                                {% if category.subcategories.all %}
+                                    <ul class="subcategories">
+                                        {% for subcategory in category.subcategories.all %}
+                                            <li class="category">
+                                                <a href="{{subcategory.get_absolute_url}}">{{subcategory.name}} {% if subcategory.subcategories.all %}<i class="bi bi-chevron-down"></i>{% endif %}</a>
+                                                {% if subcategory.subcategories.all %}
+                                                    <ul class="subcategories">
+                                                        {% for subsubcategory in subcategory.subcategories.all %}
+                                                            <li class="category"><a href="{{subsubcategory.get_absolute_url}}">{{subsubcategory.name}}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </li>
-                            <li class="category"><a href="">Brows</a></li>
-                        </ul>
-                    </li>
-                    <li class="category main-category">
-                        <a href="">Face Care <i class="bi bi-chevron-down"></i></a>
-                        <ul class="subcategories">
-                            <li class="category"><a href="">Toners</a></li>
-                            <li class="category"><a href="">Foam Cleansers</a></li>
-                            <li class="category"><a href="">Cleansing Oil</a></li>
-                        </ul>
-                    </li>
-                    <li class="category main-category">
-                        <a href="">Body Care <i class="bi bi-chevron-down"></i></a>
-                        <ul class="subcategories">
-                            <li class="category"><a href="">Creams</a></li>
-                            <li class="category"><a href="">Cleansers</a></li>
-                        </ul>
-                    </li>
-                    <li class="category main-category">
-                        <a href="">Hair Care <i class="bi bi-chevron-down"></i></a>
-                        <ul class="subcategories">
-                            <li class="category">
-                                <a href="">Shampoos</a>
-                            </li>
-                            <li class="category">
-                                <a href="">Conditioners</a>
-                            </li>
-                            <li class="category">
-                                <a href="">Hair Masks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="category main-category">
+                        {% endif %}
+                    {% endfor %}
+                    <li class="category main-category brands">
                         <a href="brands.html">Brands <i class="bi bi-chevron-down"></i></a>
                         <ul class="subcategories">
-                            <li class="category">
-                                <a href="">Shampoos</a>
-                            </li>
-                            <li class="category">
-                                <a href="">Conditioners</a>
-                            </li>
-                            <li class="category">
-                                <a href="">Hair Masks</a>
-                            </li>
+                            {% for brand in brands %}
+                                <li class="category">
+                                    <a href="">{{brand.name}}</a>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </li>
                 </ul>
