@@ -449,13 +449,17 @@ nav ul ul ul li a {
     padding: 1.5em 0;
 }
 
-.items a {
+.items .item-product {
     color: black;
     display: block;
     position: relative;
 }
 
-.items a .buttons {
+.item-product a {
+    color: black;
+}
+
+.items .item-product .buttons {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -464,7 +468,7 @@ nav ul ul ul li a {
     gap: .5em;
 }
 
-.items a .buttons form .form-btn {
+.items .item-product .buttons form .form-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -475,7 +479,16 @@ nav ul ul ul li a {
     cursor: pointer;
 }
 
-.items a:hover > .card {
+.items .item-product .buttons form .form-btn:hover i {
+    color: white;
+}
+
+.items .item-product .buttons form .form-btn:hover {
+
+    background-color: black;
+}
+
+.items .item-product:hover > a .card {
     box-shadow: 2px 5px 10px rgb(105, 105, 105);
 }
 

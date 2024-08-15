@@ -4,37 +4,39 @@
     <div class="products">
         <h2>New Arrivals</h2>
         <div class="items">
-            {% for new_arrival in new_arrivals %}
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="{{new_arrival.main_image.url}}" alt="">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>{{new_arrival.name}}</p>
-                            <p class="full-desc">{{new_arrival.brief_description}}</p>
+            {% for product in new_arrivals %}
+            <div class='item-product'>
+                <a href="">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="{{product.main_image.url}}" alt="">
                         </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <p class="total-ratings">100</p>
+                        <div class="content">
+                            <div class="product-name">
+                                <p>{{product.name}}</p>
+                                <p class="full-desc">{{product.brief_description}}</p>
                             </div>
-                            <div class="prod-price">
-                                {% if new_arrival.price_new %}
-                                <p class="price new">${{new_arrival.price_new}}</p>
-                                <p class="price old">${{new_arrival.price}}</p>
-                                {% else %}
-                                <p class="price">${{new_arrival.price}}</p>
-                                {% endif %}
+                            <div class="price_rating">
+                                <div class="rating">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p class="total-ratings">100</p>
+                                </div>
+                                <div class="prod-price">
+                                    {% if product.price_new %}
+                                    <p class="price new">${{product.price_new}}</p>
+                                    <p class="price old">${{product.price}}</p>
+                                    {% else %}
+                                    <p class="price">${{product.price}}</p>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 <div class="buttons">
                     <form method="" action="">
                         <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
@@ -44,7 +46,7 @@
                         <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
                     </form>
                 </div>
-            </a>
+            </div>
             {% endfor %}
         </div>
         <div class="btn">
@@ -68,101 +70,7 @@
                     {% endfor %}
                 </div>
                 <div class="items">
-                    {% for subcategory in category.subcategories.all %}
-                        {% if subcategory.category_products.all %}
-                            {% for product in subcategory.category_products.all %}
-                                <a href="">
-                                    <div class="card">
-                                        <div class="imgBx">
-                                            <img src="{{product.main_image.url}}" alt="">
-                                        </div>
-                                        <div class="content">
-                                            <div class="product-name">
-                                                <p>{{product.name}}</p>
-                                                <p class="full-desc">{{product.brief_description}}</p>
-                                            </div>
-                                            <div class="price_rating">
-                                                <div class="rating">
-                                                    <i class="bi bi-star"></i>
-                                                    <i class="bi bi-star"></i>
-                                                    <i class="bi bi-star"></i>
-                                                    <i class="bi bi-star"></i>
-                                                    <i class="bi bi-star"></i>
-                                                </div>
-                                                <div class="prod-price">
-                                                    {% if product.price_new %}
-                                                    <p class="price new">${{product.price_new}}</p>
-                                                    <p class="price old">${{product.price}}</p>
-                                                    {% else %}
-                                                    <p class="price">${{product.price}}</p>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="buttons">
-                                        <form method="" action="">
-                                            <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                                        </form>
-                                        <form method="" action="">
-                                            
-                                            <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                                        </form>
-                                    </div>
-                                </a>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-
-
-                    {% for subcategory in category.subcategories.all %}
-                        {% for subsubcategory in subcategory.subcategories.all %}
-                            {% if subsubcategory.category_products.exists %}
-                                {% for product in subsubcategory.category_products.all %}
-                                    <a href="">
-                                        <div class="card">
-                                            <div class="imgBx">
-                                                <img src="{{ product.main_image.url }}" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <div class="product-name">
-                                                    <p>{{ product.name }}</p>
-                                                    <p class="full-desc">{{ product.brief_description }}</p>
-                                                </div>
-                                                <div class="price_rating">
-                                                    <div class="rating">
-                                                        <i class="bi bi-star"></i>
-                                                        <i class="bi bi-star"></i>
-                                                        <i class="bi bi-star"></i>
-                                                        <i class="bi bi-star"></i>
-                                                        <i class="bi bi-star"></i>
-                                                    </div>
-                                                    <div class="prod-price">
-                                                        {% if product.price_new %}
-                                                            <p class="price new">${{ product.price_new }}</p>
-                                                            <p class="price old">${{ product.price }}</p>
-                                                        {% else %}
-                                                            <p class="price">${{ product.price }}</p>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="buttons">
-                                            <form method="post" action="">
-                                                {% csrf_token %}
-                                                <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                                            </form>
-                                            <form method="post" action="">
-                                                {% csrf_token %}
-                                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                                            </form>
-                                        </div>
-                                    </a>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
+                    {% include "shop/category_products.html" with categories=category.subcategories.all %}
                 </div>
                 <div class="btn">
                     <a href="">

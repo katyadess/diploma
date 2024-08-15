@@ -1,6 +1,7 @@
 {% for category in categories %}
     {% if category.category_products.all %}
         {% for product in category.category_products.all %}
+        <div class='item-product'>
             <a href="">
                 <div class="card">
                     <div class="imgBx">
@@ -13,11 +14,12 @@
                         </div>
                         <div class="price_rating">
                             <div class="rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
                                 <i class="bi bi-star"></i>
                                 <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
+                                <p class="total-ratings">100</p>
                             </div>
                             <div class="prod-price">
                                 {% if product.price_new %}
@@ -30,16 +32,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="buttons">
-                    <form method="" action="">
-                        <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                    </form>
-                    <form method="" action="">
-                        
-                        <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                    </form>
-                </div>
             </a>
+            <div class="buttons">
+                <form method="" action="">
+                    <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                </form>
+                <form method="" action="">
+                    
+                    <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                </form>
+            </div>
+        </div>
         {% endfor %}
+    {% else %}
+        {% include "shop/category_products.html" with categories=category.subcategories.all %}
     {% endif %}
 {% endfor %}
