@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from .models import *
@@ -10,13 +11,9 @@ class MainPageView(View):
         
         brands = Brand.objects.all()
         categories = Category.objects.all()
-        products = Product.objects.all()
+        new_arrivals = Product.objects.all().order_by('-created_at')[:5]
         
-        categorized_products = {}
-        for category in categories:
-            categorized_products[category] = Product.objects.filter(category=category)
-
-        context = {'categories': categories, 'brands': brands, 'products': products, 'categorized_products': categorized_products}
+        context = {'categories': categories, 'brands': brands, 'new_arrivals': new_arrivals}
         return render (request, 'shop/main.html', context)
 
 class ProductListView(ListView):

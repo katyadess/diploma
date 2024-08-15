@@ -4,17 +4,16 @@
     <div class="products">
         <h2>New Arrivals</h2>
         <div class="items">
-            {% for product in products %}
-            {% endfor %}
-            <a href="product_details.html">
+            {% for new_arrival in new_arrivals %}
+            <a href="">
                 <div class="card">
                     <div class="imgBx">
-                        <img src="../../images/kiko_milano_lipgloss.jpg " alt="kiko_milano_lipgloss">
+                        <img src="{{new_arrival.main_image.url}}" alt="">
                     </div>
                     <div class="content">
                         <div class="product-name">
-                            <p>kiko Milano Lip Gloss</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                            <p>{{new_arrival.name}}</p>
+                            <p class="full-desc">{{new_arrival.brief_description}}</p>
                         </div>
                         <div class="price_rating">
                             <div class="rating">
@@ -26,8 +25,12 @@
                                 <p class="total-ratings">100</p>
                             </div>
                             <div class="prod-price">
-                                <p class="price new">$12.99</p>
-                                <p class="price old">$15.45</p>
+                                {% if new_arrival.price_new %}
+                                <p class="price new">${{new_arrival.price_new}}</p>
+                                <p class="price old">${{new_arrival.price}}</p>
+                                {% else %}
+                                <p class="price">${{new_arrival.price}}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -42,102 +45,7 @@
                     </form>
                 </div>
             </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/dokdo-foam-cleanser.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$12.67</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/flax_seed_oil_jerden_proff.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Jerden Proff Flax Seed Oil</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$8.45</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/biotrade_acne_out.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Biotrade Acne Out Hydro Active</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$11.00</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="card">
-                    <div class="imgBx">
-                        <img src="../../images/loreal_paris_concealer_infaillible.jpg " alt="kiko_milano_lipgloss">
-                    </div>
-                    <div class="content">
-                        <div class="product-name">
-                            <p>Loreal Paris Concealer Infaillible</p>
-                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                        </div>
-                        <div class="price_rating">
-                            <div class="rating">
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p class="price">$15.99</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
+            {% endfor %}
         </div>
         <div class="btn">
             <a href="">
@@ -160,125 +68,101 @@
                     {% endfor %}
                 </div>
                 <div class="items">
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="../../images/sunscreen_eucerin.jpg" alt="kiko_milano_lipgloss">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>Sunscreen Eucerin SPF50</p>
-                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                                </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
+                    {% for subcategory in category.subcategories.all %}
+                        {% if subcategory.category_products.all %}
+                            {% for product in subcategory.category_products.all %}
+                                <a href="">
+                                    <div class="card">
+                                        <div class="imgBx">
+                                            <img src="{{product.main_image.url}}" alt="">
+                                        </div>
+                                        <div class="content">
+                                            <div class="product-name">
+                                                <p>{{product.name}}</p>
+                                                <p class="full-desc">{{product.brief_description}}</p>
+                                            </div>
+                                            <div class="price_rating">
+                                                <div class="rating">
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                </div>
+                                                <div class="prod-price">
+                                                    {% if product.price_new %}
+                                                    <p class="price new">${{product.price_new}}</p>
+                                                    <p class="price old">${{product.price}}</p>
+                                                    {% else %}
+                                                    <p class="price">${{product.price}}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p class="price">$15.45</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                                    <div class="buttons">
+                                        <form method="" action="">
+                                            <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                        </form>
+                                        <form method="" action="">
+                                            
+                                            <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                        </form>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
 
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="../../images/dokdo-foam-cleanser.jpg " alt="kiko_milano_lipgloss">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>Round Lab 1025 Dokdo Foam Cleanser</p>
-                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                                </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <p class="price">$12.67</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
 
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="../../images/the_ordinary_ascorbic_acid_powder.jpg " alt="kiko_milano_lipgloss">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>Jerden Proff Flax Seed Oil</p>
-                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                                </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <p class="price">$8.45</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="../../images/biotrade_acne_out.jpg " alt="kiko_milano_lipgloss">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>Biotrade Acne Out Hydro Active</p>
-                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                                </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <p class="price">$11.00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="../../images/avene_cream.jpg " alt="kiko_milano_lipgloss">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>Loreal Paris Concealer Infaillible</p>
-                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
-                                </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <p class="price">$15.99</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                    {% for subcategory in category.subcategories.all %}
+                        {% for subsubcategory in subcategory.subcategories.all %}
+                            {% if subsubcategory.category_products.exists %}
+                                {% for product in subsubcategory.category_products.all %}
+                                    <a href="">
+                                        <div class="card">
+                                            <div class="imgBx">
+                                                <img src="{{ product.main_image.url }}" alt="">
+                                            </div>
+                                            <div class="content">
+                                                <div class="product-name">
+                                                    <p>{{ product.name }}</p>
+                                                    <p class="full-desc">{{ product.brief_description }}</p>
+                                                </div>
+                                                <div class="price_rating">
+                                                    <div class="rating">
+                                                        <i class="bi bi-star"></i>
+                                                        <i class="bi bi-star"></i>
+                                                        <i class="bi bi-star"></i>
+                                                        <i class="bi bi-star"></i>
+                                                        <i class="bi bi-star"></i>
+                                                    </div>
+                                                    <div class="prod-price">
+                                                        {% if product.price_new %}
+                                                            <p class="price new">${{ product.price_new }}</p>
+                                                            <p class="price old">${{ product.price }}</p>
+                                                        {% else %}
+                                                            <p class="price">${{ product.price }}</p>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="buttons">
+                                            <form method="post" action="">
+                                                {% csrf_token %}
+                                                <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                            </form>
+                                            <form method="post" action="">
+                                                {% csrf_token %}
+                                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                            </form>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 </div>
                 <div class="btn">
                     <a href="">

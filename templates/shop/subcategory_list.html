@@ -1,0 +1,10 @@
+{% for category in categories %}
+    <li class="category">
+        <a href="{{ category.get_absolute_url }}">{{ category.name }} {% if category.subcategories.all %}<i class="bi bi-chevron-down"></i>{% endif %}</a>
+        {% if category.subcategories.all %}
+            <ul class="subcategories">
+                {% include 'shop/subcategory_list.html' with categories=category.subcategories.all %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %} 

@@ -1,0 +1,45 @@
+{% for category in categories %}
+    {% if category.category_products.all %}
+        {% for product in category.category_products.all %}
+            <a href="">
+                <div class="card">
+                    <div class="imgBx">
+                        <img src="{{product.main_image.url}}" alt="">
+                    </div>
+                    <div class="content">
+                        <div class="product-name">
+                            <p>{{product.name}}</p>
+                            <p class="full-desc">{{product.brief_description}}</p>
+                        </div>
+                        <div class="price_rating">
+                            <div class="rating">
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div class="prod-price">
+                                {% if product.price_new %}
+                                <p class="price new">${{product.price_new}}</p>
+                                <p class="price old">${{product.price}}</p>
+                                {% else %}
+                                <p class="price">${{product.price}}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <form method="" action="">
+                        <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                    </form>
+                    <form method="" action="">
+                        
+                        <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                    </form>
+                </div>
+            </a>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
