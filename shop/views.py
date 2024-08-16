@@ -1,7 +1,8 @@
-from django.db.models.query import QuerySet
+from django.db.models import F
+from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -62,13 +63,14 @@ class ProductListView(View):
             category = get_object_or_404(Category, slug=category_slug)
             all_categories = category.get_descendants(include_self=True)
         
-        products = Product.objects.filter(category__in=all_categories)
+        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
+                ).filter(category__in=all_categories)
         
         sort_by_value = request.GET.get('selected_value', '1')
         if sort_by_value == '2':
-            products = products.order_by('price')
+            products = products.order_by('current_price')
         elif sort_by_value == '3':
-            products = products.order_by('-price')
+            products = products.order_by('-current_price')
         else:
             products = products.order_by('-created_at')
 
@@ -89,11 +91,11 @@ class ProductListView(View):
         
         return render(request, 'shop/product_list.html', context)
     
-class SearchView(ListView):
+class SearchView(TemplateView):
     
-    model = Product
     template_name = 'shop/search_results.html'
-    paginate_by = 30
+    
+    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -103,15 +105,60 @@ class SearchView(ListView):
         context['subscribe_form'] = SubscribeForm()
         return context
       
-    def get_queryset(self):
+      
+    def get(self, request):
         query = self.request.GET.get('query', '')
-        return Product.objects.filter(Q(name__icontains=query) | Q(brief_description__icontains=query) | Q(brand__name__icontains=query))
-         
+        sort_by_value = request.GET.get('selected_value', '1')
+        
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price'))
+            ).filter(
+            Q(name__icontains=query) | 
+            Q(brief_description__icontains=query) | 
+            Q(brand__name__icontains=query))
+        
+        if sort_by_value == '2':
+            products = products.order_by('current_price')
+        elif sort_by_value == '3':
+            products = products.order_by('-current_price')
+        else:
+            products = products.order_by('-created_at')
+            
+        return render(request, 'shop/search_results.html')
+            
+        
+      
+  
+    def get_queryset(self):
+    
+        query = self.request.GET.get('query', '')
+        sort_by_value = self.request.GET.get('selected_value', '1')
+
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price'))
+            ).filter(
+            Q(name__icontains=query) | 
+            Q(brief_description__icontains=query) | 
+            Q(brand__name__icontains=query))
+        
+        
+        if sort_by_value == '2':
+            products = products.order_by('current_price')
+        elif sort_by_value == '3':
+            products = products.order_by('-current_price')
+        else:
+            products = products.order_by('-created_at')
+            
+        return products 
+    
     
     def post(self, request):
         query = self.request.GET.get('query', '')
+        sort_by_value = self.request.GET.get('selected_value', '1')
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
             subscribe_form.save()
         
-        return redirect(f'{request.path}?query={query}')
+        return redirect(f'{request.path}?query={query}#selected_value={sort_by_value}')
+    
+    

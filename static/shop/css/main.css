@@ -587,7 +587,8 @@ nav ul ul ul li a {
     padding: .6em .9em;
 }
 
-.btn a {
+.btn a button {
+    cursor: pointer;
     color: #fff;
 }
 

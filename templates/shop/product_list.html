@@ -57,7 +57,12 @@
                     <div class="custom-select">
                         <div class="custom-select__value-wrap">
                             <div class="custom-select__value">
-                                Default
+                                {% if request.GET.selected_value %}
+                                    {% if request.GET.selected_value == '2' %} Lowest Price
+                                    {% elif request.GET.selected_value == '3' %} Highest Price
+                                    {% else %} Default
+                                    {% endif %}
+                                {% else %} Default {% endif %}
                             </div>
                             <i class="bi bi-chevron-down"></i>
                         </div>
@@ -68,7 +73,7 @@
                         </div> 
                     </div>
                     
-                    <input type="submit" name="selected_value" id="selected-value">
+                    <input type="hidden" name="selected_value" id="selected-value" value='{{request.GET.selected_value}}'>
                     
                 </div>
             </form>
@@ -77,8 +82,8 @@
 
     <div class="selected-filters">
         <div class="selected-filter__item">
-            <p>5$ - 20$</p>    
-            <button class="remove-filter"><i class="bi bi-x-lg"></i></button>
+            {% comment %} <p>5$ - 20$</p>    
+            <button class="remove-filter"><i class="bi bi-x-lg"></i></button> {% endcomment %}
         </div>
     </div>
 </section>
