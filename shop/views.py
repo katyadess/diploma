@@ -66,10 +66,10 @@ class ProductListView(View):
         products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
                 ).filter(category__in=all_categories)
         
-        sort_by_value = request.GET.get('selected_value', '1')
-        if sort_by_value == '2':
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        if sort_by_value == 'lowest_price':
             products = products.order_by('current_price')
-        elif sort_by_value == '3':
+        elif sort_by_value == 'highest_price':
             products = products.order_by('-current_price')
         else:
             products = products.order_by('-created_at')
@@ -91,8 +91,10 @@ class ProductListView(View):
         
         return render(request, 'shop/product_list.html', context)
     
-class SearchView(TemplateView):
+class SearchView(ListView):
     
+    model = Product
+    paginate_by = 30
     template_name = 'shop/search_results.html'
     
     
@@ -100,39 +102,16 @@ class SearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('query', '')
+        context['sort_by'] = self.request.GET.get('sort_by', '1')
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
         return context
-      
-      
-    def get(self, request):
-        query = self.request.GET.get('query', '')
-        sort_by_value = request.GET.get('selected_value', '1')
-        
-        products = Product.objects.annotate(
-            current_price=Coalesce('price_new', F('price'))
-            ).filter(
-            Q(name__icontains=query) | 
-            Q(brief_description__icontains=query) | 
-            Q(brand__name__icontains=query))
-        
-        if sort_by_value == '2':
-            products = products.order_by('current_price')
-        elif sort_by_value == '3':
-            products = products.order_by('-current_price')
-        else:
-            products = products.order_by('-created_at')
-            
-        return render(request, 'shop/search_results.html')
-            
-        
-      
   
     def get_queryset(self):
     
         query = self.request.GET.get('query', '')
-        sort_by_value = self.request.GET.get('selected_value', '1')
+        sort_by_value = self.request.GET.get('sort_by', 'default')
 
         products = Product.objects.annotate(
             current_price=Coalesce('price_new', F('price'))
@@ -142,9 +121,9 @@ class SearchView(TemplateView):
             Q(brand__name__icontains=query))
         
         
-        if sort_by_value == '2':
+        if sort_by_value == 'lowest_price':
             products = products.order_by('current_price')
-        elif sort_by_value == '3':
+        elif sort_by_value == 'highest_price':
             products = products.order_by('-current_price')
         else:
             products = products.order_by('-created_at')
@@ -154,11 +133,11 @@ class SearchView(TemplateView):
     
     def post(self, request):
         query = self.request.GET.get('query', '')
-        sort_by_value = self.request.GET.get('selected_value', '1')
+        sort_by_value = self.request.GET.get('sort_by', '1')
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
             subscribe_form.save()
         
-        return redirect(f'{request.path}?query={query}#selected_value={sort_by_value}')
+        return redirect(f'{request.path}?query={query}#sort_by={sort_by_value}')
     
     

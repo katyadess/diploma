@@ -39,29 +39,28 @@
         </div>
         <div class="sort-container sort-price">
             <div class="name">Sort by:</div>
-            <form method="get" action="{% url "shop:shop_search" %}" class="form">
-                <div class="custom-select-container">
-                    <div class="custom-select">
-                        <div class="custom-select__value-wrap">
-                            <div class="custom-select__value">
-                                {% if request.GET.selected_value %}
-                                    {% if request.GET.selected_value == '2' %} Lowest Price
-                                    {% elif request.GET.selected_value == '3' %} Highest Price
-                                    {% else %} Default
-                                    {% endif %}
-                                {% else %} Default {% endif %}
-                            </div>
-                            <i class="bi bi-chevron-down"></i>
+            <div class="custom-select-container">
+                <div class="custom-select">
+                    <div class="custom-select__value-wrap">
+                        <div class="custom-select__value">
+                            {% if request.GET.sort_by %}
+                                {% if request.GET.sort_by == 'lowest_price' %} Lowest Price
+                                {% elif request.GET.sort_by == 'highest_price' %} Highest Price
+                                {% else %} Default
+                                {% endif %}
+                            {% else %} Default {% endif %}
                         </div>
-                        <div class="custom-select__popup">
-                            <div data-value="1" class="custom-select__item">Default</div>
-                            <div data-value="2" class="custom-select__item">Lowest Price</div>
-                            <div data-value="3" class="custom-select__item">Highest Price</div>
-                        </div> 
+                        <i class="bi bi-chevron-down"></i>
                     </div>
-                    <input type="hidden" name="selected_value" id="selected-value" value='{{request.GET.selected_value}}'>
+                    <div class="custom-select__popup">
+                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=default">Default</a></div>
+                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=lowest_price">Lowest Price</a></div>
+                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=highest_price">Highest Price</a></div>
+                    </div> 
                 </div>
-            </form>
+                
+                <input type="hidden" name="sort_by" value="{{request.GET.sort_by}}">
+            </div>
         </div>
     </div>
 

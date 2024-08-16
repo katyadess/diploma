@@ -18,16 +18,18 @@
                 <div class="categories"><i class="bi bi-x-lg close-sidebar"></i></div>
                 <ul>
                     {% for category in categories %}
+                        {% if category.is_root_node %}
                         <li class="category main-category">
                             <a href="{{category.get_absolute_url}}">{{category.name}} {% if category.get_children %}<i class="bi bi-chevron-down"></i>{% endif %}</a>
                             {% if category.get_children %}
-                                <ul class="subcategories">
-                                    {% for child in category.get_children %}
+                            <ul class="subcategories">
+                                {% for child in category.get_children %}
                                         {% include "shop/subcategory_list.html" with category=child %}
                                     {% endfor %}
                                 </ul>
                             {% endif %}
                         </li>
+                        {% endif %}
                     {% endfor %}
                     <li class="category main-category brands">
                         <a href="brands.html">Brands <i class="bi bi-chevron-down"></i></a>

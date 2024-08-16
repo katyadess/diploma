@@ -2,8 +2,6 @@ const customSelect = document.querySelector('.custom-select');
 const customSelectValue = customSelect.querySelector('.custom-select__value');
 const customSelectPopup = customSelect.querySelector('.custom-select__popup');
 const customSelectItems = customSelectPopup.querySelectorAll('.custom-select__item');
-const hiddenInput = document.getElementById('selected-value');
-const sortForm = document.querySelector('.sort-price .form');
 
 
 customSelect.addEventListener('click', () => {
@@ -12,10 +10,7 @@ customSelect.addEventListener('click', () => {
 
 customSelectItems.forEach(item => {
     item.addEventListener('click', () => {
-        const value = item.getAttribute('data-value');
-        hiddenInput.value = value;
         customSelectValue.textContent = item.textContent;
-        sortForm.submit()
     });
     customSelectPopup.classList.remove('show');
 });

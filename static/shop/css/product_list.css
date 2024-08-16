@@ -125,6 +125,10 @@
     white-space: nowrap;
 }
 
+.custom-select__item a {
+    color: black;
+}
+
 .custom-filter__value-wrap {
     display: flex;
     padding: 10px;
