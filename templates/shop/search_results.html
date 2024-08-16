@@ -18,20 +18,23 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="price-range">
-                    <form method="get" action="" class="price-form">
+                    <form class="price-form" method='GET' action='{% url "shop:shop_search" %}'>
+
+                        <input type="hidden" name="query" value="{{ query }}">
+                        <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
                         
                         <div class="price-input">
                             <div class="field">
-                                <input type="number" name="" id="" class="input-min" value="100">
+                                <input type="number" name="min_price" id="input-min" class="input-min" value="{% if request.GET.min_price %}{{request.GET.min_price}}{% else %}3{% endif %}" min='3' max='1000'>
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
-                                <input type="number" name="" id="" class="input-max" value="2000">
+                                <input type="number" name="max_price" id="input-max" class="input-max" value="{% if request.GET.max_price %}{{request.GET.max_price}}{% else %}1000{% endif %}" max='1000' min='3'>
                             </div>
                         </div>
                         
                         <div class="btn-wrapper">
-                            <button type="submit" class="filter-button">Apply</button>
+                            <button class="filter-button" type='submit'>Apply</button>
                         </div>
                     </form>
                 </div>
@@ -39,28 +42,34 @@
         </div>
         <div class="sort-container sort-price">
             <div class="name">Sort by:</div>
-            <div class="custom-select-container">
-                <div class="custom-select">
-                    <div class="custom-select__value-wrap">
-                        <div class="custom-select__value">
-                            {% if request.GET.sort_by %}
-                                {% if request.GET.sort_by == 'lowest_price' %} Lowest Price
-                                {% elif request.GET.sort_by == 'highest_price' %} Highest Price
-                                {% else %} Default
-                                {% endif %}
-                            {% else %} Default {% endif %}
+            <form method="get" action="{% url "shop:shop_search" %}" class="form">
+                <input type="hidden" name="query" value="{{ query }}">
+                <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+                <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+                        
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                {% if request.GET.sort_by %}
+                                    {% if request.GET.sort_by == 'lowest_price' %} Lowest Price
+                                    {% elif request.GET.sort_by == 'highest_price' %} Highest Price
+                                    {% else %} Default
+                                    {% endif %}
+                                {% else %} Default {% endif %}
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
                         </div>
-                        <i class="bi bi-chevron-down"></i>
+                        <div class="custom-select__popup">
+                            <div class="custom-select__item">Default</div>
+                            <div class="custom-select__item">Lowest Price</div>
+                            <div class="custom-select__item">Highest Price</div>
+                        </div> 
                     </div>
-                    <div class="custom-select__popup">
-                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=default">Default</a></div>
-                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=lowest_price">Lowest Price</a></div>
-                        <div class="custom-select__item"><a href="{% url "shop:shop_search" %}?query={{query}}&sort_by=highest_price">Highest Price</a></div>
-                    </div> 
+                    
+                    <input type="hidden" name="sort_by">
                 </div>
-                
-                <input type="hidden" name="sort_by" value="{{request.GET.sort_by}}">
-            </div>
+            </form>
         </div>
     </div>
 

@@ -62,9 +62,15 @@ class ProductListView(View):
         if category_slug: 
             category = get_object_or_404(Category, slug=category_slug)
             all_categories = category.get_descendants(include_self=True)
+            
+        price_min = request.GET.get('min_price', '3')
+        price_max = request.GET.get('max_price', '1000')
+        
         
         products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
                 ).filter(category__in=all_categories)
+        
+        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
         
         sort_by_value = self.request.GET.get('sort_by', 'default')
         if sort_by_value == 'lowest_price':
@@ -106,12 +112,17 @@ class SearchView(ListView):
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        context['price_min'] = self.request.GET.get('min_price', '3')
+        context['price_max'] = self.request.GET.get('max_price', '1000')
         return context
   
     def get_queryset(self):
     
         query = self.request.GET.get('query', '')
         sort_by_value = self.request.GET.get('sort_by', 'default')
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
 
         products = Product.objects.annotate(
             current_price=Coalesce('price_new', F('price'))
@@ -120,6 +131,7 @@ class SearchView(ListView):
             Q(brief_description__icontains=query) | 
             Q(brand__name__icontains=query))
         
+        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
         
         if sort_by_value == 'lowest_price':
             products = products.order_by('current_price')

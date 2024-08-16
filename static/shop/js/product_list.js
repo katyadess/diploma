@@ -2,7 +2,8 @@ const customSelect = document.querySelector('.custom-select');
 const customSelectValue = customSelect.querySelector('.custom-select__value');
 const customSelectPopup = customSelect.querySelector('.custom-select__popup');
 const customSelectItems = customSelectPopup.querySelectorAll('.custom-select__item');
-
+const sortForm = document.querySelector('.sort-price .form')
+const sortByInput = sortForm.querySelector('input[name="sort_by"]');
 
 customSelect.addEventListener('click', () => {
     customSelectPopup.classList.toggle('show');
@@ -11,6 +12,8 @@ customSelect.addEventListener('click', () => {
 customSelectItems.forEach(item => {
     item.addEventListener('click', () => {
         customSelectValue.textContent = item.textContent;
+        sortByInput.value = item.textContent.toLowerCase().replace(' ', '_'); 
+        sortForm.submit()
     });
     customSelectPopup.classList.remove('show');
 });
@@ -35,3 +38,4 @@ document.addEventListener('click', (e) => {
         priceRange.classList.remove('show');
     }
 });
+
