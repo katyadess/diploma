@@ -31,15 +31,15 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="price-range">
-                    <form method="get" action="" class="price-form">
+                    <form method="get" action="{{category.get_absolute_url}}" class="price-form">
                         
                         <div class="price-input">
                             <div class="field">
-                                <input type="number" name="" id="" class="input-min" value="100">
+                                <input type="number" name="input-min" id="input-min" class="input-min" value="100" min='5'>
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
-                                <input type="number" name="" id="" class="input-max" value="2000">
+                                <input type="number" name="input-max" id="input-max" class="input-max" value="2000">
                             </div>
                         </div>
                         
@@ -52,7 +52,7 @@
         </div>
         <div class="sort-container sort-price">
             <div class="name">Sort by:</div>
-            <form method="get" action="/submit/" class="form">
+            <form method="get" action="{{category.get_absolute_url}}" class="form">
                 <div class="custom-select-container">
                     <div class="custom-select">
                         <div class="custom-select__value-wrap">
@@ -67,7 +67,9 @@
                             <div data-value="3" class="custom-select__item">Highest Price</div>
                         </div> 
                     </div>
-                    <input type="hidden" name="selected_value" id="selected-value">
+                    
+                    <input type="submit" name="selected_value" id="selected-value">
+                    
                 </div>
             </form>
         </div>
@@ -96,7 +98,7 @@
             {% endfor %}
         </div>
 
-        {% if category.subcategories.all %}
+        {% comment %} {% if category.subcategories.all %}
             <div class="items">
                     {% include "shop/category_products.html" with categories=category.subcategories.all %}
             </div>
@@ -104,8 +106,8 @@
                 <a href="">
                     <button type="submit">Load more</button>
                 </a>
-            </div>
-        {% elif products%}
+            </div> {% endcomment %}
+        {% if products%}
             <div class="items">
                 {% for product in products %}
                     <div class='item-product'>

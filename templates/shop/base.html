@@ -154,8 +154,9 @@
         <div class="footer-sec subscribe list-items">
             <div class="subscribe-container">
                 <p class="footer-list">Subscribe to receive updates and news!</p>
-                <form action="" class="subscribe-form">
-                    <input type="email" name="email" id="email" placeholder="Enter your email...">
+                <form method="POST" class="subscribe-form">
+                    {% csrf_token %}
+                    {{subscribe_form.email}}
                     <button type="submit" class='subscribe-button'>Subscribe</button>
                 </form>
             </div>

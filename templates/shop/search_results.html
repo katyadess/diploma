@@ -2,20 +2,81 @@
 {% block css_links %}
 {% load static %}
 <link rel="stylesheet" href="{% static "shop/css/product_list.css" %}">
+<link rel="stylesheet" href="{% static "shop/css/brands.css" %}">
 {% endblock css_links %}
 
 {% block content %}
 
+<section class="sort-section">
 
-<div class="main">
+    <div class="filters">
+        <div class="sort-container filter-price">
+            <div class="name">Filter by:</div>
+            <div class="custom-filter__value-wrap"> 
+                <div class="custom-filter__value">
+                    Price, $
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <div class="price-range">
+                    <form method="get" action="" class="price-form">
+                        
+                        <div class="price-input">
+                            <div class="field">
+                                <input type="number" name="" id="" class="input-min" value="100">
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="field">
+                                <input type="number" name="" id="" class="input-max" value="2000">
+                            </div>
+                        </div>
+                        
+                        <div class="btn-wrapper">
+                            <button type="submit" class="filter-button">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="sort-container sort-price">
+            <div class="name">Sort by:</div>
+            <form method="get" action="/submit/" class="form">
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                Default
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div class="custom-select__popup">
+                            <div data-value="1" class="custom-select__item">Default</div>
+                            <div data-value="2" class="custom-select__item">Lowest Price</div>
+                            <div data-value="3" class="custom-select__item">Highest Price</div>
+                        </div> 
+                    </div>
+                    <input type="hidden" name="selected_value" id="selected-value">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="selected-filters">
+        <div class="selected-filter__item">
+            <p>5$ - 20$</p>    
+            <button class="remove-filter"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+</section>
+
+<div class="main" style='align-items: center !important'>
     <h2>Search results</h2>
-    <p style='margin: 2em 0'>Search results for "{{query}}". Found {{products|length}} product{{ products|length|pluralize }}</p>
+    <p style='margin: 1em 0'>Search results for <span style='color: blueviolet'>"{{query}}"</span>. Found {{object_list|length}} product{{ products|length|pluralize }}</p>
     <div class="products">
-    {% if products %}
+    {% if object_list %}
     
         
         <div class="items">
-            {% for product in products %}
+            {% for product in object_list %}
                 <div class='item-product'>
                     <a href="">
                         <div class="card">

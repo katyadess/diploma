@@ -626,6 +626,14 @@ nav ul ul ul li a {
     border: none;
 }
 
+.subscribe-button {
+    cursor: pointer;
+}
+
+.subscribe-button:hover {
+    opacity: 85%;
+}
+
 .form {
     display: flex;
     flex-direction: column;
