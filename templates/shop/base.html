@@ -108,7 +108,7 @@
 
     <section>
         <div class="search-container">
-            <form action="/search" method="GET" class="form">
+            <form action="{% url "shop:shop_search" %}" method="GET" class="form">
                 <input type="text" placeholder="Search items" name="query" class="search-input">
                 <div class="btn-wrapper">
                     <button type="submit" class="search-button">Search</button>

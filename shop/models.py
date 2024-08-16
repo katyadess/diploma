@@ -114,3 +114,17 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.city}, {self.street}"
+    
+    
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self) -> str:
+        return f'{self.email}'
+    
+    class Meta:
+        verbose_name = 'Subscriber'
+        verbose_name_plural = 'Subscribers'
+        

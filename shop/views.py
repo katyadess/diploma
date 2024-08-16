@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from .models import *
+from django.db.models import Q
 
 # Create your views here.
 
@@ -19,6 +20,9 @@ class ProductListView(View):
     
     def get(self, request, category_slug=None):
         
+        brands = Brand.objects.all()
+        categories = Category.objects.all()
+        
         if category_slug: 
             category = get_object_or_404(Category, slug=category_slug)
         
@@ -32,7 +36,19 @@ class ProductListView(View):
         context = {
             'category': category,
             'breadcrumbs': breadcrumbs,
-            'products': products
+            'products': products,
+            'categories':categories,
+            'brands': brands
         }
         
         return render(request, 'shop/product_list.html', context)
+    
+
+def search(request):
+    query = request.GET.get('query')
+    products = Product.objects.filter(Q(name__icontains=query) | Q(brief_description__icontains=query) | Q(brand__name__icontains=query))
+    
+    brands = Brand.objects.all()
+    categories = Category.objects.all()
+    context = {'categories': categories, 'brands': brands, 'products': products, 'query': query}
+    return render(request, 'shop/search_results.html', context)

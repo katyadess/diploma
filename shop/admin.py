@@ -30,3 +30,4 @@ admin.site.register(ProductReview, ProductReviewAdmin)
 class AddressAdmin(admin.ModelAdmin):
     list_display = ['user', 'city', 'street']
 admin.site.register(Address, AddressAdmin)
+admin.site.register(Subscriber)

@@ -25,6 +25,7 @@
 }
 
 .breadcrumbs-back {
+    cursor: pointer;
     background-color: white;
     border: none;
     color: black;
