@@ -21,9 +21,22 @@ class MainPageView(View):
     def get(self, request):   
         subscribe_form = SubscribeForm()
         brands = Brand.objects.all()
-        categories = Category.objects.all()
+        categories = Category.objects.filter(parent__isnull=True)
         new_arrivals = Product.objects.all().order_by('-created_at')[:5]
-        context = {'categories': categories, 'brands': brands, 'new_arrivals': new_arrivals, 'subscribe_form': subscribe_form}
+        
+        category_products = {}
+        for category in categories:
+            descendants = category.get_descendants()
+            products = Product.objects.filter(category__in=descendants)
+            category_products[category] = products
+            
+        context = {
+            'categories': categories, 
+            'brands': brands, 
+            'new_arrivals': new_arrivals, 
+            'subscribe_form': subscribe_form,
+            'category_products': category_products
+            }
         return render(request, 'shop/main.html', context)
 
 class ProductListView(View):
@@ -47,14 +60,9 @@ class ProductListView(View):
         
         if category_slug: 
             category = get_object_or_404(Category, slug=category_slug)
-            subcategories = category.subcategories.all()
-            subsubcategories_total = []
-            for subcategory in subcategories:
-                subsubcategories_total.extend(subcategory.subcategories.all())
-            categories_to_include = category.get
+            all_categories = category.get_descendants(include_self=True)
         
-        
-        products = Product.objects.filter(category__name__in=categories_to_include)
+        products = Product.objects.filter(category__in=all_categories)
         
         sort_by_value = request.GET.get('selected_value', '1')
         if sort_by_value == '2':
@@ -63,9 +71,7 @@ class ProductListView(View):
             products = products.order_by('-price')
         else:
             products = products.order_by('-created_at')
-            
-        
-        # products = Product.objects.filter(category=category)
+
         
         breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}]
         for parent in category.get_full_breadcrumb_path():

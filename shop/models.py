@@ -1,15 +1,20 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 
 
-class Category(models.Model):
+class Category(MPTTModel):
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
     category_image = models.ImageField(upload_to='categories', null=True, blank=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
 
     class Meta:
         ordering = ('name',)

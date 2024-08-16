@@ -88,7 +88,7 @@
     <div class="products">
         <h2>{{category.name}}</h2>
         <div class="product-categories">
-            {% for subcategory in category.subcategories.all %}
+            {% for subcategory in category.get_children %}
                 <a class="category-link" href="{{subcategory.get_absolute_url}}">
                     <div class="img-container">
                         <img src="{{subcategory.category_image.url}}" alt="">
@@ -97,17 +97,7 @@
                 </a>
             {% endfor %}
         </div>
-
-        {% comment %} {% if category.subcategories.all %}
-            <div class="items">
-                    {% include "shop/category_products.html" with categories=category.subcategories.all %}
-            </div>
-            <div class="btn">
-                <a href="">
-                    <button type="submit">Load more</button>
-                </a>
-            </div> {% endcomment %}
-        {% if products%}
+        {% if products %}
             <div class="items">
                 {% for product in products %}
                     <div class='item-product'>
