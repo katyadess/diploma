@@ -28,6 +28,8 @@ document.addEventListener('click', (e) => {
 
 const customFilterValue = document.querySelector('.custom-filter__value');
 const priceRange = document.querySelector('.price-range');
+const minPriceInput = document.querySelector('#input-min');
+const maxPriceInput = document.querySelector('#input-max');
 
 customFilterValue.addEventListener('click', () => {
     priceRange.classList.toggle('show');
