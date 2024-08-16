@@ -23,7 +23,16 @@ class Category(models.Model):
         return reverse('shop:product_list_by_category',
                        args=[self.slug])
 
-
+    def get_full_breadcrumb_path(self):
+        
+        parents = []
+        category = self
+        while category.parent:
+            parents.insert(0, category.parent)
+            category = category.parent
+        
+        return parents
+    
 class Brand(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True)

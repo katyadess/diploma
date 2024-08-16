@@ -61,7 +61,7 @@
                 <h2>{{category.name}}</h2>
                 <div class="product-categories">
                     {% for subcategory in category.subcategories.all %}
-                        <a class="category-link" href="">
+                        <a class="category-link" href="{{subcategory.get_absolute_url}}">
                             <div class="img-container">
                                 <img src="{{subcategory.category_image.url}}" alt="">
                             </div>
@@ -73,7 +73,7 @@
                     {% include "shop/category_products.html" with categories=category.subcategories.all %}
                 </div>
                 <div class="btn">
-                    <a href="">
+                    <a href="{{category.get_absolute_url}}">
                         <button type="submit">See more</button>
                     </a>
                 </div>

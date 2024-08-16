@@ -1,0 +1,186 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/product_list.css" %}">
+<link rel="stylesheet" href="{% static "shop/css/brands.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<div class="breadcrumbs">
+
+    <div class="btn-wrapper">
+        <button class="button breadcrumbs-back"><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <ul>
+        {% for breadcrumb in breadcrumbs %}
+        <li>
+            <a class="breadcrumb-link {% if breadcrumb.class %}{{breadcrumb.class}}{% endif %}" href="{{breadcrumb.url}}">{{breadcrumb.name}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<section class="sort-section">
+
+    <div class="filters">
+        <div class="sort-container filter-price">
+            <div class="name">Filter by:</div>
+            <div class="custom-filter__value-wrap"> 
+                <div class="custom-filter__value">
+                    Price, $
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <div class="price-range">
+                    <form method="get" action="" class="price-form">
+                        
+                        <div class="price-input">
+                            <div class="field">
+                                <input type="number" name="" id="" class="input-min" value="100">
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="field">
+                                <input type="number" name="" id="" class="input-max" value="2000">
+                            </div>
+                        </div>
+                        
+                        <div class="btn-wrapper">
+                            <button type="submit" class="filter-button">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="sort-container sort-price">
+            <div class="name">Sort by:</div>
+            <form method="get" action="/submit/" class="form">
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                Default
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div class="custom-select__popup">
+                            <div data-value="1" class="custom-select__item">Default</div>
+                            <div data-value="2" class="custom-select__item">Lowest Price</div>
+                            <div data-value="3" class="custom-select__item">Highest Price</div>
+                        </div> 
+                    </div>
+                    <input type="hidden" name="selected_value" id="selected-value">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="selected-filters">
+        <div class="selected-filter__item">
+            <p>5$ - 20$</p>    
+            <button class="remove-filter"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+</section>
+
+<main class="main">
+
+    <div class="products">
+        <h2>{{category.name}}</h2>
+        <div class="product-categories">
+            {% for subcategory in category.subcategories.all %}
+                <a class="category-link" href="{{subcategory.get_absolute_url}}">
+                    <div class="img-container">
+                        <img src="{{subcategory.category_image.url}}" alt="">
+                    </div>
+                    <p>{{subcategory.name}}</p>
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if category.subcategories.all %}
+            <div class="items">
+                    {% include "shop/category_products.html" with categories=category.subcategories.all %}
+            </div>
+            <div class="btn">
+                <a href="">
+                    <button type="submit">Load more</button>
+                </a>
+            </div>
+        {% elif products%}
+            <div class="items">
+                {% for product in products %}
+                    <div class='item-product'>
+                        <a href="">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img src="{{product.main_image.url}}" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="product-name">
+                                        <p>{{product.name}}</p>
+                                        <p class="full-desc">{{product.brief_description}}</p>
+                                    </div>
+                                    <div class="price_rating">
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <p class="total-ratings">100</p>
+                                        </div>
+                                        <div class="prod-price">
+                                            {% if product.price_new %}
+                                            <p class="price new">${{product.price_new}}</p>
+                                            <p class="price old">${{product.price}}</p>
+                                            {% else %}
+                                            <p class="price">${{product.price}}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="buttons">
+                            <form method="" action="">
+                                <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                            </form>
+                            <form method="" action="">
+                                
+                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="btn">
+                <a href="">
+                    <button type="submit">Load more</button>
+                </a>
+            </div>
+        {% else %}
+            <p>No items found</p>
+        {% endif %}
+    </div>
+
+</main>
+
+<div class="pagination">
+    <a href="#" class="pagination-link active">
+        <span>1</span>
+    </a>
+    <a href="#" class="pagination-link">
+        <span>2</span>
+    </a>
+    <a href="#" class="pagination-link">
+        <span>3</span>
+    </a>
+    <span class="pagination-ellipsis">...</span>
+    <a href="#" class="pagination-link">
+        <span>24</span>
+    </a>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src='{% static "shop/js/product_list.js" %}'></script>
+{% endblock scripts %}

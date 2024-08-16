@@ -48,14 +48,22 @@
                     <span class="hamburger"><i class="bi bi-list"></i></span>
                 </div>
 
-                <div class="logo"><a href="main.html">Éclat Essentials</a></div>
+                <div class="logo"><a href="{% url 'shop:main' %}">Éclat Essentials</a></div>
                 
 
                 <div class="nav-items">
-                    <li class="nav-item person">
-                        {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item person">
                             <a href="account.html" class="nav-link"><i class="bi bi-person-fill"></i></a>
-                        {% else %}
+                        </li> 
+                        <li class="nav-item favourites">
+                            <a href="account.html?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
+                            <span class='badge'>
+                                2
+                            </span>
+                        </li> 
+                    {% else %}
+                        <li class="nav-item person">
                             <p class="nav-link not-signed-in"><i class="bi bi-person-fill"></i></p>
                             <div class="login">
                             <div class="close-login-container">
@@ -78,15 +86,10 @@
                             </form>
 
                             <a href="register.html" class="register-link">Register</a>
-                            </div>
-                        {% endif %}
+                            </div>       
+                        </li>
                     </li> 
-                    <li class="nav-item favourites">
-                        <a href="account.html?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
-                        <span class='badge'>
-                            2
-                        </span>
-                    </li> 
+                    {% endif %}
                     <li class="nav-item cart">
                         <a href="cart.html" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
                         <span class='badge'>
@@ -164,8 +167,8 @@
     <script src="{% static "shop/js/main.js" %}"></script>
     <script src="{% static "shop/js/back-to-top-button.js" %}"></script>
 
-    {% block js_scripts %}
-    {% endblock js_scripts %}
+    {% block scripts %}
+    {% endblock scripts %}
         
 </body>
 </html>

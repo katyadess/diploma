@@ -1,0 +1,161 @@
+.main-menu {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: baseline;
+    width: 100%;
+    padding: 0 2em;
+    margin-bottom: 2em;
+}
+
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: .7rem;
+}
+
+.sidebar-menu .nav-link {
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+
+.section {
+    flex: 1;
+    gap: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.sub-section {
+    gap: 1em;
+    flex-direction: column;
+    display: none;
+}
+
+.sub-section.active {
+    display: flex;
+}
+ 
+.text {
+    display: flex;
+    gap: .3em;
+    flex-direction: column;
+}
+
+.sidebar-menu .nav-link.active {
+    color: blueviolet;
+    border-right: 2px solid black;
+}
+
+.sidebar-menu .nav-link:hover {
+    border-right: 2px solid black;
+}
+
+ 
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff;
+    color: black;
+    font-weight: 600;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: none; 
+    z-index: 1000;
+}
+
+.back-to-top:hover {
+    background-color: #c7c7c7;
+}
+
+
+@media (min-width: 600px) {
+    .main-menu {
+        flex-direction: row;
+    }
+
+    .sidebar-menu {
+
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+    
+    }
+
+}
+
+
+@media (min-width: 700px) {
+
+    .sidebar-menu .nav-link {
+        font-size: .9rem !important;
+    }
+    
+    .sub-section * {
+        font-size: 1rem !important;
+    }
+    .section-heading {
+        font-size: 1.4rem !important;
+    }
+
+}
+
+
+@media (min-width: 930px) {
+
+    .main-menu {
+        padding: 0 3.5em;
+    }
+
+    .sidebar-menu {
+        width: 25%;
+    }
+}
+
+@media (min-width: 1200px) {
+    
+
+    .sidebar-menu {
+        width: 20%;
+    }
+
+    .main-menu {
+        
+        gap: 3em;
+        
+    }
+
+    .sub-section * {
+        font-size: 1.1rem !important;
+    }
+    .section-heading {
+        font-size: 1.6rem !important;
+    }
+
+
+}
+
+@media (min-width: 1500px) {
+    
+
+    .sidebar-menu {
+        width: 17%;
+    }
+
+}
+
+@media (min-width: 1800px) {
+    
+
+    .sidebar-menu {
+        width: 14%;
+    }
+
+}
