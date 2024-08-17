@@ -32,8 +32,6 @@
                 </div>
                 <div class="price-range">
                     <form class="price-form" method='GET' action='{{category.get_absolute_url}}'>
-
-                        <input type="hidden" name="query" value="{{ query }}">
                         {% if request.GET.sort_by %}
                             <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
                         {% endif %}
@@ -58,7 +56,6 @@
         <div class="sort-container sort-price">
             <div class="name">Sort by:</div>
             <form method="get" action="{{category.get_absolute_url}}" class="form">
-                <input type="hidden" name="query" value="{{ query }}">
                 {% if request.GET.min_price or request.GET.max_price %}
                     <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
                     <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">        
@@ -101,7 +98,7 @@
 
 <main class="main">
 
-    <div class="products">
+    <div class="products" id='products-section'>
         <h2>{{category.name}}</h2>
         <div class="product-categories">
             {% for subcategory in category.get_children %}
@@ -113,9 +110,9 @@
                 </a>
             {% endfor %}
         </div>
-        {% if products %}
+        {% if page_obj %}
             <div class="items">
-                {% for product in products %}
+                {% for product in page_obj %}
                     <div class='item-product'>
                         <a href="">
                             <div class="card">
@@ -160,11 +157,13 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if page_obj.has_next %}   
             <div class="btn">
-                <a href="">
-                    <button type="submit">Load more</button>
+                <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.next_page_number }}#products-section">
+                    <button>Load more</button>
                 </a>
             </div>
+            {% endif %}
         {% else %}
             <p>No items found</p>
         {% endif %}
@@ -173,20 +172,33 @@
 </main>
 
 <div class="pagination">
-    <a href="#" class="pagination-link active">
-        <span>1</span>
-    </a>
-    <a href="#" class="pagination-link">
-        <span>2</span>
-    </a>
-    <a href="#" class="pagination-link">
-        <span>3</span>
-    </a>
-    <span class="pagination-ellipsis">...</span>
-    <a href="#" class="pagination-link">
-        <span>24</span>
-    </a>
+
+    {% if not page_obj.number == 1 %}
+        <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page=1#products-section" class="pagination-link">1</a>
+    {% endif %}
+
+    {% if page_obj.number > 6 %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range%}
+        {% if page_obj.number == num%}
+            <a href="#products-section" class="pagination-link active">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' and num != 1 and num != page_obj.paginator.num_pages %}
+            <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ num }}#products-section" class="pagination-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+            
+    {% if page_obj.number < page_obj.paginator.num_pages|add:'-5' %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+
+    {% if not page_obj.number == page_obj.paginator.num_pages %}
+        <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.paginator.num_pages }}#products-section" class="pagination-link">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+    
 </div>
+
 {% endblock content %}
 
 {% block scripts %}

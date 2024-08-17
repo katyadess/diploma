@@ -40,4 +40,3 @@ document.addEventListener('click', (e) => {
         priceRange.classList.remove('show');
     }
 });
-

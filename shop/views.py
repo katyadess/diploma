@@ -1,13 +1,14 @@
 from django.db.models import F
+from django.http import JsonResponse
 from django.db.models.functions import Coalesce
-from django.db.models.query import QuerySet
-from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -47,9 +48,10 @@ class ProductListView(View):
         if category_slug: 
             category = get_object_or_404(Category, slug=category_slug)
         
-        sort_by_value = self.request.GET.get('sort_by', 'default')
-        price_min = self.request.GET.get('min_price', '3')
-        price_max = self.request.GET.get('max_price', '1000')
+        sort_by_value = self.request.GET.get('sort_by')
+        price_min = self.request.GET.get('min_price')
+        price_max = self.request.GET.get('max_price')
+        page = self.request.GET.get('page')
         
         redirect_url = f'{request.path}?'
         
@@ -58,6 +60,9 @@ class ProductListView(View):
             
         if price_min or price_max:
             redirect_url += f'min_price={price_min}&max_price={price_max}&'
+        
+        if page:
+            redirect_url += f'page={page}&'
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
@@ -78,14 +83,15 @@ class ProductListView(View):
             category = get_object_or_404(Category, slug=category_slug)
             all_categories = category.get_descendants(include_self=True)
             
-        price_min = request.GET.get('min_price', '3')
-        price_max = request.GET.get('max_price', '1000')
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
         
         
         products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
                 ).filter(category__in=all_categories)
         
         products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        
         
         sort_by_value = self.request.GET.get('sort_by', 'default')
         if sort_by_value == 'lowest_price':
@@ -95,6 +101,9 @@ class ProductListView(View):
         else:
             products = products.order_by('-created_at')
 
+        paginator = Paginator(products, 4)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         
         breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}]
         for parent in category.get_full_breadcrumb_path():
@@ -104,10 +113,10 @@ class ProductListView(View):
         context = {
             'category': category,
             'breadcrumbs': breadcrumbs,
-            'products': products,
             'categories':categories,
             'brands': brands,
-            'subscribe_form': subscribe_form
+            'subscribe_form': subscribe_form,
+            'page_obj': page_obj,
         }
         
         return render(request, 'shop/product_list.html', context)
@@ -115,7 +124,7 @@ class ProductListView(View):
 class SearchView(ListView):
     
     model = Product
-    paginate_by = 30
+    paginate_by = 4
     template_name = 'shop/search_results.html'
     
     
@@ -129,6 +138,10 @@ class SearchView(ListView):
         context['subscribe_form'] = SubscribeForm()
         context['price_min'] = self.request.GET.get('min_price', '3')
         context['price_max'] = self.request.GET.get('max_price', '1000')
+        
+        full_length = self.get_queryset().count()
+        context['full_length'] = full_length
+        
         return context
   
     def get_queryset(self):
@@ -161,10 +174,11 @@ class SearchView(ListView):
     def post(self, request):
         
         
-        query = self.request.GET.get('query', '')
-        sort_by_value = self.request.GET.get('sort_by', 'default')
-        price_min = self.request.GET.get('min_price', '3')
-        price_max = self.request.GET.get('max_price', '1000')
+        query = self.request.GET.get('query')
+        sort_by_value = self.request.GET.get('sort_by')
+        price_min = self.request.GET.get('min_price')
+        price_max = self.request.GET.get('max_price')
+        page = self.request.GET.get('page')
         
         redirect_url = f'{request.path}?query={query}'
         
@@ -173,6 +187,9 @@ class SearchView(ListView):
             
         if price_min or price_max:
             redirect_url += f'&min_price={price_min}&max_price={price_max}'
+        
+        if page:
+            redirect_url += f'&page={page}'
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
@@ -211,7 +228,7 @@ class BrandsView(View):
         if brand_slug: 
             brand = get_object_or_404(Brand, slug=brand_slug)
         
-        sort_by_value = self.request.GET.get('sort_by', 'all')
+        sort_by_value = self.request.GET.get('sort_by')
         redirect_url = f'{request.path}?'
         
         if sort_by_value:
@@ -232,9 +249,9 @@ class BrandsProductView(View):
         if brand_slug: 
             brand = get_object_or_404(Brand, slug=brand_slug)
         
-        sort_by_value = self.request.GET.get('sort_by', 'default')
-        price_min = self.request.GET.get('min_price', '3')
-        price_max = self.request.GET.get('max_price', '1000')
+        sort_by_value = self.request.GET.get('sort_by')
+        price_min = self.request.GET.get('min_price')
+        price_max = self.request.GET.get('max_price')
         
         redirect_url = f'{request.path}?'
         
@@ -277,6 +294,10 @@ class BrandsProductView(View):
             products = products.order_by('-current_price')
         else:
             products = products.order_by('-created_at')
+            
+        paginator = Paginator(products, 4)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
         
         breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}, 
@@ -286,7 +307,7 @@ class BrandsProductView(View):
             
         context = {
             'breadcrumbs': breadcrumbs,
-            'products': products,
+            'page_obj': page_obj,
             'brands': brands,
             'brand': brand,
             'subscribe_form': subscribe_form

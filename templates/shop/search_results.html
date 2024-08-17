@@ -89,8 +89,8 @@
 
 <div class="main" style='align-items: center !important'>
     <h2>Search results</h2>
-    <p style='margin: 1em 0'>Search results for <span style='color: blueviolet'>"{{query}}"</span>. Found {{object_list|length}} product{{ products|length|pluralize }}</p>
-    <div class="products">
+    <p style='margin: 1em 0'>Search results for <span style='color: blueviolet'>"{{query}}"</span>. Found {{full_length}} product{{ products|length|pluralize }}</p>
+    <div class="products" id='products-section'>
     {% if object_list %}
     
         
@@ -140,11 +140,13 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">Load more</button>
-            </a>
-        </div>
+        {% if page_obj.has_next %}   
+            <div class="btn">
+                <a href="?query={{query}}&{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.next_page_number }}#products-section">
+                    <button>Load more</button>
+                </a>
+            </div>
+        {% endif %}
         
     {% else %}
        <p>No matches found</p> 
@@ -153,19 +155,31 @@
 </div>
 
 <div class="pagination">
-    <a href="#" class="pagination-link active">
-        <span>1</span>
-    </a>
-    <a href="#" class="pagination-link">
-        <span>2</span>
-    </a>
-    <a href="#" class="pagination-link">
-        <span>3</span>
-    </a>
-    <span class="pagination-ellipsis">...</span>
-    <a href="#" class="pagination-link">
-        <span>24</span>
-    </a>
+
+    {% if not page_obj.number == 1 %}
+        <a href="?query={{query}}&{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page=1#products-section" class="pagination-link">1</a>
+    {% endif %}
+
+    {% if page_obj.number > 6 %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range%}
+        {% if page_obj.number == num%}
+            <a href="#products-section" class="pagination-link active">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' and num != 1 and num != page_obj.paginator.num_pages %}
+            <a href="?query={{query}}&{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ num }}#products-section" class="pagination-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+            
+    {% if page_obj.number < page_obj.paginator.num_pages|add:'-5' %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+
+    {% if not page_obj.number == page_obj.paginator.num_pages %}
+        <a href="?query={{query}}&{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.paginator.num_pages }}#products-section" class="pagination-link">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+
 </div>
 
 {% endblock content %}
