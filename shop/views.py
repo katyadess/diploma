@@ -288,6 +288,7 @@ class BrandsProductView(View):
             'breadcrumbs': breadcrumbs,
             'products': products,
             'brands': brands,
+            'brand': brand,
             'subscribe_form': subscribe_form
         }
         
