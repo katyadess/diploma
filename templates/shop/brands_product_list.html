@@ -6,6 +6,19 @@
 {% endblock css_links %}
 
 {% block content %}
+<div class="breadcrumbs">
+
+    <div class="btn-wrapper">
+        <button onclick="history.back()" class="button breadcrumbs-back"><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <ul>
+        {% for breadcrumb in breadcrumbs %}
+        <li>
+            <a class="breadcrumb-link {% if breadcrumb.class %}{{breadcrumb.class}}{% endif %}" href="{{breadcrumb.url}}">{{breadcrumb.name}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
 <section class="sort-section">
 
@@ -18,12 +31,13 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="price-range">
-                    <form class="price-form" method='GET' action='{% url "shop:shop_search" %}'>
+                    <form class="price-form" method='GET' action='{{category.get_absolute_url}}'>
 
                         <input type="hidden" name="query" value="{{ query }}">
                         {% if request.GET.sort_by %}
                             <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
                         {% endif %}
+                        
                         <div class="price-input">
                             <div class="field">
                                 <input type="number" name="min_price" id="input-min" class="input-min" value="{% if request.GET.min_price %}{{request.GET.min_price}}{% else %}3{% endif %}" min='3' max='1000'>
@@ -43,14 +57,12 @@
         </div>
         <div class="sort-container sort-price">
             <div class="name">Sort by:</div>
-            <form method="get" action="{% url "shop:shop_search" %}" class="form">
+            <form method="get" action="{{category.get_absolute_url}}" class="form">
                 <input type="hidden" name="query" value="{{ query }}">
-
                 {% if request.GET.min_price or request.GET.max_price %}
                     <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
                     <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">        
-                {% endif %}
-
+                {% endif %}        
                 <div class="custom-select-container">
                     <div class="custom-select">
                         <div class="custom-select__value-wrap">
@@ -87,70 +99,68 @@
     </div>
 </section>
 
-<div class="main" style='align-items: center !important'>
-    <h2>Search results</h2>
-    <p style='margin: 1em 0'>Search results for <span style='color: blueviolet'>"{{query}}"</span>. Found {{object_list|length}} product{{ products|length|pluralize }}</p>
+<main class="main">
+
     <div class="products">
-    {% if object_list %}
-    
-        
-        <div class="items">
-            {% for product in object_list %}
-                <div class='item-product'>
-                    <a href="">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="{{product.main_image.url}}" alt="">
-                            </div>
-                            <div class="content">
-                                <div class="product-name">
-                                    <p>{{product.name}}</p>
-                                    <p class="full-desc">{{product.brief_description}}</p>
+        <h2>{{brand.name}}</h2>
+        {% if products %}
+            <div class="items">
+                {% for product in products %}
+                    <div class='item-product'>
+                        <a href="">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img src="{{product.main_image.url}}" alt="">
                                 </div>
-                                <div class="price_rating">
-                                    <div class="rating">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p class="total-ratings">100</p>
+                                <div class="content">
+                                    <div class="product-name">
+                                        <p>{{product.name}}</p>
+                                        <p class="full-desc">{{product.brief_description}}</p>
                                     </div>
-                                    <div class="prod-price">
-                                        {% if product.price_new %}
-                                        <p class="price new">${{product.price_new}}</p>
-                                        <p class="price old">${{product.price}}</p>
-                                        {% else %}
-                                        <p class="price">${{product.price}}</p>
-                                        {% endif %}
+                                    <div class="price_rating">
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <p class="total-ratings">100</p>
+                                        </div>
+                                        <div class="prod-price">
+                                            {% if product.price_new %}
+                                            <p class="price new">${{product.price_new}}</p>
+                                            <p class="price old">${{product.price}}</p>
+                                            {% else %}
+                                            <p class="price">${{product.price}}</p>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </a>
+                        <div class="buttons">
+                            <form method="" action="">
+                                <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                            </form>
+                            <form method="" action="">
+                                
+                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                            </form>
                         </div>
-                    </a>
-                    <div class="buttons">
-                        <form method="" action="">
-                            <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                        </form>
-                        <form method="" action="">
-                            
-                            <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                        </form>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="btn">
-            <a href="">
-                <button type="submit">Load more</button>
-            </a>
-        </div>
-        
-    {% else %}
-       <p>No matches found</p> 
-    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="btn">
+                <a href="">
+                    <button type="submit">Load more</button>
+                </a>
+            </div>
+        {% else %}
+            <p>No items found</p>
+        {% endif %}
     </div>
-</div>
+
+</main>
 
 <div class="pagination">
     <a href="#" class="pagination-link active">
@@ -167,7 +177,6 @@
         <span>24</span>
     </a>
 </div>
-
 {% endblock content %}
 
 {% block scripts %}

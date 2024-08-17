@@ -1,0 +1,53 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/brands.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<div class="main">
+
+    <h1>Brands</h1>
+
+    <form method="get" action="{% url "shop:product_brands" %}" class="form">
+        <div class="custom-select-container">
+            <div class="custom-select">
+                <div class="custom-select__value-wrap">
+                    <div class="custom-select__value">
+                        {% if request.GET.sort_by %}
+                            {% if request.GET.sort_by == 'makeup' %} Makeup
+                            {% elif request.GET.sort_by == 'face-care' %} Face Care
+                            {% elif request.GET.sort_by == 'hair-care' %} Hair Care
+                            {% elif request.GET.sort_by == 'body-care' %} Body Care
+                            {% else %} All
+                            {% endif %}
+                        {% else %} All {% endif %}
+                    </div>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <div class="custom-select__popup">
+                    <div class="custom-select__item">All</div>
+                    <div class="custom-select__item">Makeup</div>
+                    <div class="custom-select__item">Face Care</div>
+                    <div class="custom-select__item">Body Care</div>
+                    <div class="custom-select__item">Hair Care</div>
+                </div> 
+            </div>
+            <input type="hidden" name="sort_by">
+        </div>
+    </form>
+
+    <div class="brands-list">
+        <ul>
+            {% for brand in category_brands %}
+                <li><a href="{{brand.get_absolute_url}}">{{brand.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src='{% static "shop/js/brands.js" %}'></script>
+{% endblock scripts %}

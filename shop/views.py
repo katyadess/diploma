@@ -1,5 +1,6 @@
 from django.db.models import F
 from django.db.models.functions import Coalesce
+from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.views import View
 from django.views.generic import ListView, TemplateView
@@ -45,10 +46,24 @@ class ProductListView(View):
     def post(self, request, category_slug=None):
         if category_slug: 
             category = get_object_or_404(Category, slug=category_slug)
+        
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
+        redirect_url = f'{request.path}?'
+        
+        if sort_by_value:
+            redirect_url += f'sort_by={sort_by_value}&'
+            
+        if price_min or price_max:
+            redirect_url += f'min_price={price_min}&max_price={price_max}&'
+        
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
             subscribe_form.save()
-        return redirect(f'{request.path}')
+    
+        return redirect(redirect_url)
         
     
     def get(self, request, category_slug=None):
@@ -108,7 +123,7 @@ class SearchView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('query', '')
-        context['sort_by'] = self.request.GET.get('sort_by', '1')
+        context['sort_by'] = self.request.GET.get('sort_by', 'default')
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
@@ -144,12 +159,137 @@ class SearchView(ListView):
     
     
     def post(self, request):
+        
+        
         query = self.request.GET.get('query', '')
-        sort_by_value = self.request.GET.get('sort_by', '1')
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
+        redirect_url = f'{request.path}?query={query}'
+        
+        if sort_by_value:
+            redirect_url += f'&sort_by={sort_by_value}'
+            
+        if price_min or price_max:
+            redirect_url += f'&min_price={price_min}&max_price={price_max}'
+        
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
             subscribe_form.save()
-        
-        return redirect(f'{request.path}?query={query}#sort_by={sort_by_value}')
     
+        return redirect(redirect_url)
+    
+class BrandsView(View):
+    
+    def get(self, request):
+        
+        subscribe_form = SubscribeForm()
+        categories = Category.objects.all()
+        brands = Brand.objects.all()
+        category_brands = brands.all()
+        sort_by_value = self.request.GET.get('sort_by', 'all')
+        
+        sorting_values = ['makeup', 'face-care', 'hair-care', 'body-care']
+        
+        for value in sorting_values:
+            if sort_by_value == value:
+                value_category = get_object_or_404(Category, slug=value)
+                all_subcategories = value_category.get_descendants(include_self=True)
+                category_brands = category_brands.filter(brand_products__category__in=all_subcategories)        
+        
+        context = {
+            'categories':categories,
+            'brands': brands,
+            'category_brands': category_brands,
+            'subscribe_form': subscribe_form
+        }
+        
+        return render(request, 'shop/brands.html', context)
+    
+    def post(self, request, brand_slug=None):
+        if brand_slug: 
+            brand = get_object_or_404(Brand, slug=brand_slug)
+        
+        sort_by_value = self.request.GET.get('sort_by', 'all')
+        redirect_url = f'{request.path}?'
+        
+        if sort_by_value:
+            redirect_url += f'sort_by={sort_by_value}'
+            
+        
+        subscribe_form = SubscribeForm(request.POST)
+        if subscribe_form.is_valid():
+            subscribe_form.save()
+    
+        return redirect(redirect_url)
+    
+    
+class BrandsProductView(View):
+    
+    def post(self, request, brand_slug=None):
+        
+        if brand_slug: 
+            brand = get_object_or_404(Brand, slug=brand_slug)
+        
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
+        redirect_url = f'{request.path}?'
+        
+        if sort_by_value:
+            redirect_url += f'sort_by={sort_by_value}&'
+            
+        if price_min or price_max:
+            redirect_url += f'min_price={price_min}&max_price={price_max}&'
+        
+        subscribe_form = SubscribeForm(request.POST)
+        if subscribe_form.is_valid():
+            subscribe_form.save()
+    
+        return redirect(redirect_url)
+        
+    
+    def get(self, request, brand_slug=None):
+        
+        
+        subscribe_form = SubscribeForm()
+        
+        brands = Brand.objects.all()
+        
+        if brand_slug: 
+            brand = get_object_or_404(Brand, slug=brand_slug)
+            
+        price_min = request.GET.get('min_price', '3')
+        price_max = request.GET.get('max_price', '1000')
+        
+        
+        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
+                ).filter(brand=brand)
+        
+        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        if sort_by_value == 'lowest_price':
+            products = products.order_by('current_price')
+        elif sort_by_value == 'highest_price':
+            products = products.order_by('-current_price')
+        else:
+            products = products.order_by('-created_at')
+
+        
+        breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}, 
+                       {'name': 'Brands', 'url': reverse('shop:product_brands')},
+                       {'name': brand.name, 'url': brand.get_absolute_url(), 'class': 'active'}]
+        
+            
+        context = {
+            'breadcrumbs': breadcrumbs,
+            'products': products,
+            'brands': brands,
+            'subscribe_form': subscribe_form
+        }
+        
+        return render(request, 'shop/brands_product_list.html', context)
     

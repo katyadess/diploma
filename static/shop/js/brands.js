@@ -2,8 +2,9 @@ const customSelect = document.querySelector('.custom-select');
 const customSelectValue = customSelect.querySelector('.custom-select__value');
 const customSelectPopup = customSelect.querySelector('.custom-select__popup');
 const customSelectItems = customSelectPopup.querySelectorAll('.custom-select__item');
-const hiddenInput = document.getElementById('selected-value');
-const chevron = customSelect.querySelector('.bi-chevron-down');
+const sortForm = document.querySelector('.main .form')
+const chevron = document.querySelector('.bi-chevron-down')
+const sortByInput = sortForm.querySelector('input[name="sort_by"]');
 
 customSelect.addEventListener('click', () => {
     const isPopupVisible = customSelectPopup.classList.toggle('show');
@@ -13,11 +14,11 @@ customSelect.addEventListener('click', () => {
 
 customSelectItems.forEach(item => {
     item.addEventListener('click', () => {
-        const value = item.getAttribute('data-value');
         customSelectValue.textContent = item.textContent;
-        hiddenInput.value = value;
         chevron.classList.remove('bi-chevron-up');
         chevron.classList.add('bi-chevron-down');
+        sortByInput.value = item.textContent.toLowerCase().replace(' ', '-'); 
+        sortForm.submit()
     });
     customSelectPopup.classList.remove('show');
 });

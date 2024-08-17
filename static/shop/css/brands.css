@@ -81,7 +81,11 @@
     transition: opacity 0.3s; 
 }
 
-.brands-list ul li:hover {
+.brands-list ul li a {
+    color: black;
+}
+
+.brands-list ul li a:hover {
     opacity: 75%;
 }
 

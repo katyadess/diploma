@@ -34,7 +34,9 @@
                     <form class="price-form" method='GET' action='{{category.get_absolute_url}}'>
 
                         <input type="hidden" name="query" value="{{ query }}">
-                        <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                        {% if request.GET.sort_by %}
+                            <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                        {% endif %}
                         
                         <div class="price-input">
                             <div class="field">
@@ -57,9 +59,10 @@
             <div class="name">Sort by:</div>
             <form method="get" action="{{category.get_absolute_url}}" class="form">
                 <input type="hidden" name="query" value="{{ query }}">
-                <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
-                <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
-                        
+                {% if request.GET.min_price or request.GET.max_price %}
+                    <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+                    <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">        
+                {% endif %}        
                 <div class="custom-select-container">
                     <div class="custom-select">
                         <div class="custom-select__value-wrap">
