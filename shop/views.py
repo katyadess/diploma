@@ -1,5 +1,4 @@
 from django.db.models import F
-from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
@@ -433,6 +432,7 @@ class ContactView(FormView):
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                
             return redirect(self.success_url)
             
         else:
@@ -446,7 +446,6 @@ class ContactView(FormView):
         return super().form_valid(form)
     
     def form_invalid(self, contact_form):
-        print('form invalid')
         context = self.get_context_data(form=contact_form)
         return self.render_to_response(context)
 

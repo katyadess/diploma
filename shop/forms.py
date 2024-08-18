@@ -16,6 +16,7 @@ class SubscribeForm(forms.ModelForm):
             })
         }
         
+        
     def send_email(self):
     
         email = self.cleaned_data['email']

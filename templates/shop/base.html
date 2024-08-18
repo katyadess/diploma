@@ -128,7 +128,7 @@
         
     <footer class="footer">
 
-        <div class="logo"><a href="main.html">Éclat <span>Essentials</span></a></div>
+        <div class="logo"><a href="{% url "shop:main" %}">Éclat <span>Essentials</span></a></div>
                 
                 
         
@@ -160,6 +160,11 @@
                     {% csrf_token %}
                     {{subscribe_form.email}}
                     <button type="submit" class='subscribe-button' name='subscribe'>Subscribe</button>
+                    {% for error in subscribe_form.email.errors %}
+                        <div class="alert alert-warning">
+                            <p>{{ error }}</p>
+                        </div>
+                    {% endfor %}
                 </form>
             </div>
         </div>
