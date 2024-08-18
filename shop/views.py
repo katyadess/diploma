@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -392,3 +392,22 @@ class BrandsProductView(View):
         
         return render(request, 'shop/brands_product_list.html', context)
     
+    
+class HelpView(TemplateView):
+    template_name = 'shop/q-a.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['subscribe_form'] = SubscribeForm()
+        
+        return context
+    
+    def post(self, request):
+        
+        subscribe_form = SubscribeForm(request.POST)
+        if subscribe_form.is_valid():
+            subscribe_form.save()
+        
+        return redirect('shop:help')

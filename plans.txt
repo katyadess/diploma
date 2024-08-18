@@ -1,5 +1,4 @@
 1. Formatting tel, city and street inputs
 Add autofill for city and street
 2. Add autosuggestions for search
-3. Add remove function for selected filters
-4. Add product detail page, q-a page
+3. Add product detail page, q-a page

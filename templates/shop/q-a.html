@@ -1,0 +1,98 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/q-a.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<main class="main-menu">
+        
+    <div class="sidebar-menu">
+        
+            <p data-rel="1" class="nav-link active">Delivery Options</p>
+            <p data-rel="2" class="nav-link">Payment Methods</p>  
+            <p data-rel="3" class="nav-link">Returns & Exchanges</p>
+        
+    </div>
+
+    <div class="section">
+        
+        <div id="1" class="sub-section active">
+            <h2 class="section-heading">Delivery Options</h2>
+            <div class="text">
+                <h3>Our Delivery Service</h3>
+                <p>Enjoy free courier delivery to 170 cities across Ukraine with our delivery service. The minimum order amount for free delivery is 199 UAH.</p>
+            </div>
+            <div class="text">
+                <h3>Delivery with Nova Poshta | Self-Pickup</h3>
+                <p>We offer convenient delivery through Nova Poshta to ensure your order reaches you quickly and securely. Enjoy reliable shipping to cities and towns across Ukraine with our partnership with Nova Poshta.</p>
+            </div>
+
+            <div class="text">
+                <h3>Delivery with Nova Poshta | Delivery to a Postal Locker</h3>
+                <p>We offer convenient delivery through Nova Poshta to ensure your order reaches you quickly and securely. Choose a nearby locker location when placing your order, and we'll deliver your package to the selected locker. </p>
+            </div>
+        </div>
+
+        <div id="2" class="sub-section">
+            <h2 class="section-heading">Payment Methods</h2>
+            <div class="text">
+                <h3>Cash on Delivery</h3>
+                <p>If you prefer not to pay for your order in advance, you have the option to pay the courier upon delivery. To make the process as smooth as possible for both you and the courier, we recommend having the exact amount ready for payment when the package arrives.</p>
+            </div>
+            <div class="text">
+                <h3>Credit and Debit Cards</h3>
+                <p>We currently accept Visa and MasterCard credit and debit cards. You can store multiple credit cards to use for your online purchase. During this step in the checkout process, you can add, edit, or delete your information. Select one credit or debit card for the payment of your order.</p>
+            </div>
+        </div>
+
+        <div id="3" class="sub-section">
+            <h2 class="section-heading">Returns & Exchanges</h2>
+            
+            <div class="text">
+                <h3>Easy Returns and Exchanges</h3>
+                <p>Did you accidentally add or mix up an item in your order? Did you notice damage to the product upon inspection? We understand that misunderstandings can happen. Just let us know about the issue, and we’ll help you resolve it quickly.</p>
+            </div>
+            <div class="text">
+                <h3>Returning Incorrect or Damaged Items</h3>
+                <p>If the delivered item does not match your order upon receipt, the courier or the manager at the pickup point will collect the item and refund your money upon your request. At the pickup points of our postal service partners, and also when receiving packages from the EU, returns are possible, but only for the entire package, not individual items. If there is a defect in the packaging of the product and you wish to return it, please do not open other items from the package. We cannot accept partial returns of individual items or returns of products with damaged packaging.</p>
+            </div>
+
+            <div class="text">
+                <h3>Reporting Issues After Delivery</h3>
+                <p>If the issue is discovered later, briefly describe the situation and attach photos or videos of the product you purchased and wish to return. Send an email from the address used to place the order to <a href="mailto:example@gmail.com" style="color: blueviolet;">example@gmail.com</a>.</p>
+            </div>
+
+            <div class="text">
+                <h3>Returning Unopened Products</h3>
+                <p>If the product is unopened and the packaging is intact, you can return the product within 14 days of purchase.</p>
+            </div>
+
+            <div class="text">
+                <h3>Defective Products</h3>
+                <p>Unfortunately, even the most reputable brands can have manufacturing defects. If you find defects, you can return the product.</p>
+            </div>
+
+            <div class="text">
+                <h3>Important Information for Returns</h3>
+                <p>Please keep the packaging with the product barcode. When contacting us, we will ask you to provide the product or products included in the set (undamaged during unpacking and use), all accessories and packaging with the manufacturer's barcode, as well as a document proving the purchase from us.</p>
+            </div>
+            <div class="text">
+                <h3>Our Return Process</h3>
+                <p>Our manager will offer possible solutions and, in case of an exchange or return, will arrange for a courier visit or provide instructions on how to send the package back to us. Within approximately 14 days (but no longer than 30 days) after receiving the returned items, we will review the returned items and make a decision regarding the refund to the specified account. If you did not use a card for payment, you will need to provide the card number for the refund, as well as your TIN and cardholder’s full name. Additionally, you will receive an email notification about the status of the return.</p>
+            </div>
+            <div class="text">
+                <h3>Important Note</h3>
+                <p>Please do not return items purchased from another store, used items, or products without valid reasons for exchange or return. In all other cases, we will try to help you easily and quickly exchange or return the product.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>  
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static "shop/js/q-a.js" %}"></script>
+{% endblock scripts %}
