@@ -21,11 +21,12 @@ class ContactForm(forms.Form):
     name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': 'required'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'required': 'required'}))
     message = forms.CharField(widget=forms.Textarea(attrs={'required': 'required'}))
-    file_upload = forms.FileField(widget = forms.ClearableFileInput(attrs={
+    files = forms.FileField(widget = forms.FileInput(attrs={
             "name": "file-upload",
             "type": "file",
             "id": 'file-upload',
-    }))
+            'allow_multiple_selected': True,
+    }), required=False)
     
     def send_email(self):
     

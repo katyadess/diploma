@@ -74,6 +74,14 @@ input[type="file"] {
     color: #828282;
 }
 
+.btn button {
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 85%;
+}
+
 @media (min-width: 930px) {
 
     .main {

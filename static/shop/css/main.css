@@ -375,7 +375,7 @@ nav ul ul ul li a {
 
 .nav-link:hover, 
 .nav-link:focus, .btn:hover, .search-button:hover {
-    opacity: .65;
+    opacity: 85%;
 }
 
 
