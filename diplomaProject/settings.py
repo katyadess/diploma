@@ -145,3 +145,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # CART_SESSION_ID = 'cart'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'katyadess.django@gmail.com'
+EMAIL_HOST_PASSWORD = 'mbej xuau jcli cgxv'
+# app-password - password for email
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

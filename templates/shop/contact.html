@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/contact.css" %}">
+{% endblock css_links %}
+{% block content %}
+<div class="main">
+    <div class="section">
+        <h2 class="section-heading">Contact Us</h2>
+        <p class="paragraph">If you have any questions, suggestions, or feedback about our online cosmetics store, please feel free to reach out to us. We are committed to providing high-quality products, but if you encounter any issues with your purchase, such as receiving defective items, please let us know so we can address the problem promptly. We are also open to collaborations and new partnerships, and we look forward to hearing from you!</p>
+        <div class="main-list-items">
+            <li class="main-list">E-mail: <a href="mailto:example@gmail.com" class="nav-link">example@gmail.com</a></li>
+            <li class="main-list">Phone Number: <a class="nav-link" href="tel:+">(999) 999 99 99</a></span></li>
+        </div>
+        <div class="paragraph">
+            Our Social Links:
+            <div class="socials">
+                <li class="footer-list instagram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-instagram"></i></a></li>
+                <li class="footer-list telegram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-telegram"></i></a></li>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <form action="{% url "shop:contact" %}" class="form" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">(required)</span></label>
+                {{form.name}}
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail <span class="required">(required)</span></label>
+                {{form.email}}
+            </div>
+            <div class="form-group">
+                <label for="message">Comment <span class="required">(required)</span></label>
+                {{form.message}}
+            </div>
+            <div class="form-group images">
+                <label for="file-upload" class="custom-file-upload">
+                    <i class="bi bi-upload"></i> Choose Files
+                </label>
+                {{form.file_upload}}
+                <div id="file-names"></div>
+            </div>
+            <div class="btn">
+                <button type="submit">Send Message</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "shop/js/contact.js" %}"></script>
+{% endblock scripts %}

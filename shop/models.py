@@ -132,4 +132,4 @@ class Subscriber(models.Model):
     class Meta:
         verbose_name = 'Subscriber'
         verbose_name_plural = 'Subscribers'
-        
+    

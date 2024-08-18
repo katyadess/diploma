@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, FormView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -411,3 +411,24 @@ class HelpView(TemplateView):
             subscribe_form.save()
         
         return redirect('shop:help')
+
+class ContactView(FormView):
+    template_name = 'shop/contact.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('shop:contact')
+    
+    def form_valid(self, form):
+        form.send_email()
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        print('form invalid')
+        return self.render_to_response(self.get_context_data(form=form))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['subscribe_form'] = SubscribeForm()
+        return context
+    
