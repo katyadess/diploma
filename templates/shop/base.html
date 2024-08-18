@@ -141,14 +141,14 @@
         </div>
 
         <div class="footer-sec socials">
-            <li class="footer-list instagram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-instagram"></i></a></li>
-            <li class="footer-list telegram"><a href="https://www.instagram.com/tvoya_kvitka.dp/" class="nav-link"><i class="bi bi-telegram"></i></a></li>
+            <li class="footer-list instagram"><a href="https://www.instagram.com" class="nav-link"><i class="bi bi-instagram"></i></a></li>
+            <li class="footer-list telegram"><a href="https://www.telegram.com" class="nav-link"><i class="bi bi-telegram"></i></a></li>
         </div>
         
         <div class="footer-sec contacts">
             <div class="list-items">
                 <li class="footer-list phone-number"><i class="bi bi-telephone"></i> 555-555-55-55</li>
-                <li class="footer-list email"><i class="bi bi-envelope"></i> example@gmail.com</li>
+                <li class="footer-list email"><i class="bi bi-envelope"></i> katyadess.django@gmail.com</li>
             </div>
            
         </div>
@@ -159,7 +159,7 @@
                 <form method="POST" class="subscribe-form">
                     {% csrf_token %}
                     {{subscribe_form.email}}
-                    <button type="submit" class='subscribe-button'>Subscribe</button>
+                    <button type="submit" class='subscribe-button' name='subscribe'>Subscribe</button>
                 </form>
             </div>
         </div>

@@ -1,4 +1,5 @@
 from django.db.models import F
+from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
@@ -17,6 +18,7 @@ class MainPageView(View):
     def post(self, request):
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
         
         return redirect('shop:main')
@@ -71,6 +73,7 @@ class ProductListView(View):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
     
         return redirect(redirect_url)
@@ -148,8 +151,9 @@ class NewArrivalsView(View):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
-    
+            
         return redirect(redirect_url)
         
     
@@ -270,6 +274,7 @@ class SearchView(ListView):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
     
         return redirect(redirect_url)
@@ -314,6 +319,7 @@ class BrandsView(View):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
     
         return redirect(redirect_url)
@@ -340,6 +346,7 @@ class BrandsProductView(View):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
     
         return redirect(redirect_url)
@@ -408,6 +415,7 @@ class HelpView(TemplateView):
         
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
+            subscribe_form.send_email()
             subscribe_form.save()
         
         return redirect('shop:help')
@@ -417,14 +425,31 @@ class ContactView(FormView):
     form_class = ContactForm
     success_url = reverse_lazy('shop:contact')
     
+    def post(self, request, *args, **kwargs):
+        contact_form = ContactForm(request.POST, request.FILES)
+        subscribe_form = SubscribeForm(request.POST)
+        
+        if 'subscribe' in request.POST:
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+            return redirect(self.success_url)
+            
+        else:
+            if contact_form.is_valid():
+                return self.form_valid(contact_form)
+            else:
+                return self.form_invalid(contact_form, subscribe_form)
+    
     def form_valid(self, form):
         form.send_email()
         return super().form_valid(form)
     
-    def form_invalid(self, form):
+    def form_invalid(self, contact_form):
         print('form invalid')
-        return self.render_to_response(self.get_context_data(form=form))
-    
+        context = self.get_context_data(form=contact_form)
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()

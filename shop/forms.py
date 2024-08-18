@@ -16,6 +16,18 @@ class SubscribeForm(forms.ModelForm):
             })
         }
         
+    def send_email(self):
+    
+        email = self.cleaned_data['email']
+        subject = f"Email from ÉCLAT ESSENTIALS"
+        body = f"You successfully subscribed to our newsletter!"
+        from_email = 'katyadess.django@gmail.com'
+        to_email = [email]
+        
+        email_message = EmailMessage(subject, body, from_email, to_email)
+        email_message.send()
+        
+        
 class ContactForm(forms.Form):
         
     name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'required': 'required'}))
