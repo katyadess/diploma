@@ -139,8 +139,8 @@ class SearchView(ListView):
         context['price_min'] = self.request.GET.get('min_price', '3')
         context['price_max'] = self.request.GET.get('max_price', '1000')
         
-        full_length = self.get_queryset().count()
-        context['full_length'] = full_length
+        full_query_length = self.get_queryset().count()
+        context['full_query_length'] = full_query_length
         
         return context
   
