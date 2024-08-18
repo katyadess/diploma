@@ -1,5 +1,5 @@
 from django.db.models import F
-from django.http import JsonResponse
+from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
@@ -25,7 +25,12 @@ class MainPageView(View):
         subscribe_form = SubscribeForm()
         brands = Brand.objects.all()
         categories = Category.objects.filter(parent__isnull=True)
-        new_arrivals = Product.objects.all().order_by('-created_at')[:5]
+        
+        now = timezone.now()
+        
+        new_arrivals = Product.objects.filter(
+            created_at__month=now.month
+        ).order_by('-created_at')[:5]
         
         category_products = {}
         for category in categories:
@@ -120,7 +125,79 @@ class ProductListView(View):
         }
         
         return render(request, 'shop/product_list.html', context)
+
+class NewArrivalsView(View):
     
+    def post(self, request):
+        
+        sort_by_value = self.request.GET.get('sort_by')
+        price_min = self.request.GET.get('min_price')
+        price_max = self.request.GET.get('max_price')
+        page = self.request.GET.get('page')
+        
+        redirect_url = f'{request.path}?'
+        
+        if sort_by_value:
+            redirect_url += f'sort_by={sort_by_value}&'
+            
+        if price_min or price_max:
+            redirect_url += f'min_price={price_min}&max_price={price_max}&'
+        
+        if page:
+            redirect_url += f'page={page}&'
+        
+        subscribe_form = SubscribeForm(request.POST)
+        if subscribe_form.is_valid():
+            subscribe_form.save()
+    
+        return redirect(redirect_url)
+        
+    
+    def get(self, request):
+        
+        
+        subscribe_form = SubscribeForm()
+        
+        brands = Brand.objects.all()
+        categories = Category.objects.all()
+        
+            
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
+        
+        now = timezone.now()
+        
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price'))
+        ).filter(created_at__month=now.month
+        ).order_by('-created_at')
+        
+        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        
+        
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        if sort_by_value == 'lowest_price':
+            products = products.order_by('current_price', '-created_at')
+        elif sort_by_value == 'highest_price':
+            products = products.order_by('-current_price', '-created_at')
+        else:
+            products = products.order_by('-created_at')
+
+        paginator = Paginator(products, 4)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+            
+        context = {
+            'categories':categories,
+            'brands': brands,
+            'subscribe_form': subscribe_form,
+            'page_obj': page_obj,
+        }
+        
+        return render(request, 'shop/new_arrivals.html', context)
+  
+
 class SearchView(ListView):
     
     model = Product

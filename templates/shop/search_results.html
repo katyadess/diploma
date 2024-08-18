@@ -81,7 +81,7 @@
         {% if request.GET.min_price or request.GET.max_price %}
         <div class="selected-filter__item">
             <p>{{request.GET.min_price}}$ - {{request.GET.max_price}}$</p>    
-            <button class="remove-filter"><i class="bi bi-x-lg"></i></button>
+            <a class="remove-filter" style='color:black' href="?query={{query}}&{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}"><i class="bi bi-x-lg"></i></a>
         </div>
         {% endif %}
     </div>

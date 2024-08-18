@@ -6,19 +6,6 @@
 {% endblock css_links %}
 
 {% block content %}
-<div class="breadcrumbs">
-
-    <div class="btn-wrapper">
-        <button onclick="history.back()" class="button breadcrumbs-back"><i class="bi bi-arrow-left"></i></button>
-    </div>
-    <ul>
-        {% for breadcrumb in breadcrumbs %}
-        <li>
-            <a class="breadcrumb-link {% if breadcrumb.class %}{{breadcrumb.class}}{% endif %}" href="{{breadcrumb.url}}">{{breadcrumb.name}}</a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
 
 <section class="sort-section">
 
@@ -99,17 +86,7 @@
 <main class="main">
 
     <div class="products" id='products-section'>
-        <h2>{{category.name}}</h2>
-        <div class="product-categories">
-            {% for subcategory in category.get_children %}
-                <a class="category-link" href="{{subcategory.get_absolute_url}}">
-                    <div class="img-container">
-                        <img src="{{subcategory.category_image.url}}" alt="">
-                    </div>
-                    <p>{{subcategory.name}}</p>
-                </a>
-            {% endfor %}
-        </div>
+        <h2>New Arrivals</h2>
         {% if page_obj %}
             <div class="items">
                 {% for product in page_obj %}
