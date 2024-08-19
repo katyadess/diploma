@@ -31,3 +31,18 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ['user', 'city', 'street']
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Subscriber)
+
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    raw_id_fields = ['product']
+    
+    
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'address', 'paid', 'created', 'updated']
+    list_filter = ['paid', 'created']
+    list_editable = ['paid']
+    inlines = [OrderItemInline]
+    
+admin.site.register(Order, OrderAdmin)

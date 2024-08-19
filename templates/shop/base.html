@@ -72,18 +72,22 @@
                                 Sign In to your account
                                 <i class="bi bi-x-lg close-login"></i>
                             </div>
-                            <form action="" class="account-form">
+                            <form action="{% url "shop:main" %}" class="account-form" method='POST'>
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="email">E-mail</label>
-                                    <input type="email" id="email" name="email" required>
+                                    {% comment %} <label for="email">E-mail</label>
+                                    <input type="email" id="email" name="email" required> {% endcomment %}
+                                    <label for="username">Username</label>
+                                    {{login_form.username}}
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" required>
+                                    {% comment %} <input type="password" id="password" name="password" required> {% endcomment %}
+                                    {{login_form.password}}
                                 </div>
                                 
                                 <a class="reset-password">Forgot password?</a>
-                                <button class='login-button' type="submit">Log in</button>
+                                <button class='login-button' type="submit" name='login'>Log in</button>
                                 
                             </form>
 

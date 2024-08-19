@@ -5,6 +5,24 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordChangeForm
 
 
+
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'id': 'username', 
+            'name': 'username'
+        }), 
+        required=True
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'id': 'password',
+            'name': 'password'
+        }), 
+        required=True
+    )
+
+
 class SubscribeForm(forms.ModelForm):
     
     class Meta: 

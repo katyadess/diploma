@@ -20,4 +20,8 @@ urlpatterns = [
     path('contact', views.ContactView.as_view(), name='contact'),
     
     path('account', views.AccountView.as_view(), name='account'),
+    
+    path('logout', views.MyLogoutView.as_view(), name='shop_logout'),
+    
+    # path('login', views.MyLoginView.as_view(), name='shop_login'),
 ]
