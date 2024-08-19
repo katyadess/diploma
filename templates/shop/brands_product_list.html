@@ -137,15 +137,26 @@
                                 </div>
                             </div>
                         </a>
-                        <div class="buttons">
-                            <form method="" action="">
-                                <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                            </form>
-                            <form method="" action="">
-                                
-                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                            </form>
-                        </div>
+                        {% if user.is_authenticated %}
+                            <div class="buttons">
+                                <form method="" action="">
+                                    <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                </form>
+                                <form method="" action="">
+                                    
+                                    <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <div class="buttons">
+                                <form>
+                                    <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                                </form>
+                                <form>
+                                    <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

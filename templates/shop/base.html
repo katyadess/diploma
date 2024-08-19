@@ -64,41 +64,46 @@
                                 2
                             </span>
                         </li> 
+                        <li class="nav-item cart">
+                            <a href="cart.html" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
+                            <span class='badge'>
+                                2
+                            </span>
+                        </li>
                     {% else %}
                         <li class="nav-item person">
                             <p class="nav-link not-signed-in"><i class="bi bi-person-fill"></i></p>
                             <div class="login">
-                            <div class="close-login-container">
-                                Sign In to your account
-                                <i class="bi bi-x-lg close-login"></i>
-                            </div>
-                            <form action="{% url "shop:shop_login" %}" class="account-form" method='POST'>
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="username">E-mail</label>
-                                    <input type="email" id="email" name="username" required>
+                                <div class="close-login-container">
+                                    Sign In to your account
+                                    <i class="bi bi-x-lg close-login"></i>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" required>
-                                </div>
-                                
-                                <a class="reset-password">Forgot password?</a>
-                                <button class='login-button' type="submit" name='login'>Log in</button>
-                                
-                            </form>
+                                <form action="{% url "shop:shop_login" %}" class="account-form" method='POST'>
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="username">E-mail</label>
+                                        <input type="email" id="email" name="username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" name="password" required>
+                                    </div>
+                                    
+                                    <a class="reset-password">Forgot password?</a>
+                                    <button class='login-button' type="submit" name='login'>Log in</button>
+                                    
+                                </form>
 
-                            <a href="{% url "shop:register" %}" class="register-link">Register</a>
+                                <a href="{% url "shop:register" %}" class="register-link">Register</a>
                             </div>       
                         </li>
-                    </li> 
+                        <li class="nav-item cart">
+                            <p class="nav-link position-relative not-signed-in"><i class="bi bi-bag"></i></p>
+                            {% comment %} <span class='badge'>
+                                2
+                            </span> {% endcomment %}
+                        </li> 
                     {% endif %}
-                    <li class="nav-item cart">
-                        <a href="cart.html" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
-                        <span class='badge'>
-                            2
-                        </span>
-                    </li> 
                 </div>
 
             </div>

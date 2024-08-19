@@ -5,4 +5,4 @@ Add autofill for city and street
 4. add account page - done
 5. create wishlist model - done
 6. make 'to favourites' button work
-7. add registration, login and logout
+7. add registration, login and logout - done?

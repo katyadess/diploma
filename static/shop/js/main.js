@@ -33,31 +33,32 @@ document.querySelectorAll('.category > a i ').forEach(category => {
 });
 
 
-const notSignedInElement = document.querySelector('.not-signed-in');
+const notSignedInElement = document.querySelectorAll('.not-signed-in');
 
 if (notSignedInElement) {
-
-    const openLoginContainer = notSignedInElement
 
     const loginContainer = document.querySelector('.login');
     const closeLoginContainer = document.querySelector('.close-login');
     
-    
-    openLoginContainer.addEventListener('click', () => {
-        loginContainer.classList.add('open');
-        document.body.classList.add('no-scroll');
-    });
-    
-    closeLoginContainer.addEventListener('click', () => {
-        loginContainer.classList.remove('open');
-        document.body.classList.remove('no-scroll');
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (!loginContainer.contains(e.target) && !openLoginContainer.contains(e.target)) {
+    notSignedInElement.forEach(el => {
+        el.addEventListener('click', () => {
+            loginContainer.classList.add('open');
+            document.body.classList.add('no-scroll');
+        })
+        
+        closeLoginContainer.addEventListener('click', () => {
             loginContainer.classList.remove('open');
             document.body.classList.remove('no-scroll');
-        }
-    });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!loginContainer.contains(e.target) && !openLoginContainer.contains(e.target)) {
+                loginContainer.classList.remove('open');
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    })
+    // const openLoginContainer = notSignedInElement
+
 }
 
