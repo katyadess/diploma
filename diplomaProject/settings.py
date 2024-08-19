@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -140,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'shop:main'
 LOGOUT_REDIRECT_URL = 'shop:main'
-LOGIN_URL = 'shop:main'
+LOGIN_URL = 'shop:shop_login'
 LOGOUT_URL = 'shop:shop_logout'
 
 

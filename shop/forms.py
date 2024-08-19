@@ -7,10 +7,10 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Authenti
 
 
 class CustomLoginForm(AuthenticationForm):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'id': 'username', 
-            'name': 'username'
+    username = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'id': 'email', 
+            'name': 'email',
         }), 
         required=True
     )

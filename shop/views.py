@@ -12,26 +12,24 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth import logout, login
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model
+
 # Create your views here.
 
 class MainPageView(View):
     
     def post(self, request):
         subscribe_form = SubscribeForm(request.POST)
-        login_form = CustomLoginForm(request, data=request.POST)
-        if 'subscribe' in request.POST and subscribe_form.is_valid():
+        if subscribe_form.is_valid():
             subscribe_form.send_email()
             subscribe_form.save()
             
-        if 'login' in request.POST and login_form.is_valid():
-            user = login_form.get_user()
-            login(request, user)
-        
         return redirect('shop:main')
     
     def get(self, request):   
         subscribe_form = SubscribeForm()
-        login_form = CustomLoginForm()
         brands = Brand.objects.all()
         categories = Category.objects.filter(parent__isnull=True)
         
@@ -52,7 +50,6 @@ class MainPageView(View):
             'brands': brands, 
             'new_arrivals': new_arrivals, 
             'subscribe_form': subscribe_form,
-            'login_form': login_form,
             'category_products': category_products
             }
         return render(request, 'shop/main.html', context)
@@ -482,21 +479,21 @@ class MyLogoutView(View):
           logout(request)
           return redirect('shop:main')
       
-# class MyLoginView(LoginView):
+class MyLoginView(LoginView):
     
-#     template_name = 'shop/login.html'
-#     success_url = reverse_lazy('shop:main')
-#     form_class = CustomLoginForm
+    template_name = 'shop/login.html'
+    success_url = reverse_lazy('shop:main')
+    form_class = CustomLoginForm
     
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['categories'] = Category.objects.all()
-#         context['brands'] = Brand.objects.all()
-#         context['subscribe_form'] = SubscribeForm()
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['subscribe_form'] = SubscribeForm()
+        return context
     
-#     def form_invalid(self, form):
-#         print('invalid')
-#         context = self.get_context_data(form=form)
-#         return self.render_to_response(context)
+    def form_invalid(self, form):
+        print('invalid')
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
     

@@ -215,6 +215,7 @@ nav ul ul ul li a {
 .list-items {
     letter-spacing: 1px;
     font-family: sans-serif;
+    white-space: nowrap;
     display: flex;
     font-size: var(--fs-list-items);
     flex-direction: column;

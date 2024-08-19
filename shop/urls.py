@@ -23,5 +23,5 @@ urlpatterns = [
     
     path('logout', views.MyLogoutView.as_view(), name='shop_logout'),
     
-    # path('login', views.MyLoginView.as_view(), name='shop_login'),
+    path('login', views.MyLoginView.as_view(), name='shop_login'),
 ]
