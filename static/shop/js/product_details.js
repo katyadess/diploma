@@ -76,7 +76,7 @@ commentStars.forEach((star, index) => {
 })
 
 
-// const imgs = document.querySelectorAll('.img-select a');
+
 const imgBtns = document.querySelectorAll('.img-select a');
 let imgId = 1;
 

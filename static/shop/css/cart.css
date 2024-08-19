@@ -1,0 +1,158 @@
+.main {
+    padding: 0 !important;
+}
+
+.title {
+    padding-bottom: 1em;
+}
+
+.cart-items {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.cart-results {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 2em;
+}
+
+.total {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1rem 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.buy-btn-wrapper, .shop, .register-form{
+    width: 100%;
+    padding-bottom: 1rem;
+}
+
+.button {
+    border: none !important;
+    width: 100%;
+    padding: 1em;
+    background-color: black;
+}
+
+.button:hover {
+    opacity: 85%;
+}
+
+.button a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.max {
+    padding: .5rem 0rem;
+    color: red;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.item:not(:last-of-type) {
+    border-bottom: 1px solid #ddd;
+}
+
+.info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-img-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; 
+}
+
+.cart-item-img {
+    width: auto; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+
+.remove a, .shop {
+    color: black;
+    text-decoration: none;
+}
+
+.remove a:hover {
+    color: rgb(142, 142, 142);
+}
+
+.shop:hover {
+    color: blueviolet;
+}
+
+
+.update-form input[type="number"] {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px 0;
+    width: 45px;
+}
+
+.update-form input[type="number"]::-webkit-inner-spin-button,
+.update-form input[type="number"]::-webkit-outer-spin-button {
+    height: 30px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+.product-info .product-name {
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
+
+.product-name, .full-desc, .price {
+    font-size: .8rem;
+}
+
+.product-link .product-name p:first-child {
+    color: black;
+}
+
+@media (min-width: 520px) {
+    .product-name, .full-desc, .price {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 900px) {
+    
+    .product-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 70%;
+        margin-left: 1em;
+        justify-content: space-between;
+    }
+
+    .total {
+        font-size: 1.4rem;
+    }
+    
+}

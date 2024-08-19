@@ -1,0 +1,44 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/register.css" %}">
+{% endblock css_links %}
+{% block content %}
+<div class="main">
+    <h2>Registration</h2>
+    <form action="{% url "shop:register" %}" class="register-form" method='POST'>
+        {% csrf_token %}
+        <div class="name">
+            <div class="form-group">
+                <label for="first-name">First Name*</label>
+                {{register_form.first_name}}
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name*</label>
+                {{register_form.last_name}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number*</label>
+            {{register_form.telephone}}
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail*</label>
+            {{register_form.email}}
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password*</label>
+            {{register_form.password1}}
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password*</label>
+            {{register_form.password2}}
+        </div>
+        
+        <button class='register-button' type="submit" name='register'>Register</button>
+        
+    </form>
+</div>
+{% endblock content %}

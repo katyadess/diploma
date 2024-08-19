@@ -2,6 +2,9 @@ from django import forms
 from .models import *
 from django.core.mail import EmailMessage
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordChangeForm
 
 
@@ -77,3 +80,46 @@ class ContactForm(forms.Form):
             email_message.attach(file.name, file.read(), file.content_type)
 
         email_message.send()
+        
+        
+class RegisterForm(UserCreationForm):
+    
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'id': 'email', 
+            'name': 'email',
+        }), 
+        required=True
+    )
+    
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'name': 'first-name',
+            'id': 'first-name'
+        }),
+        max_length=100, 
+        required=True
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'name': 'last-name',
+            'id': 'last-name'
+        }),
+        max_length=100, 
+        required=True
+    )
+    
+    telephone = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'id': 'phone', 
+            'name': 'phone',
+            'type': 'tel'
+        }), 
+        required=True
+    )
+    
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
+    
+    

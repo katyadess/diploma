@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import *
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
 
 # Register your models here.
 
@@ -45,4 +47,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = ['paid']
     inlines = [OrderItemInline]
     
+
 admin.site.register(Order, OrderAdmin)
+admin.site.register(UserData)

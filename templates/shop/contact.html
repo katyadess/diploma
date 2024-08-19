@@ -24,15 +24,15 @@
         <form action="{% url "shop:contact" %}" class="form" method='POST' enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="name">Your Name <span class="required">(required)</span></label>
+                <label for="name">Your Name*</label>
                 {{form.name}}
             </div>
             <div class="form-group">
-                <label for="email">E-mail <span class="required">(required)</span></label>
+                <label for="email">E-mail*</label>
                 {{form.email}}
             </div>
             <div class="form-group">
-                <label for="message">Comment <span class="required">(required)</span></label>
+                <label for="message">Comment*</label>
                 {{form.message}}
             </div>
             <div class="form-group images">

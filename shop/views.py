@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView, FormView
+from django.views.generic import ListView, TemplateView, FormView, CreateView
 from django.contrib.auth.views import LoginView
 from .models import *
 from .forms import *
@@ -14,7 +14,7 @@ from django.contrib.auth import logout, login
 
 from django.contrib.auth import get_user_model
 
-User = get_user_model
+User = get_user_model()
 
 # Create your views here.
 
@@ -481,7 +481,7 @@ class MyLogoutView(View):
       
 class MyLoginView(LoginView):
     
-    template_name = 'shop/login.html'
+    template_name = 'registration/login.html'
     success_url = reverse_lazy('shop:main')
     form_class = CustomLoginForm
     
@@ -493,7 +493,44 @@ class MyLoginView(LoginView):
         return context
     
     def form_invalid(self, form):
-        print('invalid')
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
     
+    
+class RegisterView(TemplateView):
+    
+    template_name = 'registration/register.html'
+    
+    def post(self, request, *args, **kwargs):
+        subscribe_form = SubscribeForm(request.POST)
+        register_form = RegisterForm(request.POST)
+        
+        if 'subscribe' in request.POST:
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                      
+            return redirect('shop:register')
+        
+        else:
+            if register_form.is_valid():
+                register_form.save()
+                email = register_form.cleaned_data.get('email')
+                telephone = register_form.cleaned_data.get('telephone')
+                user = User.objects.get(email=email)
+                user.username = f'app_user_{user.id}'
+                user_data = UserData.objects.create(user=user, telephone=telephone)
+                user_data.save()
+                user.save()
+                
+                login(request, user)
+            
+            return redirect('shop:main')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['subscribe_form'] = SubscribeForm()
+        context['register_form'] = RegisterForm()
+        return context

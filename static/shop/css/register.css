@@ -1,0 +1,32 @@
+.main h2 {
+    font-weight: 500;
+    font-size: 1.7rem;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 60%;
+    margin: 2em 0;
+}
+
+.register-form .name {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.register-button {
+    padding: 12px;
+    color: white;
+    background-color: black;
+    border: none;
+    cursor: pointer;
+    margin-top: 2em;
+    font-size: 1.1rem;
+}
+
+.register-button:hover {
+    opacity: 85%;
+}

@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
-from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
@@ -202,3 +201,15 @@ class OrderItem(models.Model):
     
     def get_cost(self):
         return self.price * self.quantity
+    
+    
+class UserData(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    telephone = models.CharField(max_length=20)
+    
+    class Meta:
+        verbose_name = 'UserData'
+        verbose_name_plural = 'UserData'
+        
+    def __str__(self) -> str:
+        return self.user.email

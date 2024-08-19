@@ -88,7 +88,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const showSection = urlParams.get('show');
 
 if (showSection) {
-    const targetId = showSection === 'favourites' ? '4' : showSection; // Adjust this if needed
+    const targetId = showSection === 'favourites' ? '4' : showSection; 
     const targetElement = document.getElementById(targetId);
 
     if (targetElement) {
