@@ -84,26 +84,6 @@ toggleOrderContent.forEach(container => {
     })
 })
 
-
-const backToTopButton = document.getElementById('back-to-top');
-
-
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'block';
-    } else {
-        backToTopButton.style.display = 'none';
-    }
-});
-
-backToTopButton.addEventListener('click', function() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-
 const urlParams = new URLSearchParams(window.location.search);
 const showSection = urlParams.get('show');
 
@@ -121,14 +101,3 @@ if (showSection) {
         targetElement.scrollIntoView({ behavior: 'smooth' });
     }
 }
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    new Cleave('#input-phone', {
-        phone: true,
-        phoneRegionCode: 'UA',
-        delimiter: ' ',
-        blocks: [0, 3, 3, 2, 2],
-        prefix: '+38 '
-    });
-});

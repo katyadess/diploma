@@ -1,0 +1,916 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/account.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<main class="main-menu">
+        
+    <div class="sidebar-menu">
+    
+        <p data-rel="1" class="nav-link active">Account Information</p>
+        <p data-rel="2" class="nav-link">Addresses</p>  
+        <p data-rel="3" class="nav-link">Order History</p>
+        <p data-rel="4" class="nav-link">My Favourites</p>
+
+
+        <a href="" class="log-out-link">Log out</a>
+    
+    </div>
+
+    <div class="sections">
+        
+        <div id="1" class="sub-section active">
+            <h2 class="section-heading">Account Information</h2>
+            <form action="" class="account-form">
+                <div class="name">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <button class='update-button' type="submit">Update</button>
+                
+            </form>
+
+            <p>To change the password click <a class="password-link" href="">this link</a></p>
+
+            <a href="" class="log-out-link">Log out</a>
+
+        </div>
+
+        <div id="2" class="sub-section">
+            <h2 class="section-heading">Address Book</h2>
+            <div class="addresses">
+                <div class="address-info">
+                    <div class="customer-name">Trunova Kateryna</div>
+                    <div class="address">
+                        <div class="street">Vul. Lesi Ukraynky 27</div>
+                        <div class="city">Dnipro</div>
+                    </div>
+                    <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+
+                    <div class="edit-address">
+                        <button class="address-button edit" id="edit-button">Edit Address</button>
+                        <form action="" class="account-form" id="edit-form">
+                            <div class="name">
+                                <div class="form-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" name="first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" name="last-name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">City</label>
+                                <div class="input-container">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Street</label>
+                                <div class="input-container">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                            </div>
+
+                            
+                            <button class="address-button">Save Changes</button>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="address-info">
+                    <div class="customer-name">Trunova Marina</div>
+                    <div class="address">
+                        <div class="street">Vul. Lesi Ukraynky 27</div>
+                        <div class="city">Kyiv</div>
+                    </div>
+                    <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+
+                    <div class="edit-address">
+                        <button class="address-button" id="edit-button">Edit Address</button>
+                        <form action="" class="account-form" id="edit-form">
+                            <div class="name">
+                                <div class="form-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" name="first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" name="last-name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">City</label>
+                                <div class="input-container">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Street</label>
+                                <div class="input-container">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                            </div>
+
+                            
+                            <button class="address-button">Save Changes</button>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="add-address">
+                <h2 class="section-heading">Add New Address</h2>
+                <form action="" class="account-form" id="edit-form">
+                    <div class="name">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" name="first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="last-name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input tabindex="12" 
+                        id="input-phone" 
+                        
+                        class="profile-form-input" 
+                        required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">City</label>
+                        <div class="input-container">
+                            <i class="bi bi-search"></i>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Street</label>
+                        <div class="input-container">
+                            <i class="bi bi-search"></i>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                    </div>
+
+                    
+                    <button class="address-button">Save Address</button>
+                    
+                </form>
+            </div>
+        </div>
+
+        <div id="3" class="sub-section">
+            <h2 class="section-heading">My Orders</h2>
+            <form method="get" action="" class="filter-orders-form">
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                All
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div class="custom-select__popup">
+                            <div data-value="1" class="custom-select__item">This Month</div>
+                            <div data-value="2" class="custom-select__item">Last Month</div>
+                            <div data-value="3" class="custom-select__item">This Year</div>
+                            <div data-value="4" class="custom-select__item">Last Year</div>
+                        </div> 
+                    </div>
+                    <input type="hidden" name="selected_value" id="selected-value">
+                </div>
+            </form>
+
+            <div class="orders">
+                <div class="order-item">
+                    <div class="order-container pending-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status pending">Pending</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container processing-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status processing">Processing</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container sent-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status sent">Sent</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container delivered-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status delivered">Delivered</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container completed-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status completed">Completed</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container canceled-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status canceled">Canceled</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <div class="order-container failed-status">
+                        <div class="id-date-container">
+                            <div class="id-date">
+                                <p class="order-id">Order № 3646421</p>
+                                <p class="date">August 9, 2024</p>
+                            </div>
+                            <span>
+                                <i class="bi bi-plus-lg"></i>
+                            </span>
+                        </div>
+                        <div class="order-item-sum">
+                            <p class="order-status failed">Failed</p>
+                            <p class="total-price">$13.88</p>
+                        </div>
+                        <div class="order-images">
+                            <div class="order-image">
+                                <img src="../../images/avene_cream.jpg" alt="">
+                            </div>
+                            <div class="order-image">
+                                <img src="../../images/garnier_superfood_body_cream.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-address">
+                            <div class="address-info">
+                                <div class="customer-name">Trunova Marina</div>
+                                <div class="address">
+                                    <div class="street">Vul. Lesi Ukraynky 27</div>
+                                    <div class="city">Kyiv</div>
+                                </div>
+                                <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="cart-img-container">
+                                    <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+                                </div>
+                                <div class="info">
+                
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                        </div>
+                                        <p class="price">$15.99</p> 
+                                        <p class="quantity">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <p class="total">Total</p>
+                            <p class="total-sum">$45.76</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="4" class="sub-section">
+            <h2 class="section-heading">My Favourites</h2>
+            <div class="wishlist-items small-screen">
+                <div class="item">
+                    <div class="cart-img-container">
+                        <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                    </div>
+                    <div class="info">
+    
+                        <div class="product-info">
+                            <a class="product-link" href="product_details.html">
+                                <div class="product-name">
+                                    <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                    <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                    <p class="quantity in-stock">In Stock</p>
+                                </div>
+                            </a>
+                            <div class="price">
+                                <p class="price">$15.99</p> 
+                            </div>
+                        </div>
+
+                        <div class="add-to-cart-delete">
+                            <a href="#" ><i class="bi bi-bag"></i></a>
+                            <a href=""><i class="bi bi-x-lg"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="cart-img-container">
+                        <img class='cart-item-img' src="../../images/avene_cream.jpg">
+                    </div>
+                    <div class="info">
+    
+                        <div class="product-info">
+                            <div class="product-name">
+                                <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                                <p class="quantity out-of-stock">Out of Stock</p>
+                            </div>
+                            <div class="price">
+                                <p class="price">$15.99</p> 
+                            </div>
+                        </div>
+
+                        <div class="add-to-cart-delete">
+                            <!-- <a href="#" ><i class="bi bi-bag"></i></a> -->
+                            <a href=""><i class="bi bi-x-lg"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wishlist-items big-screen items">
+                <a href="product_details.html">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="../../images/kiko_milano_lipgloss.jpg " alt="kiko_milano_lipgloss">
+                        </div>
+                        <div class="content">
+                            <div class="product-name">
+                                <p>kiko Milano Lip Gloss</p>
+                                <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                            </div>
+                            <div class="price_rating">
+                                <div class="rating">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <p class="price">$15.45</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <form method="" action="">
+                            <button type="submit" class="form-btn btn-delete"><i class="bi bi-x-lg"></i></button>
+                        </form>
+                        <form method="" action="">
+                            
+                            <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                        </form>
+                    </div>
+                </a>
+
+                <a href="">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="../../images/dokdo-foam-cleanser.jpg " alt="kiko_milano_lipgloss">
+                        </div>
+                        <div class="content">
+                            <div class="product-name">
+                                <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                                <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                            </div>
+                            <div class="price_rating">
+                                <div class="rating">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <p class="price">$12.67</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="../../images/flax_seed_oil_jerden_proff.jpg " alt="kiko_milano_lipgloss">
+                        </div>
+                        <div class="content">
+                            <div class="product-name">
+                                <p>Jerden Proff Flax Seed Oil</p>
+                                <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                            </div>
+                            <div class="price_rating">
+                                <div class="rating">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <p class="price">$8.45</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="../../images/biotrade_acne_out.jpg " alt="kiko_milano_lipgloss">
+                        </div>
+                        <div class="content">
+                            <div class="product-name">
+                                <p>Biotrade Acne Out Hydro Active</p>
+                                <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                            </div>
+                            <div class="price_rating">
+                                <div class="rating">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <p class="price">$11.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <button id="back-to-top" class="back-to-top"><i class="bi bi-chevron-double-up"></i></button>
+    
+</main> 
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "shop/js/account.js" %}"></script>
+{% endblock scripts %}

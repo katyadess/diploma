@@ -56,10 +56,10 @@
                 <div class="nav-items">
                     {% if user.is_authenticated %}
                         <li class="nav-item person">
-                            <a href="account.html" class="nav-link"><i class="bi bi-person-fill"></i></a>
+                            <a href="{% url "shop:account" %}" class="nav-link"><i class="bi bi-person-fill"></i></a>
                         </li> 
                         <li class="nav-item favourites">
-                            <a href="account.html?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
+                            <a href="{% url "shop:account" %}?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
                             <span class='badge'>
                                 2
                             </span>

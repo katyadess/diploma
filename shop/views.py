@@ -439,7 +439,7 @@ class ContactView(FormView):
             if contact_form.is_valid():
                 return self.form_valid(contact_form)
             else:
-                return self.form_invalid(contact_form, subscribe_form)
+                return self.form_invalid(contact_form)
     
     def form_valid(self, form):
         form.send_email()
@@ -456,3 +456,6 @@ class ContactView(FormView):
         context['subscribe_form'] = SubscribeForm()
         return context
     
+
+class AccountView(TemplateView):
+    template_name = 'shop/account.html'

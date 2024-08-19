@@ -57,8 +57,8 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='category_products', on_delete=models.CASCADE) 
-    brand = models.ForeignKey(Brand, related_name='brand_products', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='category_products', on_delete=models.SET_NULL, null=True) 
+    brand = models.ForeignKey(Brand, related_name='brand_products', on_delete=models.SET_NULL, null=True)
     brief_description = models.TextField()
     detailed_description = models.TextField()
     usage_instructions = models.TextField(null=True, blank=True)
@@ -82,14 +82,17 @@ class Product(models.Model):
                        args=[self.id, self.slug])
     
 
-class ProductReview(models.Model):
+class ProductReview(MPTTModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='reviews')
     text = models.TextField()
     rating = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='comment_images', blank=True)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+
+    class MPTTMeta:
+        order_insertion_by = ['product']
 
     def __str__(self):
         if self.parent:
@@ -133,3 +136,68 @@ class Subscriber(models.Model):
         verbose_name = 'Subscriber'
         verbose_name_plural = 'Subscribers'
     
+
+class WishList(models.Model):
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='wishlist_items')
+    
+    class Meta:
+        verbose_name_plural = 'Wishlist'
+        
+    def __str__(self) -> str:
+        return self.product.name
+    
+class Order(models.Model):
+    
+    PENDING = 'pending'
+    PROCESSING = 'processing'
+    SENT = 'sent'
+    DELIVERED = 'delivered'
+    COMPLETED = 'completed'
+    CANCELED = 'canceled'
+    FAILED = 'failed'
+    
+    STATUS_CHOICES = [
+        (PENDING, 'pending'),
+        (PROCESSING, 'processing'),
+        (SENT, 'sent'),
+        (DELIVERED, 'delivered'),
+        (COMPLETED, 'completed'),
+        (CANCELED, 'canceled'),
+        (FAILED, 'failed'),
+    ]
+    
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
+    created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(choices=STATUS_CHOICES, default=PENDING, max_length=50)
+    updated = models.DateTimeField(auto_now=True)
+    paid = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ('created',)
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+        
+        
+    def __str__(self) -> str:
+        return f'order by {self.id}'
+    
+    def get_total_cost(self):
+        return sum(item.get_cost() for item in self.items.all())
+    
+    
+
+class OrderItem(models.Model):
+    
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    
+    def __str__(self) -> str:
+        return f'{self.id}'
+    
+    def get_cost(self):
+        return self.price * self.quantity
