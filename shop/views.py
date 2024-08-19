@@ -463,15 +463,74 @@ class ContactView(FormView):
         context['subscribe_form'] = SubscribeForm()
         return context
     
+    
+
+def account(request):
+    user_data = get_object_or_404(UserData, user=request.user)
+    
+    if request.method == 'POST':
+        if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST, prefix='subscribe')
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                return redirect('shop:account')
+        
+        elif 'account' in request.POST:
+            edit_account_form = EditAccountForm(request.POST, instance=request.user)
+            edit_phone_form = EditPhoneForm(request.POST, instance=user_data)
+            
+            if edit_account_form.is_valid() and edit_phone_form.is_valid():
+                edit_account_form.save()
+                phone = edit_phone_form.cleaned_data.get('telephone')
+                user_data.telephone = phone
+                user_data.save()
+                return redirect('shop:account')
+                
+    categories = Category.objects.all()
+    brands = Brand.objects.all()
+    subscribe_form = SubscribeForm()
+    edit_account_form = EditAccountForm(instance=request.user)
+    edit_phone_form = EditPhoneForm(instance=user_data)
+        
+    context = {
+        'categories': categories,
+        'brands': brands,
+        'subscribe_form': subscribe_form,
+        'edit_account_form': edit_account_form,
+        'edit_phone_form': edit_phone_form
+    }
+    
+    return render(request, 'shop/account.html', context)
 
 class AccountView(TemplateView):
+    
     template_name = 'shop/account.html'
+    
+    def post(self, request, *args, **kwargs):
+        edit_account_form = EditAccountForm(request.POST, instance=request.user)
+        subscribe_form = SubscribeForm(request.POST)
+        
+        if 'subscribe' in request.POST:
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                
+            return redirect(self.success_url)
+            
+        else:
+            if edit_account_form.is_valid():
+                pass            
+    
+    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        context['edit_account_form'] = EditAccountForm(instance=self.request.user)
+        context['edit_phone_form'] = EditPhoneForm()
         return context
     
     
@@ -496,45 +555,6 @@ class MyLoginView(LoginView):
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
-    
-    
-# class RegisterView(TemplateView):
-    
-#     template_name = 'registration/register.html'
-    
-#     def post(self, request, *args, **kwargs):
-#         subscribe_form = SubscribeForm(request.POST)
-#         register_form = RegisterForm(request.POST)
-        
-#         if 'subscribe' in request.POST:
-#             if subscribe_form.is_valid():
-#                 subscribe_form.send_email()
-#                 subscribe_form.save()
-                      
-#             return redirect('shop:register')
-        
-#         else:
-#             if register_form.is_valid():
-#                 register_form.save()
-#                 email = register_form.cleaned_data.get('email')
-#                 telephone = register_form.cleaned_data.get('telephone')
-#                 user = User.objects.get(email=email)
-#                 user.username = f'app_user_{user.id}'
-#                 user_data = UserData.objects.create(user=user, telephone=telephone)
-#                 user_data.save()
-#                 user.save()
-                
-#                 login(request, user)
-            
-#             return redirect('shop:main')
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['categories'] = Category.objects.all()
-#         context['brands'] = Brand.objects.all()
-#         context['subscribe_form'] = SubscribeForm()
-#         context['register_form'] = RegisterForm()
-#         return context
     
     
 class RegisterView(FormView):

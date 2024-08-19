@@ -123,3 +123,46 @@ class RegisterForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
     
     
+class EditAccountForm(UserChangeForm):
+    
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'id': 'email', 
+            'name': 'email',
+        }), 
+        required=True
+    )
+    
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'name': 'first-name',
+            'id': 'first-name'
+        }),
+        max_length=100, 
+        required=True
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'name': 'last-name',
+            'id': 'last-name'
+        }),
+        max_length=100, 
+        required=True
+    )
+    
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        
+class EditPhoneForm(forms.ModelForm):
+    class Meta:
+        model = UserData
+        fields = ['telephone']
+        widgets = {
+            'telephone': forms.TextInput(attrs= {
+                'id': 'phone', 
+                'name': 'phone',
+                'type': 'tel'
+            })
+        }
+        

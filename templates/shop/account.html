@@ -23,33 +23,35 @@
         
         <div id="1" class="sub-section active">
             <h2 class="section-heading">Account Information</h2>
-            <form action="" class="account-form">
+            <form action="{% url "shop:account" %}" class="account-form" method='POST'>
+                {% csrf_token %}
+
                 <div class="name">
                     <div class="form-group">
                         <label for="first-name">First Name</label>
-                        <input type="text" id="first-name" name="first-name" required>
+                        {{edit_account_form.first_name}}
                     </div>
                     <div class="form-group">
                         <label for="last-name">Last Name</label>
-                        <input type="text" id="last-name" name="last-name" required>
+                        {{edit_account_form.last_name}}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required>
+                    {{edit_account_form.email}}
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    {{edit_phone_form.telephone}}
                 </div>
                 
-                <button class='update-button' type="submit">Update</button>
+                <button class='update-button' type="submit" name='account'>Update</button>
                 
             </form>
 
             <p>To change the password click <a class="password-link" href="">this link</a></p>
 
-            <a href="" class="log-out-link">Log out</a>
+            <a href="{% url "shop:shop_logout" %}" class="log-out-link">Log out</a>
 
         </div>
 
