@@ -267,6 +267,7 @@ nav ul ul ul li a {
 }
 
 .cart, .favourites, .person {
+
     font-size: calc(var(--fs-section-btn) + .5em);
 }
 
@@ -729,10 +730,10 @@ li.nav-item.favourites {
     align-items: center; 
     justify-content: center; 
     background-color: black;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 50%; 
     color: white;
     font-size: 14px; 
-    font-weight: bold; 
 }
 
 

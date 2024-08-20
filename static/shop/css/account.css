@@ -387,11 +387,14 @@
     gap: .3em;
 }
 
-.add-to-cart-delete a {
+.add-to-cart-delete form button {
+    cursor: pointer;
     color: black;
+    border: none;
+    background-color: transparent;
 }
 
-.add-to-cart-delete a:hover {
+.add-to-cart-delete form button:hover {
     opacity: 85%;
 }
 

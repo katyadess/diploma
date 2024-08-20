@@ -12,7 +12,8 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth import logout, login
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -520,7 +521,7 @@ class ContactView(FormView):
         return context
     
     
-
+@login_required
 def account(request):
     user_data = get_object_or_404(UserData, user=request.user)  
     addresses = Address.objects.filter(user=request.user)          
@@ -573,6 +574,15 @@ def account(request):
                 address = get_object_or_404(Address, id=address_id, user=request.user)
                 address.delete()
                 return redirect('shop:account')
+            
+        elif 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
         
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -589,10 +599,12 @@ def account(request):
         'edit_phone_form': edit_phone_form,
         'add_address_form': add_address_form,
         'addresses': addresses,
-        'address_edit_forms': address_edit_forms
+        'address_edit_forms': address_edit_forms,
     }
     
     return render(request, 'shop/account.html', context)
+
+
 
 class MyPasswordChangeView(PasswordChangeView):
     template_name = 'registration/change_password.html'
@@ -620,6 +632,7 @@ class MyLogoutView(View):
      def get(self, request):
           logout(request)
           return redirect('shop:main')
+      
       
 class MyLoginView(LoginView):
     
