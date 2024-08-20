@@ -5,4 +5,8 @@ Add autofill for city and street
 4. add account page - done
 5. create wishlist model - done
 6. make 'to favourites' button work
-7. add registration, login and logout - done?
+7. add registration, login and logout - done
+
+
+<i class="fa-solid fa-heart"></i> - full heart
+<i class="bi bi-bag-fill"></i> - full bag
