@@ -159,6 +159,7 @@
            
         </div>
 
+        {% if subscribe_form %}
         <div class="footer-sec subscribe list-items">
             <div class="subscribe-container">
                 <p class="footer-list">Subscribe to receive updates and news!</p>
@@ -174,6 +175,7 @@
                 </form>
             </div>
         </div>
+        {% endif %}
 
     </footer>
 
@@ -184,5 +186,14 @@
     {% block scripts %}
     {% endblock scripts %}
         
+    {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for message in messages %}
+                    alert("{{ message }}");
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
 </body>
 </html>

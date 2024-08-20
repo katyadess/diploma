@@ -9,10 +9,10 @@
         
     <div class="sidebar-menu">
     
-        <p data-rel="1" class="nav-link active">Account Information</p>
-        <p data-rel="2" class="nav-link">Addresses</p>  
-        <p data-rel="3" class="nav-link">Order History</p>
-        <p data-rel="4" class="nav-link">My Favourites</p>
+        <p data-rel="1" class="nav-link active"><a href="#account-info">Account Information</a></p>
+        <p data-rel="2" class="nav-link"><a href="#addresses">Addresses</a></p>  
+        <p data-rel="3" class="nav-link"><a href="#order-history">Order History</a></p>
+        <p data-rel="4" class="nav-link"><a href="#favorites">My Favourites</a></p>
 
 
         <a href="{% url "shop:shop_logout" %}" class="log-out-link">Log out</a>
@@ -49,7 +49,7 @@
                 
             </form>
 
-            <p>To change the password click <a class="password-link" href="">this link</a></p>
+            <p>To change the password click <a class="password-link" href="{% url "shop:change_password" %}">this link</a></p>
 
             <a href="{% url "shop:shop_logout" %}" class="log-out-link">Log out</a>
 
@@ -58,137 +58,107 @@
         <div id="2" class="sub-section">
             <h2 class="section-heading">Address Book</h2>
             <div class="addresses">
-                <div class="address-info">
-                    <div class="customer-name">Trunova Kateryna</div>
-                    <div class="address">
-                        <div class="street">Vul. Lesi Ukraynky 27</div>
-                        <div class="city">Dnipro</div>
-                    </div>
-                    <div class="telephon-num">Tel: +38 (096) 837 5814</div>
+                {% if addresses %}
+                    {% for address, edit_form in address_edit_forms.items %}
+                        <div class="address-info">
+                            <input type="hidden" name="address_id" value="{{address.id}}">
+                            <div class="customer-name">{{address.last_name}} {{address.first_name}}</div>
+                            <div class="address">
+                                <div class="street">{{address.street}}</div>
+                                <div class="city">{{address.city}}</div>
+                            </div>
+                            <div class="telephon-num">Tel: {{address.phone_number}}</div>
 
-                    <div class="edit-address">
-                        <button class="address-button edit" id="edit-button">Edit Address</button>
-                        <form action="" class="account-form" id="edit-form">
-                            <div class="name">
-                                <div class="form-group">
-                                    <label for="first-name">First Name</label>
-                                    <input type="text" id="first-name" name="first-name" required>
+                            <div class="edit-address">
+                                <div>
+                                    <button class="address-button edit" id="edit-button">Edit Address</button>
+                                    <form action="{% url "shop:account" %}" class="account-form" id="edit-form" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="address_id" value="{{ address.id }}">
+                                        <div class="name">
+                                            <div class="form-group">
+                                                <label for="first-name">First Name</label>
+                                                {{edit_form.first_name}}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="last-name">Last Name</label>
+                                                {{edit_form.last_name}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            {{edit_form.phone_number}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">City</label>
+                                            <div class="input-container">
+                                                <i class="bi bi-search"></i>
+                                                {{edit_form.city}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Street</label>
+                                            <div class="input-container">
+                                                <i class="bi bi-search"></i>
+                                                {{edit_form.street}}
+                                            </div>
+                                        </div>
+    
+                                        
+                                        <button class="address-button save" type='submit' name='edit-address'>Save Changes</button>
+                                        
+                                    </form>
                                 </div>
-                                <div class="form-group">
-                                    <label for="last-name">Last Name</label>
-                                    <input type="text" id="last-name" name="last-name" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">City</label>
-                                <div class="input-container">
-                                    <i class="bi bi-search"></i>
-                                    <input type="text" id="city" name="city" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Street</label>
-                                <div class="input-container">
-                                    <i class="bi bi-search"></i>
-                                    <input type="text" id="city" name="city" required>
-                                </div>
-                            </div>
 
-                            
-                            <button class="address-button">Save Changes</button>
-                            
-                        </form>
-                    </div>
-                </div>
-                <div class="address-info">
-                    <div class="customer-name">Trunova Marina</div>
-                    <div class="address">
-                        <div class="street">Vul. Lesi Ukraynky 27</div>
-                        <div class="city">Kyiv</div>
-                    </div>
-                    <div class="telephon-num">Tel: +38 (096) 837 5814</div>
-
-                    <div class="edit-address">
-                        <button class="address-button" id="edit-button">Edit Address</button>
-                        <form action="" class="account-form" id="edit-form">
-                            <div class="name">
-                                <div class="form-group">
-                                    <label for="first-name">First Name</label>
-                                    <input type="text" id="first-name" name="first-name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="last-name">Last Name</label>
-                                    <input type="text" id="last-name" name="last-name" required>
+                                <div>
+                                    <form action="{% url 'shop:account' %}" method="POST" class='delete-address-form'>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="address_id" value="{{ address.id }}">
+                                        
+                                        <button class='delete-button' type="submit" name='delete-address'><i class="bi bi-x-circle-fill"></i></button>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">City</label>
-                                <div class="input-container">
-                                    <i class="bi bi-search"></i>
-                                    <input type="text" id="city" name="city" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Street</label>
-                                <div class="input-container">
-                                    <i class="bi bi-search"></i>
-                                    <input type="text" id="city" name="city" required>
-                                </div>
-                            </div>
-
-                            
-                            <button class="address-button">Save Changes</button>
-                            
-                        </form>
-                    </div>
-                </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No addresses yet</p>
+                {% endif %}
             </div>
             <div class="add-address">
                 <h2 class="section-heading">Add New Address</h2>
-                <form action="" class="account-form" id="edit-form">
+                <form action="{% url "shop:account" %}" class="account-form" id="edit-form" method='POST'>
+                    {% csrf_token %}
                     <div class="name">
                         <div class="form-group">
                             <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" name="first-name" required>
+                            {{add_address_form.first_name}}
                         </div>
                         <div class="form-group">
                             <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" name="last-name" required>
+                            {{add_address_form.last_name}}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input tabindex="12" 
-                        id="input-phone" 
-                        
-                        class="profile-form-input" 
-                        required>
+                        {{add_address_form.phone_number}}
                     </div>
                     <div class="form-group">
                         <label for="phone">City</label>
                         <div class="input-container">
                             <i class="bi bi-search"></i>
-                            <input type="text" id="city" name="city" required>
+                            {{add_address_form.city}}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="phone">Street</label>
                         <div class="input-container">
                             <i class="bi bi-search"></i>
-                            <input type="text" id="city" name="city" required>
+                            {{add_address_form.street}}
                         </div>
                     </div>
-
                     
-                    <button class="address-button">Save Address</button>
+                    <button class="address-button save" name='save-address' type='submit'>Save Address</button>
                     
                 </form>
             </div>
@@ -906,10 +876,8 @@
             </div>
         </div>
 
-    </div>
+    </div> 
 
-    <button id="back-to-top" class="back-to-top"><i class="bi bi-chevron-double-up"></i></button>
-    
 </main> 
 {% endblock content %}
 

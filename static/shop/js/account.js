@@ -101,3 +101,11 @@ if (showSection) {
         targetElement.scrollIntoView({ behavior: 'smooth' });
     }
 }
+
+document.querySelectorAll('.delete-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (!confirm('Are you sure you want to delete this address?')) {
+            e.preventDefault();
+        }
+    })
+})

@@ -9,6 +9,10 @@
     margin-bottom: 2em;
 }
 
+.sidebar-menu .nav-link a {
+    color: black !important;
+}
+
 
 .sidebar-menu {
 
@@ -49,8 +53,11 @@
 
 
 .sidebar-menu .nav-link.active {
-    color: blueviolet;
     border-right: 2px solid black;
+}
+
+.sidebar-menu .nav-link.active a {
+    color: blueviolet !important;
 }
 
 .sidebar-menu .nav-link:hover {
@@ -120,7 +127,7 @@
 }
 
 .input-container input {
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 
@@ -149,7 +156,13 @@
 }
 
 .edit-address {
+    display: flex;
+    align-items: baseline;
     margin-top: 1em;
+    gap: 1em;
+}
+
+.edit-address div {
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -163,12 +176,24 @@
     display: flex;
 }
 
-.address-button, .update-button {
+.address-button, .update-button, .delete-button {
     width: fit-content;
-    border: none;
     cursor: pointer;
+    color: #929292;
+    border: none;
+    background-color: transparent;
+}
+
+.address-button.save, .update-button, .address-button.delete {
+    padding: 20px 30px;
+    border: black 1px solid;
+    color: black;
+
+}
+
+.address-button.save:hover, .update-button:hover, .address-button.delete:hover {
+    border: black 1px solid;
     color: white;
-    padding: 10px;
     background-color: black;
 }
 
@@ -176,8 +201,8 @@
     padding: 20px 30px;
 }
 
-.address-button:hover, .update-button:hover {
-    opacity: 85%;
+.address-button.edit:hover {
+    color: blueviolet;
 }
 
 .add-address {

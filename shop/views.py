@@ -1,11 +1,11 @@
 from django.db.models import F
-from django.http import HttpRequest, HttpResponse
+from django.contrib import messages
 from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView, FormView, CreateView
-from django.contrib.auth.views import LoginView
+from django.views.generic import ListView, TemplateView, FormView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -466,11 +466,19 @@ class ContactView(FormView):
     
 
 def account(request):
-    user_data = get_object_or_404(UserData, user=request.user)
+    user_data = get_object_or_404(UserData, user=request.user)  
+    addresses = Address.objects.filter(user=request.user)          
+    
+    
+    address_edit_forms = {}
+    for address in addresses:
+        address_edit_forms[address] = EditAddressForm(instance=address)
+      
+    print(address_edit_forms)  
     
     if request.method == 'POST':
         if 'subscribe' in request.POST:
-            subscribe_form = SubscribeForm(request.POST, prefix='subscribe')
+            subscribe_form = SubscribeForm(request.POST)
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
@@ -486,53 +494,71 @@ def account(request):
                 user_data.telephone = phone
                 user_data.save()
                 return redirect('shop:account')
-                
+        
+        elif 'save-address' in request.POST:
+            add_address_form = AddAddressForm(request.POST)
+            if add_address_form.is_valid():
+                new_address = add_address_form.save(commit=False)
+                new_address.user = request.user
+                new_address.save()
+                return redirect('shop:account') 
+            
+        elif 'edit-address' in request.POST:
+            address_id = request.POST.get('address_id')
+            address = get_object_or_404(Address, id=address_id, user=request.user)
+            edit_address_form = EditAddressForm(request.POST, instance=address)
+            if edit_address_form.is_valid():
+                edit_address_form.save()
+                return redirect('shop:account')
+            
+        elif 'delete-address' in request.POST:
+            address_id = request.POST.get('address_id')
+            if address_id:
+                address = get_object_or_404(Address, id=address_id, user=request.user)
+                address.delete()
+                return redirect('shop:account')
+        
     categories = Category.objects.all()
     brands = Brand.objects.all()
     subscribe_form = SubscribeForm()
     edit_account_form = EditAccountForm(instance=request.user)
     edit_phone_form = EditPhoneForm(instance=user_data)
+    add_address_form = AddAddressForm()
         
     context = {
         'categories': categories,
         'brands': brands,
         'subscribe_form': subscribe_form,
         'edit_account_form': edit_account_form,
-        'edit_phone_form': edit_phone_form
+        'edit_phone_form': edit_phone_form,
+        'add_address_form': add_address_form,
+        'addresses': addresses,
+        'address_edit_forms': address_edit_forms
     }
     
     return render(request, 'shop/account.html', context)
 
-class AccountView(TemplateView):
-    
-    template_name = 'shop/account.html'
-    
-    def post(self, request, *args, **kwargs):
-        edit_account_form = EditAccountForm(request.POST, instance=request.user)
-        subscribe_form = SubscribeForm(request.POST)
-        
-        if 'subscribe' in request.POST:
-            if subscribe_form.is_valid():
-                subscribe_form.send_email()
-                subscribe_form.save()
-                
-            return redirect(self.success_url)
-            
-        else:
-            if edit_account_form.is_valid():
-                pass            
-    
-    
+class MyPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/change_password.html'
+    success_url = reverse_lazy('shop:account')
+    form_class = PasswordChangeForm
+    success_message = "Your password has been successfully changed!" 
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
-        context['subscribe_form'] = SubscribeForm()
-        context['edit_account_form'] = EditAccountForm(instance=self.request.user)
-        context['edit_phone_form'] = EditPhoneForm()
         return context
     
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, self.success_message)
+        return response
+
     
 class MyLogoutView(View):
      def get(self, request):
@@ -549,7 +575,6 @@ class MyLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
-        context['subscribe_form'] = SubscribeForm()
         return context
     
     def form_invalid(self, form):

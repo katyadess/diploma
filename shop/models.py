@@ -110,13 +110,10 @@ class Address(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
-    city = models.CharField(max_length=100)
+    city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     
-    is_default = models.BooleanField(default=False)
-    
     class Meta:
-        ordering = ('-is_default',)
         verbose_name = 'Address'
         verbose_name_plural = 'Addresses'
 

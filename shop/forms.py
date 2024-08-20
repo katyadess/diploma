@@ -166,3 +166,33 @@ class EditPhoneForm(forms.ModelForm):
             })
         }
         
+class AddAddressForm(forms.ModelForm):
+    
+    phone_number = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'id': 'phone', 
+            'name': 'phone',
+            'type': 'tel'
+        }), 
+        required=True
+    ) 
+    
+    class Meta:
+        model = Address
+        fields = ['first_name', 'last_name', 'phone_number', 'city', 'street']
+        
+class EditAddressForm(forms.ModelForm):
+    
+    phone_number = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'id': 'phone', 
+            'name': 'phone',
+            'type': 'tel'
+        }), 
+        required=True
+    ) 
+    
+    class Meta:
+        model = Address
+        fields = ['first_name', 'last_name', 'phone_number', 'city', 'street']
+        
