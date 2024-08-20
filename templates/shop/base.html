@@ -62,7 +62,7 @@
                         <li class="nav-item favourites">
                             <a href="{% url "shop:account" %}?show=favourites" class="nav-link position-relative"><i class="fa fa-heart-o"></i></a>
                             <span class='badge'>
-                                2
+                                {{user.wishlist.products.all|length}}
                             </span>
                         </li> 
                         <li class="nav-item cart">
@@ -100,9 +100,6 @@
                         </li>
                         <li class="nav-item cart">
                             <p class="nav-link position-relative not-signed-in"><i class="bi bi-bag"></i></p>
-                            {% comment %} <span class='badge'>
-                                2
-                            </span> {% endcomment %}
                         </li> 
                     {% endif %}
                 </div>
@@ -168,11 +165,6 @@
                     {% csrf_token %}
                     {{subscribe_form.email}}
                     <button type="submit" class='subscribe-button' name='subscribe'>Subscribe</button>
-                    {% for error in subscribe_form.email.errors %}
-                        <div class="alert alert-warning">
-                            <p>{{ error }}</p>
-                        </div>
-                    {% endfor %}
                 </form>
             </div>
         </div>

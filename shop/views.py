@@ -23,9 +23,20 @@ class MainPageView(View):
     
     def post(self, request):
         subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        
+        if 'subscribe' in request.POST:
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+        
+        elif 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product) 
             
         return redirect('shop:main')
     
@@ -77,10 +88,21 @@ class ProductListView(View):
         if page:
             redirect_url += f'page={page}&'
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+        
+        elif 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
     
         return redirect(redirect_url)
         
@@ -155,10 +177,21 @@ class NewArrivalsView(View):
         if page:
             redirect_url += f'page={page}&'
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+        
+        if 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
             
         return redirect(redirect_url)
         
@@ -278,10 +311,21 @@ class SearchView(ListView):
         if page:
             redirect_url += f'&page={page}'
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+        
+        elif 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
     
         return redirect(redirect_url)
     
@@ -350,10 +394,22 @@ class BrandsProductView(View):
         if price_min or price_max:
             redirect_url += f'min_price={price_min}&max_price={price_max}&'
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+        
+        if 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
+            
     
         return redirect(redirect_url)
         

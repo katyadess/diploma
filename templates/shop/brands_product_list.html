@@ -31,7 +31,7 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="price-range">
-                    <form class="price-form" method='GET' action='{{brand.get_absolute_url}}'>
+                    <form class="price-form" method='GET' action="{{brand.get_absolute_url}}">
 
                         {% if request.GET.sort_by %}
                             <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
@@ -139,13 +139,21 @@
                         </a>
                         {% if user.is_authenticated %}
                             <div class="buttons">
-                                <form method="" action="">
-                                    <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+
+                                <form method="POST">
+                                    {% csrf_token %} 
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in user.wishlist.products.all %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                    {% endif %}
                                 </form>
-                                <form method="" action="">
-                                    
+                                <form method="POST">
+                                    {% csrf_token %}
                                     <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
                                 </form>
+
                             </div>
                         {% else %}
                             <div class="buttons">

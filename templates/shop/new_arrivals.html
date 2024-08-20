@@ -124,13 +124,21 @@
                         </a>
                         {% if user.is_authenticated %}
                             <div class="buttons">
-                                <form method="" action="">
-                                    <button type="submit" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in user.wishlist.products.all %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                    {% endif %}
                                 </form>
-                                <form method="" action="">
-                                    
+                                <form method="POST">
+                                    {% csrf_token %}
                                     <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
                                 </form>
+
                             </div>
                         {% else %}
                             <div class="buttons">

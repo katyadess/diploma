@@ -81,6 +81,14 @@ class Product(models.Model):
         return reverse('shop:product_details',
                        args=[self.id, self.slug])
     
+    
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
+
+    def __str__(self):
+        return self.name
 
 class ProductReview(MPTTModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -136,14 +144,14 @@ class Subscriber(models.Model):
 
 class WishList(models.Model):
     
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='wishlist_items')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, related_name='wishlist_items', blank=True)
     
     class Meta:
         verbose_name_plural = 'Wishlist'
         
     def __str__(self) -> str:
-        return self.product.name
+        return f"Wishlist of {self.user.username}"
     
 class Order(models.Model):
     

@@ -480,6 +480,10 @@ nav ul ul ul li a {
     cursor: pointer;
 }
 
+.form-btn.btn-favorites.full-heart > i{
+    color: blueviolet !important;
+}
+
 .items .item-product .buttons form .form-btn:hover i {
     color: white;
 }
