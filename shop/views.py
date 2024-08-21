@@ -542,6 +542,8 @@ class ContactView(FormView):
     
     def form_valid(self, form):
         form.send_email()
+        messages.success(self.request, "Your message was successfully sent! We will contact you as soon as we can.")
+            
         return super().form_valid(form)
     
     def form_invalid(self, contact_form):
