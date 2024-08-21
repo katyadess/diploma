@@ -18,17 +18,22 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Create your views here.
+
 
 class MainPageView(View):
     
     def post(self, request):
-        subscribe_form = SubscribeForm(request.POST)
         
         if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST)
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+                       
+                
         
         elif 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -90,11 +95,15 @@ class ProductListView(View):
             redirect_url += f'page={page}&'
         
         if 'subscribe' in request.POST:
-            
+        
             subscribe_form = SubscribeForm(request.POST)
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
         
         elif 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -184,6 +193,10 @@ class NewArrivalsView(View):
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
         
         if 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -318,6 +331,10 @@ class SearchView(ListView):
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
         
         elif 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -368,10 +385,15 @@ class BrandsView(View):
             redirect_url += f'sort_by={sort_by_value}'
             
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
     
         return redirect(redirect_url)
     
@@ -401,6 +423,10 @@ class BrandsProductView(View):
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
         
         if 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -476,10 +502,15 @@ class HelpView(TemplateView):
     
     def post(self, request):
         
-        subscribe_form = SubscribeForm(request.POST)
-        if subscribe_form.is_valid():
-            subscribe_form.send_email()
-            subscribe_form.save()
+        if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
         
         return redirect('shop:help')
 
@@ -489,17 +520,21 @@ class ContactView(FormView):
     success_url = reverse_lazy('shop:contact')
     
     def post(self, request, *args, **kwargs):
-        contact_form = ContactForm(request.POST, request.FILES)
-        subscribe_form = SubscribeForm(request.POST)
         
         if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST)
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
                 
             return redirect(self.success_url)
             
         else:
+            contact_form = ContactForm(request.POST, request.FILES)
             if contact_form.is_valid():
                 return self.form_valid(contact_form)
             else:
@@ -534,12 +569,16 @@ def account(request):
     print(address_edit_forms)  
     
     if request.method == 'POST':
+        
         if 'subscribe' in request.POST:
             subscribe_form = SubscribeForm(request.POST)
             if subscribe_form.is_valid():
                 subscribe_form.send_email()
                 subscribe_form.save()
-                return redirect('shop:account')
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+
         
         elif 'account' in request.POST:
             edit_account_form = EditAccountForm(request.POST, instance=request.user)
@@ -550,7 +589,6 @@ def account(request):
                 phone = edit_phone_form.cleaned_data.get('telephone')
                 user_data.telephone = phone
                 user_data.save()
-                return redirect('shop:account')
         
         elif 'save-address' in request.POST:
             add_address_form = AddAddressForm(request.POST)
@@ -558,7 +596,6 @@ def account(request):
                 new_address = add_address_form.save(commit=False)
                 new_address.user = request.user
                 new_address.save()
-                return redirect('shop:account') 
             
         elif 'edit-address' in request.POST:
             address_id = request.POST.get('address_id')
@@ -566,14 +603,12 @@ def account(request):
             edit_address_form = EditAddressForm(request.POST, instance=address)
             if edit_address_form.is_valid():
                 edit_address_form.save()
-                return redirect('shop:account')
             
         elif 'delete-address' in request.POST:
             address_id = request.POST.get('address_id')
             if address_id:
                 address = get_object_or_404(Address, id=address_id, user=request.user)
                 address.delete()
-                return redirect('shop:account')
             
         elif 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -583,6 +618,8 @@ def account(request):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+        
+        return redirect('shop:account')
         
     categories = Category.objects.all()
     brands = Brand.objects.all()
