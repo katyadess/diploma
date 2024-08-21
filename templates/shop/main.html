@@ -7,7 +7,7 @@
         <div class="items">
             {% for product in new_arrivals %}
             <div class='item-product'>
-                <a href="">
+                <a href="{{ product.get_absolute_url }}">
                     <div class="card">
                         <div class="imgBx">
                             <img src="{{product.main_image.url}}" alt="">
@@ -92,7 +92,7 @@
                 <div class="items">
                     {% for product in products %}
                     <div class='item-product'>
-                        <a href="">
+                        <a href="{{ product.get_absolute_url }}">
                             <div class="card">
                                 <div class="imgBx">
                                     <img src="{{product.main_image.url}}" alt="">

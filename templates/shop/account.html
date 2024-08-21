@@ -727,7 +727,7 @@
                             <div class="info">
             
                                 <div class="product-info">
-                                    <a class="product-link" href="">
+                                    <a class="product-link" href="{{ product.get_absolute_url }}">
                                         <div class="product-name">
                                             <p>{{product.name}}</p>
                                             <p class="full-desc">{{product.brief_description}}</p>
@@ -768,7 +768,7 @@
                 {% if user.wishlist.products.all %}
                     {% for product in user.wishlist.products.all %}
                     <div class='item-product'>
-                        <a href="">
+                        <a href="{{ product.get_absolute_url }}">
                             <div class="card">
                                 <div class="imgBx">
                                     <img src="{{product.main_image.url}}" alt="">

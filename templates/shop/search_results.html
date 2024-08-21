@@ -97,7 +97,7 @@
         <div class="items">
             {% for product in object_list %}
                 <div class='item-product'>
-                    <a href="">
+                    <a href="{{product.get_absolute_url}}">
                         <div class="card">
                             <div class="imgBx">
                                 <img src="{{product.main_image.url}}" alt="">

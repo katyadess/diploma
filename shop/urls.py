@@ -27,6 +27,11 @@ urlpatterns = [
     
     path('register', views.RegisterView.as_view(), name='register'),
     
-    path('change_password', views.MyPasswordChangeView.as_view(), name='change_password')
+    path('change_password', views.MyPasswordChangeView.as_view(), name='change_password'),
+
+    path('product/<int:id>/<slug:slug>', views.ProductDetailsView.as_view(), name='product_details'),
+    
 ]
+
+
  

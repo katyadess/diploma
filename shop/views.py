@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView, FormView
+from django.views.generic import ListView, TemplateView, FormView, DetailView
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from .models import *
 from .forms import *
@@ -737,3 +737,59 @@ class RegisterView(FormView):
         context['subscribe_form'] = SubscribeForm()
         return context
     
+    
+class ProductDetailsView(DetailView):
+    model = Product
+    template_name = 'shop/product_details.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['brands'] = Brand.objects.all()
+        context['subscribe_form'] = SubscribeForm()
+        product = self.get_object() 
+        category = product.category
+        brand = product.brand
+        breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}]
+        for parent in category.get_full_breadcrumb_path():
+            breadcrumbs.append({'name': parent.name, 'url': parent.get_absolute_url()})
+        breadcrumbs.append({'name': category.name, 'url': category.get_absolute_url(), 'class': 'active'})
+        
+        brand_breadcrumbs = [{'name': 'Brands', 'url': reverse('shop:product_brands')},
+                       {'name': brand.name, 'url': brand.get_absolute_url(), 'class': 'active'}]
+        
+        brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
+        category_products = Product.objects.filter(category=category).exclude(id=product.id)
+        
+        # context['category'] = category
+        context['breadcrumbs'] = breadcrumbs
+        context['brand_breadcrumbs'] = brand_breadcrumbs
+        context['brand_products'] = brand_products
+        context['category_products'] = category_products
+        return context
+    
+    def post(self, request, id, slug):
+        
+        if id and slug: 
+            product = get_object_or_404(Product, slug=slug, id=id)
+        
+        
+        if 'subscribe' in request.POST:
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
+        elif 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
+        
+        return redirect(f'{request.path}')

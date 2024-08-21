@@ -1,0 +1,707 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/product_details.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<div class="breadcrumbs">
+
+    <div class="btn-wrapper">
+        <button onclick="history.back()" class="button breadcrumbs-back" style='cursor:pointer'><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <ul>
+        {% for breadcrumb in breadcrumbs %}
+        <li>
+            <a class="breadcrumb-link {% if breadcrumb.class %}{{breadcrumb.class}}{% endif %}" href="{{breadcrumb.url}}">{{breadcrumb.name}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<main class="main">
+    <div class="product-item-container">
+        <div class="product-item">
+            <div class="product-imgs">
+                <div class="img-display">
+                    <div class="img-showcase">
+                        
+                        <img class="product-image" src="{{object.main_image.url}}" alt="">
+                        {% if object.second_picture %}
+                            <img class="product-image" src="{{object.second_picture.url}}" alt="">
+                        {% endif %}
+                        {% if object.third_picture %}
+                            <img class="product-image" src="{{object.third_picture.url}}" alt="">
+                        {% endif %}
+                        {% if object.forth_picture %}
+                            <img class="product-image" src="{{object.forth_picture.url}}" alt="">
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                <div class="img-select">
+                    <div class="img-item">
+                        <a href="#" data-id="1" class="select-container">
+                            <img src="{{object.main_image.url}}" alt="">
+                        </a>
+                    </div>
+                    <div class="img-item">
+                        <a href="#" data-id="2" class="select-container">
+                            {% if object.second_picture %}
+                                <img src="{{object.second_picture.url}}" alt="">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="img-item">
+                        <a href="#" data-id="3" class="select-container">
+                            {% if object.third_picture %}
+                                <img src="{{object.third_picture.url}}" alt="">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="img-item">
+                        <a href="#" data-id="4" class="select-container">
+                            {% if object.forth_picture %}
+                                <img class="product-image" src="{{object.forth_picture.url}}" alt="">
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-description">
+                <div class="brand">
+                    <ul>
+                        {% for brand_breadcrumb in brand_breadcrumbs %}
+                        <li>
+                            <a class="breadcrumb-link {% if brand_breadcrumb.class %}{{brand_breadcrumb.class}}{% endif %}" href="{{brand_breadcrumb.url}}">{{brand_breadcrumb.name}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="name-desc-rating">
+                    <div class="name-desc">
+                        <p class="prod-name">{{product.name}}</p>
+                        <p class="prod-desc">{{product.brief_description}}</p>
+                    </div>
+                    <div class="prod-rating">
+                        <div class="stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <p class="total-ratings">100 <a href="#comment-section">reviews</a></p>
+                    </div>
+                </div>
+                <div class="prod-prices">
+                    <div class="prices">
+                        {% if product.price_new %}
+                        <p class="price new">${{product.price_new}}</p>
+                        <p class="price old">${{product.price}}</p>
+                        {% else %}
+                        <p class="price">${{product.price}}</p>
+                        {% endif %}
+                    </div>
+                    <div class="add-to-favourite">
+                        {% if user.is_authenticated %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                {% if product in user.wishlist.products.all %}
+                                    <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart" style='cursor: pointer;'><i class="fa fa-heart"></i></button>
+                                {% else %}
+                                    <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites" style='cursor: pointer;'><i class="fa fa-heart-o"></i></button>
+                                {% endif %}
+                            </form>
+                        {% else %}
+                            <form>
+                                <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="buy-notify-btn-wrapper">
+                    <p class="out-of-stock">Out of Stock</p>
+                    <!-- <button class="add-to-cart">Add to Cart</button> -->
+                    <button class="notify">Notify me when in stock</button> 
+                </div>
+            </div>
+        </div>
+        <div class="product-info">
+            <div class="sidebar-menu">
+    
+                <p data-rel="1" class="nav-link active">Description</p>
+                <p data-rel="2" class="nav-link">Ingredients</p>  
+                
+            </div>
+
+            <div class="sections">
+        
+                <div id="1" class="sub-section active">
+                    <div class="product-info-description">
+                        <div class="info-desc">
+                            <p>Description</p>
+                            <p>{{product.detailed_description}}</p>
+                        </div>
+                        <div class="usage">
+                            <p>How to use</p>
+                            <p>{{product.usage_instructions}}</p>
+                        </div>
+                        <div class="suitable-for">
+                            <p>Suitable for</p>
+                            <p>{{product.suitable_for}}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div id="2" class="sub-section">
+                    <div class="ingredients">
+                        {{product.ingredients}}    
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    
+    {% if brand_products %}
+        <div class="products">
+            <h2>More from <span>{{product.brand}}</span></h2>
+            <div class="items">
+
+                {% for product in brand_products %}
+                
+                    <div class='item-product'>
+                        <a href="{{ product.get_absolute_url }}">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img src="{{product.main_image.url}}" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="product-name">
+                                        <p>{{product.name}}</p>
+                                        <p class="full-desc">{{product.brief_description}}</p>
+                                    </div>
+                                    <div class="price_rating">
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <p class="total-ratings">100</p>
+                                        </div>
+                                        <div class="prod-price">
+                                            {% if product.price_new %}
+                                            <p class="price new">${{product.price_new}}</p>
+                                            <p class="price old">${{product.price}}</p>
+                                            {% else %}
+                                            <p class="price">${{product.price}}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% if user.is_authenticated %}
+                            <div class="buttons">
+
+                                <form method="POST">
+                                    {% csrf_token %} 
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in user.wishlist.products.all %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                    {% endif %}
+                                </form>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                </form>
+
+                            </div>
+                        {% else %}
+                            <div class="buttons">
+                                <form>
+                                    <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                                </form>
+                                <form>
+                                    <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="btn">
+                <a href="{{product.brand.get_absolute_url}}">
+                    <button type="submit">See more</button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if category_products %}
+        <div class="products">
+            <h2>Similar Products</h2>
+            <div class="items">
+                {% for product in category_products %}
+                    <div class='item-product'>
+                        <a href="{{ product.get_absolute_url }}">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img src="{{product.main_image.url}}" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="product-name">
+                                        <p>{{product.name}}</p>
+                                        <p class="full-desc">{{product.brief_description}}</p>
+                                    </div>
+                                    <div class="price_rating">
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <p class="total-ratings">100</p>
+                                        </div>
+                                        <div class="prod-price">
+                                            {% if product.price_new %}
+                                            <p class="price new">${{product.price_new}}</p>
+                                            <p class="price old">${{product.price}}</p>
+                                            {% else %}
+                                            <p class="price">${{product.price}}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% if user.is_authenticated %}
+                            <div class="buttons">
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in user.wishlist.products.all %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                    {% endif %}
+                                </form>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                </form>
+
+                            </div>
+                        {% else %}
+                            <div class="buttons">
+                                <form>
+                                    <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                                </form>
+                                <form>
+                                    <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="btn">
+                <a href="{{product.category.get_absolute_url}}">
+                    <button type="submit">See more</button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="comment-section" id="comment-section">
+        <h3>Reviews about Round Lab 1025 Dokdo Foam Cleanser</h3>
+        <button class="add-comment">Add Comment</button>
+        <div class="comments">
+            <div class="comment">
+
+                <div class="user-date">
+                    <div class="avatar-name">
+                        <div class="img-container">
+                            <img src="../../images/avatar.jpg" alt="">
+                        </div>
+                        <p class="username">Katyadess</p>
+                    </div>
+                    <div class="publish-date">
+                        <p>August 12, 2024</p>
+                    </div>
+                </div>
+                <div class="user-rating">
+                    <ul class="stars">
+                        <li class="star">
+                            <i class="bi bi-star-fill"></i>
+                        </li>
+                        <li class="star">
+                           <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comment-content">
+                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                    <div class="comment-images">
+                        <img src="../../images/avene_cream.jpg" alt="" class="comment-img">
+                    </div>
+                </div>
+
+                <div class="reply-comment">
+                    <a class="reply-button">Reply</a>
+                </div>
+
+
+                <div class="replies">
+                    <div class="comment">
+
+                        <div class="user-date">
+                            <div class="avatar-name">
+                                <div class="img-container">
+                                    <img src="../../images/avatar.jpg" alt="">
+                                </div>
+                                <p class="username">Katyadess</p>
+                            </div>
+                            <div class="publish-date">
+                                <p>August 12, 2024</p>
+                            </div>
+                        </div>
+                        <div class="user-rating">
+                            <ul class="stars">
+                                <li class="star">
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li class="star">
+                                   <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="comment-content">
+                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                        </div>
+    
+                        <div class="reply-comment">
+                            <a class="reply-button">Reply</a>
+                        </div>
+    
+    
+                        <div class="replies">
+                            
+                        </div>
+    
+                    </div>
+                    <div class="comment">
+
+                        <div class="user-date">
+                            <div class="avatar-name">
+                                <div class="img-container">
+                                    <img src="../../images/avatar.jpg" alt="">
+                                </div>
+                                <p class="username">Katyadess</p>
+                            </div>
+                            <div class="publish-date">
+                                <p>August 12, 2024</p>
+                            </div>
+                        </div>
+                        <div class="user-rating">
+                            <ul class="stars">
+                                <li class="star">
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li class="star">
+                                   <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="comment-content">
+                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                        </div>
+    
+                        <div class="reply-comment">
+                            <a class="reply-button">Reply</a>
+                        </div>
+    
+    
+                        <div class="replies">
+                            
+                        </div>
+    
+                    </div>
+                </div>
+
+            </div>
+            <div class="comment">
+
+                <div class="user-date">
+                    <div class="avatar-name">
+                        <div class="img-container">
+                            <img src="../../images/avatar.jpg" alt="">
+                        </div>
+                        <p class="username">Katyadess</p>
+                    </div>
+                    <div class="publish-date">
+                        <p>August 12, 2024</p>
+                    </div>
+                </div>
+                <div class="user-rating">
+                    <ul class="stars">
+                        <li class="star">
+                            <i class="bi bi-star-fill"></i>
+                        </li>
+                        <li class="star">
+                           <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                        <li class="star">
+                            <i class="bi bi-star"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comment-content">
+                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                </div>
+
+                <div class="reply-comment">
+                    <a class="reply-button">Reply</a>
+                </div>
+
+
+                <div class="replies">
+                    <div class="comment">
+
+                        <div class="user-date">
+                            <div class="avatar-name">
+                                <div class="img-container">
+                                    <img src="../../images/avatar.jpg" alt="">
+                                </div>
+                                <p class="username">Katyadess</p>
+                            </div>
+                            <div class="publish-date">
+                                <p>August 12, 2024</p>
+                            </div>
+                        </div>
+                        <div class="user-rating">
+                            <ul class="stars">
+                                <li class="star">
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li class="star">
+                                   <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="comment-content">
+                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                        </div>
+    
+                        <div class="reply-comment">
+                            <a class="reply-button">Reply</a>
+                        </div>
+    
+    
+                        <div class="replies">
+                            
+                        </div>
+    
+                    </div>
+                    <div class="comment">
+
+                        <div class="user-date">
+                            <div class="avatar-name">
+                                <div class="img-container">
+                                    <img src="../../images/avatar.jpg" alt="">
+                                </div>
+                                <p class="username">Katyadess</p>
+                            </div>
+                            <div class="publish-date">
+                                <p>August 12, 2024</p>
+                            </div>
+                        </div>
+                        <div class="user-rating">
+                            <ul class="stars">
+                                <li class="star">
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li class="star">
+                                   <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                                <li class="star">
+                                    <i class="bi bi-star"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="comment-content">
+                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                        </div>
+    
+                        <div class="reply-comment">
+                            <a class="reply-button">Reply</a>
+                        </div>
+    
+    
+                        <div class="replies">
+                            
+                        </div>
+    
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="comments-pagination">
+            <a href="#" class="pagination-link active">
+                <span>1</span>
+            </a>
+            <a href="#" class="pagination-link">
+                <span>2</span>
+            </a>
+            <a href="#" class="pagination-link">
+                <span>3</span>
+            </a>
+            <span class="pagination-ellipsis">...</span>
+            <a href="#" class="pagination-link">
+                <span>24</span>
+            </a>
+        </div>
+    </div>
+    
+</main>
+
+<div class="add-comment-container">
+    <div class="close-comment-container">
+        <i class="bi bi-x-lg close-comment"></i>
+    </div>
+    <div class="leave-comment">
+        <form action="" class="comment-form">
+            <div class="comment-rating">
+                <p>Your Rating</p>
+                <div class="input-rating">
+                    <div class="inputs">
+                        <input id="rating-default" type="radio" name="stars" value="" checked>
+                        <input id="rating1" type="radio" name="stars" value="1">
+                        <input id="rating2" type="radio" name="stars" value="2">
+                        <input id="rating3" type="radio" name="stars" value="3">
+                        <input id="rating4" type="radio" name="stars" value="4">
+                        <input id="rating5" type="radio" name="stars" value="5">
+                    </div>
+                    <ul class="stars">
+                        <li class="star">
+                            <label for="rating-default"></label>
+                        </li>
+                        <li class="star">
+                            <label for="rating1"><i class="bi bi-star"></i></label>
+                        </li>
+                        <li class="star">
+                            <label for="rating2"><i class="bi bi-star"></i></label>
+                        </li>
+                        <li class="star">
+                            <label for="rating3"><i class="bi bi-star"></i></label>
+                        </li>
+                        <li class="star">
+                            <label for="rating4"><i class="bi bi-star"></i></label>
+                        </li>
+                        <li class="star">
+                            <label for="rating5"><i class="bi bi-star"></i></label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message">Comment</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group images">
+                <label for="file-upload" class="custom-file-upload">
+                    <i class="bi bi-upload"></i> Choose Files
+                </label>
+                <input type="file" id="file-upload" name="file-upload" multiple />
+                <div id="file-names"></div>
+            </div>
+            <button type="submit" class="add-comment">Submit Comment</button>
+        </form>
+    </div>
+</div>
+<div class="reply-comment-container">
+    <div class="close-reply-container">
+        <i class="bi bi-x-lg close-reply"></i>
+    </div>
+    <div class="leave-comment">
+        <form action="" class="reply-form">
+            <div class="form-group">
+                <label for="reply-textarea">Comment</label>
+                <textarea id="reply-textarea" name="reply-textarea" required>Username, </textarea>
+            </div>
+            <div class="form-group images">
+                <label for="file-upload" class="custom-file-upload">
+                    <i class="bi bi-upload"></i> Choose Files
+                </label>
+                <input type="file" id="file-upload" name="file-upload" multiple />
+                <div id="file-names"></div>
+            </div>
+            <button type="submit" class="add-comment">Submit Reply</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "shop/js/product_details.js" %}"></script>
+{% endblock scripts %}
+
