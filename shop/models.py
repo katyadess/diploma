@@ -96,7 +96,6 @@ class ProductReview(MPTTModel):
     text = models.TextField()
     rating = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='comment_images', blank=True)
     parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     class MPTTMeta:
@@ -111,7 +110,10 @@ class ProductReview(MPTTModel):
         ordering = ('-created_at',)
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
-        
+  
+class ReviewImage(models.Model):
+    image = models.FileField(upload_to='review_images')
+    review = models.ForeignKey(ProductReview, related_name='review_images', on_delete=models.CASCADE)      
         
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')

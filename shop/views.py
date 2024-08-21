@@ -760,12 +760,16 @@ class ProductDetailsView(DetailView):
         
         brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
+        comment_form = ProductReviewForm()
+        reviews = ProductReview.objects.filter(product=product)
         
         # context['category'] = category
         context['breadcrumbs'] = breadcrumbs
         context['brand_breadcrumbs'] = brand_breadcrumbs
         context['brand_products'] = brand_products
         context['category_products'] = category_products
+        context['comment_form'] = comment_form
+        context['reviews'] = reviews
         return context
     
     def post(self, request, id, slug):
@@ -791,5 +795,21 @@ class ProductDetailsView(DetailView):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
-        
+                
+        elif 'add-comment' in request.POST:
+            comment_form = ProductReviewForm(request.POST)
+            review_images_form = ReviewImageForm(request.POST, request.FILES)
+            if comment_form.is_valid() and review_images_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.product = product
+                comment.user = request.user
+                comment.save()
+                images = request.FILES.getlist('file-upload')
+                for image in images:
+                    image_ins = ReviewImage(image=image, review=comment)
+                    image_ins.save()
+                messages.success(request, "Your review has been submitted successfully!")
+            else:
+                messages.error(request, "There was an error with your review submission.")
+                
         return redirect(f'{request.path}')

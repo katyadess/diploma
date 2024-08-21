@@ -323,286 +323,157 @@
 
 
     <div class="comment-section" id="comment-section">
-        <h3>Reviews about Round Lab 1025 Dokdo Foam Cleanser</h3>
+        <h3>Reviews about {{product.name}}</h3>
         <button class="add-comment">Add Comment</button>
         <div class="comments">
-            <div class="comment">
-
-                <div class="user-date">
-                    <div class="avatar-name">
-                        <div class="img-container">
-                            <img src="../../images/avatar.jpg" alt="">
-                        </div>
-                        <p class="username">Katyadess</p>
-                    </div>
-                    <div class="publish-date">
-                        <p>August 12, 2024</p>
-                    </div>
-                </div>
-                <div class="user-rating">
-                    <ul class="stars">
-                        <li class="star">
-                            <i class="bi bi-star-fill"></i>
-                        </li>
-                        <li class="star">
-                           <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="comment-content">
-                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                    <div class="comment-images">
-                        <img src="../../images/avene_cream.jpg" alt="" class="comment-img">
-                    </div>
-                </div>
-
-                <div class="reply-comment">
-                    <a class="reply-button">Reply</a>
-                </div>
-
-
-                <div class="replies">
+            {% if reviews %}
+                {% for review in reviews %}
                     <div class="comment">
 
                         <div class="user-date">
                             <div class="avatar-name">
                                 <div class="img-container">
-                                    <img src="../../images/avatar.jpg" alt="">
+                                    <img src="{% static "shop/images/avatar.jpg" %}" alt="">
                                 </div>
-                                <p class="username">Katyadess</p>
+                                <p class="username">{{user.first_name}}</p>
                             </div>
                             <div class="publish-date">
-                                <p>August 12, 2024</p>
+                                <p>{{review.created_at}}</p>
                             </div>
                         </div>
                         <div class="user-rating">
                             <ul class="stars">
-                                <li class="star">
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li class="star">
-                                   <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
+                                {% if review.rating > 0 %}
+                                    {% for i in '12345'|make_list %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <li class="star">
+                                                <i class="bi bi-star-fill"></i>
+                                            </li>
+                                        {% else %}
+                                            <li class="star">
+                                                <i class="bi bi-star"></i>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             </ul>
                         </div>
                         <div class="comment-content">
-                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                        </div>
-    
-                        <div class="reply-comment">
-                            <a class="reply-button">Reply</a>
-                        </div>
-    
-    
-                        <div class="replies">
-                            
-                        </div>
-    
-                    </div>
-                    <div class="comment">
-
-                        <div class="user-date">
-                            <div class="avatar-name">
-                                <div class="img-container">
-                                    <img src="../../images/avatar.jpg" alt="">
+                            <p class="text">{{review.text}}</p>
+                            {% if review.review_images.all %}
+                                <div class="comment-images">
+                                    {% for image in review.review_images.all %}
+                                        <img src="{{ image.image.url }}" alt="" class="comment-img">
+                                    {% endfor %}
                                 </div>
-                                <p class="username">Katyadess</p>
-                            </div>
-                            <div class="publish-date">
-                                <p>August 12, 2024</p>
-                            </div>
+                            {% endif %}
                         </div>
-                        <div class="user-rating">
-                            <ul class="stars">
-                                <li class="star">
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li class="star">
-                                   <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="comment-content">
-                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                        </div>
-    
+
                         <div class="reply-comment">
                             <a class="reply-button">Reply</a>
                         </div>
-    
-    
+
+
                         <div class="replies">
-                            
-                        </div>
-    
-                    </div>
-                </div>
+                            <div class="comment">
 
-            </div>
-            <div class="comment">
-
-                <div class="user-date">
-                    <div class="avatar-name">
-                        <div class="img-container">
-                            <img src="../../images/avatar.jpg" alt="">
-                        </div>
-                        <p class="username">Katyadess</p>
-                    </div>
-                    <div class="publish-date">
-                        <p>August 12, 2024</p>
-                    </div>
-                </div>
-                <div class="user-rating">
-                    <ul class="stars">
-                        <li class="star">
-                            <i class="bi bi-star-fill"></i>
-                        </li>
-                        <li class="star">
-                           <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                        <li class="star">
-                            <i class="bi bi-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="comment-content">
-                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                </div>
-
-                <div class="reply-comment">
-                    <a class="reply-button">Reply</a>
-                </div>
-
-
-                <div class="replies">
-                    <div class="comment">
-
-                        <div class="user-date">
-                            <div class="avatar-name">
-                                <div class="img-container">
-                                    <img src="../../images/avatar.jpg" alt="">
+                                <div class="user-date">
+                                    <div class="avatar-name">
+                                        <div class="img-container">
+                                            <img src="../../images/avatar.jpg" alt="">
+                                        </div>
+                                        <p class="username">Katyadess</p>
+                                    </div>
+                                    <div class="publish-date">
+                                        <p>August 12, 2024</p>
+                                    </div>
                                 </div>
-                                <p class="username">Katyadess</p>
-                            </div>
-                            <div class="publish-date">
-                                <p>August 12, 2024</p>
-                            </div>
-                        </div>
-                        <div class="user-rating">
-                            <ul class="stars">
-                                <li class="star">
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li class="star">
-                                   <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="comment-content">
-                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                        </div>
-    
-                        <div class="reply-comment">
-                            <a class="reply-button">Reply</a>
-                        </div>
-    
-    
-                        <div class="replies">
-                            
-                        </div>
-    
-                    </div>
-                    <div class="comment">
-
-                        <div class="user-date">
-                            <div class="avatar-name">
-                                <div class="img-container">
-                                    <img src="../../images/avatar.jpg" alt="">
+                                <div class="user-rating">
+                                    <ul class="stars">
+                                        <li class="star">
+                                            <i class="bi bi-star-fill"></i>
+                                        </li>
+                                        <li class="star">
+                                        <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <p class="username">Katyadess</p>
+                                <div class="comment-content">
+                                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                                </div>
+            
+                                <div class="reply-comment">
+                                    <a class="reply-button">Reply</a>
+                                </div>
+            
+            
+                                <div class="replies">
+                                    
+                                </div>
+            
                             </div>
-                            <div class="publish-date">
-                                <p>August 12, 2024</p>
-                            </div>
-                        </div>
-                        <div class="user-rating">
-                            <ul class="stars">
-                                <li class="star">
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li class="star">
-                                   <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                                <li class="star">
-                                    <i class="bi bi-star"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="comment-content">
-                            <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                        </div>
-    
-                        <div class="reply-comment">
-                            <a class="reply-button">Reply</a>
-                        </div>
-    
-    
-                        <div class="replies">
-                            
-                        </div>
-    
-                    </div>
-                </div>
+                            <div class="comment">
 
-            </div>
+                                <div class="user-date">
+                                    <div class="avatar-name">
+                                        <div class="img-container">
+                                            <img src="../../images/avatar.jpg" alt="">
+                                        </div>
+                                        <p class="username">Katyadess</p>
+                                    </div>
+                                    <div class="publish-date">
+                                        <p>August 12, 2024</p>
+                                    </div>
+                                </div>
+                                <div class="user-rating">
+                                    <ul class="stars">
+                                        <li class="star">
+                                            <i class="bi bi-star-fill"></i>
+                                        </li>
+                                        <li class="star">
+                                        <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                        <li class="star">
+                                            <i class="bi bi-star"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="comment-content">
+                                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
+                                </div>
+            
+                                <div class="reply-comment">
+                                    <a class="reply-button">Reply</a>
+                                </div>
+            
+            
+                                <div class="replies">
+                                    
+                                </div>
+            
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No comments yet!</p>
+            {% endif %}
         </div>
 
         <div class="comments-pagination">
@@ -629,17 +500,18 @@
         <i class="bi bi-x-lg close-comment"></i>
     </div>
     <div class="leave-comment">
-        <form action="" class="comment-form">
+        <form action="{{product.get_absolute_url}}" class="comment-form" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="comment-rating">
                 <p>Your Rating</p>
                 <div class="input-rating">
                     <div class="inputs">
-                        <input id="rating-default" type="radio" name="stars" value="" checked>
-                        <input id="rating1" type="radio" name="stars" value="1">
-                        <input id="rating2" type="radio" name="stars" value="2">
-                        <input id="rating3" type="radio" name="stars" value="3">
-                        <input id="rating4" type="radio" name="stars" value="4">
-                        <input id="rating5" type="radio" name="stars" value="5">
+                        <input id="rating-default" type="radio" name="rating" value="" checked>
+                        <input id="rating1" type="radio" name="rating" value="1">
+                        <input id="rating2" type="radio" name="rating" value="2">
+                        <input id="rating3" type="radio" name="rating" value="3">
+                        <input id="rating4" type="radio" name="rating" value="4">
+                        <input id="rating5" type="radio" name="rating" value="5">
                     </div>
                     <ul class="stars">
                         <li class="star">
@@ -665,7 +537,7 @@
             </div>
             <div class="form-group">
                 <label for="message">Comment</label>
-                <textarea id="message" name="message" required></textarea>
+                {{comment_form.text}}
             </div>
             <div class="form-group images">
                 <label for="file-upload" class="custom-file-upload">
@@ -674,7 +546,7 @@
                 <input type="file" id="file-upload" name="file-upload" multiple />
                 <div id="file-names"></div>
             </div>
-            <button type="submit" class="add-comment">Submit Comment</button>
+            <button type="submit" class="add-comment" name='add-comment'>Submit Comment</button>
         </form>
     </div>
 </div>

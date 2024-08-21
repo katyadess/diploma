@@ -196,3 +196,29 @@ class EditAddressForm(forms.ModelForm):
         model = Address
         fields = ['first_name', 'last_name', 'phone_number', 'city', 'street']
         
+
+class ProductReviewForm(forms.ModelForm):
+    
+    text = forms.CharField(widget = forms.Textarea(attrs={
+        'name': 'message',
+        'id': 'message',
+        'rows': 0,
+        
+    }), required=True)
+    
+    class Meta:
+        model = ProductReview
+        fields = ['rating', 'text']
+        
+class ReviewImageForm(forms.ModelForm):
+    
+    image = forms.FileField(widget = forms.FileInput(attrs={
+        "name": "file-upload",
+        "type": "file",
+        "id": 'file-upload',
+        'allow_multiple_selected': True,
+    }), required=False)
+    
+    class Meta:
+        model = ReviewImage
+        fields = ['image']
