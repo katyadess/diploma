@@ -1,2 +1,5 @@
 Pillow,
-mptt
+mptt,
+boto3
+django-storages,
+django-environ 

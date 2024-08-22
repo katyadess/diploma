@@ -10,3 +10,6 @@ Add autofill for city and street
 
 <i class="fa-solid fa-heart"></i> - full heart
 <i class="bi bi-bag-fill"></i> - full bag
+
+изменить добавление картинок к комментариям (убрать upload_to)
+add replies
