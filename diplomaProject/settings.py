@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'orders',
     'mptt',
     'users',
+    'storages',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -144,7 +145,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 
 
 LOGIN_REDIRECT_URL = 'shop:main'
@@ -154,8 +154,24 @@ LOGOUT_URL = 'shop:shop_logout'
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = BASE_DIR / 'uploads'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": env('AWS_ACCESS_KEY_ID'),
+            "secret_key": env('AWS_SECRET_ACCESS_KEY'),
+            "bucket_name": env('AWS_STORAGE_BUCKET_NAME'),
+            "region_name": env('AWS_S3_REGION_NAME'),
+            'querystring_auth': env('AWS_QUERYSTRING_AUTH'),
+            'addressing_style': env('AWS_S3_ADDRESSING_STYLE'),
+        },
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    },
+}
 # CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -166,9 +182,3 @@ EMAIL_HOST_PASSWORD = 'mbej xuau jcli cgxv'
 # app-password - password for email
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
-
-AWS_ACCESS_KEY_ID=env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=env('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME=env('AWS_S3_REGION_NAME')
