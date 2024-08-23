@@ -1,0 +1,61 @@
+{% load static %}
+<div class="comment">
+    <div class="user-date">
+        <div class="avatar-name">
+            <div class="img-container">
+                <img src="{% static 'shop/images/avatar.jpg' %}" alt="">
+            </div>
+            <p class="username">{{ review.user.first_name }}</p>
+        </div>
+        <div class="publish-date">
+            <p>{{ review.created_at }}</p>
+        </div>
+    </div>
+    
+    <div class="comment-content">
+        <p class="text">{{ review.text }}</p>
+        {% if review.review_images.all %}
+            <div class="comment-images">
+                {% for image in review.review_images.all %}
+                    <img src="{{ image.image.url }}" alt="" class="comment-img">
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="reply-comment-container">
+        <div class="close-reply-container">
+            <i class="bi bi-x-lg close-reply"></i>
+        </div>
+        <div class="leave-comment">
+            <form class="reply-form" method='POST' enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="parent" value="{{ review.id }}" />
+                <div class="form-group">
+                    <label for="text">Comment</label>
+                    <textarea name="text" id="text" required>{{review.user.first_name}}, </textarea>
+                </div>
+                <div class="form-group images">
+                    <label for="file-upload" class="custom-file-upload">
+                        <i class="bi bi-upload"></i> Choose Files
+                    </label>
+                    <input type="file" id="file-upload" name="file-upload" multiple />
+                    <div id="file-names"></div>
+                </div>
+                <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="reply-comment">
+        <a class="reply-button">Reply</a>
+    </div>
+
+    {% if review.get_children %}
+        <div class="replies">
+            {% for reply in review.get_children %}
+                {% include 'shop/comment_replies.html' with review=reply product=product %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

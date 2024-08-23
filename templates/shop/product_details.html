@@ -335,7 +335,7 @@
                                 <div class="img-container">
                                     <img src="{% static "shop/images/avatar.jpg" %}" alt="">
                                 </div>
-                                <p class="username">{{user.first_name}}</p>
+                                <p class="username">{{review.user.first_name}}</p>
                             </div>
                             <div class="publish-date">
                                 <p>{{review.created_at}}</p>
@@ -368,111 +368,47 @@
                                 </div>
                             {% endif %}
                         </div>
+                        <div class="reply-comment-container">
+                            <div class="close-reply-container">
+                                <i class="bi bi-x-lg close-reply"></i>
+                            </div>
+                            <div class="leave-comment">
+                                <form class="reply-form" method='POST' enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="parent" value="{{ review.id }}" />
+                                    <div class="form-group">
+                                        <label for="text">Comment</label>
+                                        <textarea name="text" id="text" required>{{review.user.first_name}}, </textarea>
+                                    </div>
+                                    <div class="form-group images">
+                                        <label for="file-upload" class="custom-file-upload">
+                                            <i class="bi bi-upload"></i> Choose Files
+                                        </label>
+                                        <input type="file" id="file-upload" name="file-upload" multiple />
+                                        <div id="file-names"></div>
+                                    </div>
+                                    <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
+                                </form>
+                            </div>
+                        </div>
 
                         <div class="reply-comment">
-                            <a class="reply-button">Reply</a>
+                            <a class="reply-button" name='parent' value="{{review.id}}">Reply</a>
                         </div>
 
 
-                        <div class="replies">
-                            <div class="comment">
-
-                                <div class="user-date">
-                                    <div class="avatar-name">
-                                        <div class="img-container">
-                                            <img src="../../images/avatar.jpg" alt="">
-                                        </div>
-                                        <p class="username">Katyadess</p>
-                                    </div>
-                                    <div class="publish-date">
-                                        <p>August 12, 2024</p>
-                                    </div>
-                                </div>
-                                <div class="user-rating">
-                                    <ul class="stars">
-                                        <li class="star">
-                                            <i class="bi bi-star-fill"></i>
-                                        </li>
-                                        <li class="star">
-                                        <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="comment-content">
-                                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                                </div>
-            
-                                <div class="reply-comment">
-                                    <a class="reply-button">Reply</a>
-                                </div>
-            
-            
-                                <div class="replies">
-                                    
-                                </div>
-            
+                        {% if review.get_children %}
+                            <div class="replies">
+                                {% for reply in review.get_children %}
+                                    {% include "shop/comment_replies.html" with review=reply product=product %}
+                                {% endfor %}
                             </div>
-                            <div class="comment">
-
-                                <div class="user-date">
-                                    <div class="avatar-name">
-                                        <div class="img-container">
-                                            <img src="../../images/avatar.jpg" alt="">
-                                        </div>
-                                        <p class="username">Katyadess</p>
-                                    </div>
-                                    <div class="publish-date">
-                                        <p>August 12, 2024</p>
-                                    </div>
-                                </div>
-                                <div class="user-rating">
-                                    <ul class="stars">
-                                        <li class="star">
-                                            <i class="bi bi-star-fill"></i>
-                                        </li>
-                                        <li class="star">
-                                        <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                        <li class="star">
-                                            <i class="bi bi-star"></i>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="comment-content">
-                                    <p class="text">Amazing product. I've been using it every day and my skin has never been in a better condition.</p>
-                                </div>
-            
-                                <div class="reply-comment">
-                                    <a class="reply-button">Reply</a>
-                                </div>
-            
-            
-                                <div class="replies">
-                                    
-                                </div>
-            
-                            </div>
-                        </div>
+                        {% endif %}
 
                     </div>
                 {% endfor %}
             {% else %}
-                <p>No comments yet!</p>
+                <h3 style='font-weight:500'>No comments yet!</h3>
             {% endif %}
         </div>
 
@@ -547,27 +483,6 @@
                 <div id="file-names"></div>
             </div>
             <button type="submit" class="add-comment" name='add-comment'>Submit Comment</button>
-        </form>
-    </div>
-</div>
-<div class="reply-comment-container">
-    <div class="close-reply-container">
-        <i class="bi bi-x-lg close-reply"></i>
-    </div>
-    <div class="leave-comment">
-        <form action="" class="reply-form">
-            <div class="form-group">
-                <label for="reply-textarea">Comment</label>
-                <textarea id="reply-textarea" name="reply-textarea" required>Username, </textarea>
-            </div>
-            <div class="form-group images">
-                <label for="file-upload" class="custom-file-upload">
-                    <i class="bi bi-upload"></i> Choose Files
-                </label>
-                <input type="file" id="file-upload" name="file-upload" multiple />
-                <div id="file-names"></div>
-            </div>
-            <button type="submit" class="add-comment">Submit Reply</button>
         </form>
     </div>
 </div>

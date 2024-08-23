@@ -13,31 +13,35 @@ navLinks.forEach(link => {
     });
 });
 
-document.getElementById('file-upload').addEventListener('change', function() {
-    var fileNames = [];
-    var fileLimit = 5;
-    var files = this.files;
+document.querySelectorAll('#file-upload').forEach((el, index) => {
 
-    if (files.length > fileLimit) {
-        document.getElementById('file-names').textContent = `${files.length} files`;
-    } else {
-        for (var i = 0; i < files.length; i++) {
-            fileNames.push(files[i].name);
+    el.addEventListener('change', function() {
+        var fileNames = [];
+        var fileLimit = 5;
+        var files = this.files;
+
+        var fileNamesElement = document.querySelectorAll('#file-names')[index];
+    
+        if (files.length > fileLimit) {
+            fileNamesElement.textContent = `${files.length} files`;
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                fileNames.push(files[i].name);
+            }
+            fileNamesElement.textContent = fileNames.join(', ');
         }
-        document.getElementById('file-names').textContent = fileNames.join(', ');
-    }
+    });
 });
 
 
 const commentContainer = document.querySelector('.add-comment-container');
-const replyContainer = document.querySelector('.reply-comment-container');
-const overlay = document.getElementById('overlay');
+const replyContainers = document.querySelectorAll('.reply-comment-container');
 
 const addCommentButton = document.querySelector('.comment-section .add-comment')
 const addReplyButtons = document.querySelectorAll('.reply-button');
 
 const closeCommentContainer = document.querySelector('.close-comment');
-const closeReplyContainer = document.querySelector('.close-reply');
+const closeReplyButtons = document.querySelectorAll('.close-reply');
 
 
 addCommentButton.addEventListener('click', () => {
@@ -50,16 +54,20 @@ closeCommentContainer.addEventListener('click', () => {
     document.body.classList.remove('no-scroll');
 });
 
-addReplyButtons.forEach(replyButton => {
+addReplyButtons.forEach((replyButton, index) => {
     replyButton.addEventListener('click', () => {
-        replyContainer.classList.add('open');
+        replyContainers[index].classList.add('open');
         document.body.classList.add('no-scroll');
     })
 })
 
-closeReplyContainer.addEventListener('click', () => {
-    replyContainer.classList.remove('open');
+
+closeReplyButtons.forEach((closeReplyButton, index) => {
+    closeReplyButton.addEventListener('click', () => {
+    replyContainers[index].classList.remove('open');
     document.body.classList.remove('no-scroll');
+    
+})
 
 })
 

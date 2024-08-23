@@ -210,6 +210,19 @@ class ProductReviewForm(forms.ModelForm):
         model = ProductReview
         fields = ['rating', 'text']
         
+class ReplyForm(forms.ModelForm):
+    
+    text = forms.CharField(widget = forms.Textarea(attrs={
+        'name': 'text',
+        'id': 'text',
+        'rows': 0,
+        
+    }), required=True)
+    
+    class Meta:
+        model = ProductReview
+        fields = ['text']
+        
 class ReviewImageForm(forms.ModelForm):
     
     image = forms.FileField(widget = forms.FileInput(attrs={

@@ -761,15 +761,17 @@ class ProductDetailsView(DetailView):
         brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
         comment_form = ProductReviewForm()
-        reviews = ProductReview.objects.filter(product=product)
+        reviews = ProductReview.objects.filter(product=product, parent__isnull=True)
+        reply_form = ReplyForm()
         
-        # context['category'] = category
         context['breadcrumbs'] = breadcrumbs
         context['brand_breadcrumbs'] = brand_breadcrumbs
         context['brand_products'] = brand_products
         context['category_products'] = category_products
         context['comment_form'] = comment_form
         context['reviews'] = reviews
+        context['reply_form'] = reply_form
+        
         return context
     
     def post(self, request, id, slug):
@@ -811,5 +813,24 @@ class ProductDetailsView(DetailView):
                 messages.success(request, "Your review has been submitted successfully!")
             else:
                 messages.error(request, "There was an error with your review submission.")
+                
+        elif 'add-reply' in request.POST:
+            reply_form = ReplyForm(request.POST)
+            review_images_form = ReviewImageForm(request.POST, request.FILES)
+            if reply_form.is_valid() and review_images_form.is_valid():
+                parent_id = request.POST.get('parent')
+                parent_review = get_object_or_404(ProductReview, id=parent_id)
+                reply = reply_form.save(commit=False)
+                reply.product = product
+                reply.parent = parent_review
+                reply.user = request.user
+                reply.save()
+                images = request.FILES.getlist('file-upload')
+                for image in images:
+                    image_ins = ReviewImage(image=image, review=reply)
+                    image_ins.save()
+                messages.success(request, "Your reply has been submitted successfully!")
+            else:
+                messages.error(request, "There was an error with your reply submission.")
                 
         return redirect(f'{request.path}')

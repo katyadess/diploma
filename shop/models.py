@@ -99,7 +99,7 @@ class ProductReview(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     class MPTTMeta:
-        order_insertion_by = ['product']
+        order_insertion_by = ['-created_at']
 
     def __str__(self):
         if self.parent:
@@ -107,7 +107,7 @@ class ProductReview(MPTTModel):
         return f"Review by {self.user.username} on {self.product.name}"
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ['-created_at']
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
   
