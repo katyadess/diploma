@@ -13,26 +13,24 @@ navLinks.forEach(link => {
     });
 });
 
-document.querySelectorAll('#file-upload').forEach((el, index) => {
-
-    el.addEventListener('change', function() {
-        var fileNames = [];
-        var fileLimit = 5;
-        var files = this.files;
-
-        var fileNamesElement = document.querySelectorAll('#file-names')[index];
+function HandleFileUpload(fileUploadButton, fileNamesContainer) {
+    fileUploadButton.addEventListener('change', function() {
+        const fileNames = [];
+        const fileLimit = 5;
+        const files = this.files;
+        
+        const fileNamesElement = fileNamesContainer;
     
         if (files.length > fileLimit) {
             fileNamesElement.textContent = `${files.length} files`;
         } else {
-            for (var i = 0; i < files.length; i++) {
+            for (let i = 0; i < files.length; i++) {
                 fileNames.push(files[i].name);
             }
             fileNamesElement.textContent = fileNames.join(', ');
         }
     });
-});
-
+}
 
 const commentContainer = document.querySelector('.add-comment-container');
 const replyContainers = document.querySelectorAll('.reply-comment-container');
@@ -47,6 +45,14 @@ const closeReplyButtons = document.querySelectorAll('.close-reply');
 addCommentButton.addEventListener('click', () => {
     commentContainer.classList.add('open');
     document.body.classList.add('no-scroll');
+        
+    const fileUploadButton = document.querySelector('.add-comment-container #file-upload');
+    const fileNamesContainer = document.querySelector('.add-comment-container #file-names');
+
+    console.log(fileUploadButton, fileUploadButton.parentElement)
+    console.log(fileNamesContainer, fileNamesContainer.parentElement)
+
+    HandleFileUpload(fileUploadButton, fileNamesContainer)
 });
 
 closeCommentContainer.addEventListener('click', () => {
@@ -56,8 +62,15 @@ closeCommentContainer.addEventListener('click', () => {
 
 addReplyButtons.forEach((replyButton, index) => {
     replyButton.addEventListener('click', () => {
-        replyContainers[index].classList.add('open');
+        const replyContainer = replyContainers[index]
+        replyContainer.classList.add('open');
         document.body.classList.add('no-scroll');
+
+        const fileUploadButton = replyContainer.querySelector('#file-upload');
+        const fileNamesContainer = replyContainer.querySelector('#file-names');
+        
+        HandleFileUpload(fileUploadButton, fileNamesContainer)
+
     })
 })
 
@@ -109,3 +122,11 @@ function slideImage() {
 }
 
 window.addEventListener('resize', slideImage);
+
+document.querySelectorAll('.delete-comment-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (!confirm('Are you sure you want to delete this comment?')) {
+            e.preventDefault();
+        }
+    });
+});

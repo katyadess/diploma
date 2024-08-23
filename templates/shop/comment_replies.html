@@ -39,7 +39,7 @@
                     <label for="file-upload" class="custom-file-upload">
                         <i class="bi bi-upload"></i> Choose Files
                     </label>
-                    <input type="file" id="file-upload" name="file-upload" multiple />
+                    <input type="file" id="file-upload"name="file-upload" multiple />
                     <div id="file-names"></div>
                 </div>
                 <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
@@ -49,6 +49,13 @@
 
     <div class="reply-comment">
         <a class="reply-button">Reply</a>
+        {% if user == review.user %}
+            <form method='POST'>
+                {% csrf_token %}
+                <input type="hidden" name='comment_id' value="{{review.id}}">
+                <button type="submit" name='delete-comment' class='delete-comment-button'>delete</button>
+            </form>
+        {% endif %}
     </div>
 
     {% if review.get_children %}

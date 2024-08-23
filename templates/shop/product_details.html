@@ -384,8 +384,8 @@
                                         <label for="file-upload" class="custom-file-upload">
                                             <i class="bi bi-upload"></i> Choose Files
                                         </label>
-                                        <input type="file" id="file-upload" name="file-upload" multiple />
-                                        <div id="file-names"></div>
+                                        <input type="file" id="file-upload" class='file-upload' name="file-upload" multiple />
+                                        <div id="file-names" class='file-names'></div>
                                     </div>
                                     <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
                                 </form>
@@ -393,7 +393,14 @@
                         </div>
 
                         <div class="reply-comment">
-                            <a class="reply-button" name='parent' value="{{review.id}}">Reply</a>
+                            <a class="reply-button">Reply</a>
+                            {% if user == review.user %}
+                                <form method='POST'>
+                                    {% csrf_token %}
+                                    <input type="hidden" name='comment_id' value="{{review.id}}">
+                                    <button type="submit" name='delete-comment' class='delete-comment-button'>delete</button>
+                                </form>
+                            {% endif %}
                         </div>
 
 
@@ -436,7 +443,7 @@
         <i class="bi bi-x-lg close-comment"></i>
     </div>
     <div class="leave-comment">
-        <form action="{{product.get_absolute_url}}" class="comment-form" method='POST' enctype="multipart/form-data">
+        <form class="comment-form" method='POST' enctype="multipart/form-data">
             {% csrf_token %}
             <div class="comment-rating">
                 <p>Your Rating</p>

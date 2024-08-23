@@ -762,7 +762,6 @@ class ProductDetailsView(DetailView):
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
         comment_form = ProductReviewForm()
         reviews = ProductReview.objects.filter(product=product, parent__isnull=True)
-        reply_form = ReplyForm()
         
         context['breadcrumbs'] = breadcrumbs
         context['brand_breadcrumbs'] = brand_breadcrumbs
@@ -770,7 +769,6 @@ class ProductDetailsView(DetailView):
         context['category_products'] = category_products
         context['comment_form'] = comment_form
         context['reviews'] = reviews
-        context['reply_form'] = reply_form
         
         return context
     
@@ -832,5 +830,10 @@ class ProductDetailsView(DetailView):
                 messages.success(request, "Your reply has been submitted successfully!")
             else:
                 messages.error(request, "There was an error with your reply submission.")
+        
+        elif 'delete-comment' in request.POST:
+            comment_id = request.POST.get('comment_id')
+            review = get_object_or_404(ProductReview, id=comment_id)
+            review.delete()
                 
         return redirect(f'{request.path}')
