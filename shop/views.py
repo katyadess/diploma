@@ -761,14 +761,19 @@ class ProductDetailsView(DetailView):
         brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
         comment_form = ProductReviewForm()
-        reviews = ProductReview.objects.filter(product=product, parent__isnull=True)
+        reviews = ProductReview.objects.filter(parent__isnull=True)
+        
+        paginator = Paginator(reviews, 4)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         
         context['breadcrumbs'] = breadcrumbs
         context['brand_breadcrumbs'] = brand_breadcrumbs
         context['brand_products'] = brand_products
         context['category_products'] = category_products
         context['comment_form'] = comment_form
-        context['reviews'] = reviews
+        # context['reviews'] = reviews
+        context['page_obj'] = page_obj
         
         return context
     

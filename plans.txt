@@ -12,4 +12,4 @@ Add autofill for city and street
 закончить страницу аккаунт, product_details
 добавить всем продуктам их рейтинг
 pagination for comments
-delete review function
+delete review function - done

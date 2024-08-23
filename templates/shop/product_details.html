@@ -326,93 +326,95 @@
         <h3>Reviews about {{product.name}}</h3>
         <button class="add-comment">Add Comment</button>
         <div class="comments">
-            {% if reviews %}
-                {% for review in reviews %}
-                    <div class="comment">
+            {% if page_obj %}
+                {% for review in page_obj %}
+                    {% if review.is_root_node %}
+                        <div class="comment">
 
-                        <div class="user-date">
-                            <div class="avatar-name">
-                                <div class="img-container">
-                                    <img src="{% static "shop/images/avatar.jpg" %}" alt="">
+                            <div class="user-date">
+                                <div class="avatar-name">
+                                    <div class="img-container">
+                                        <img src="{% static "shop/images/avatar.jpg" %}" alt="">
+                                    </div>
+                                    <p class="username">{{review.user.first_name}}</p>
                                 </div>
-                                <p class="username">{{review.user.first_name}}</p>
+                                <div class="publish-date">
+                                    <p>{{review.created_at}}</p>
+                                </div>
                             </div>
-                            <div class="publish-date">
-                                <p>{{review.created_at}}</p>
+                            <div class="user-rating">
+                                <ul class="stars">
+                                    {% if review.rating > 0 %}
+                                        {% for i in '12345'|make_list %}
+                                            {% if forloop.counter <= review.rating %}
+                                                <li class="star">
+                                                    <i class="bi bi-star-fill"></i>
+                                                </li>
+                                            {% else %}
+                                                <li class="star">
+                                                    <i class="bi bi-star"></i>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
                             </div>
-                        </div>
-                        <div class="user-rating">
-                            <ul class="stars">
-                                {% if review.rating > 0 %}
-                                    {% for i in '12345'|make_list %}
-                                        {% if forloop.counter <= review.rating %}
-                                            <li class="star">
-                                                <i class="bi bi-star-fill"></i>
-                                            </li>
-                                        {% else %}
-                                            <li class="star">
-                                                <i class="bi bi-star"></i>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
+                            <div class="comment-content">
+                                <p class="text">{{review.text}}</p>
+                                {% if review.review_images.all %}
+                                    <div class="comment-images">
+                                        {% for image in review.review_images.all %}
+                                            <img src="{{ image.image.url }}" alt="" class="comment-img">
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
-                            </ul>
-                        </div>
-                        <div class="comment-content">
-                            <p class="text">{{review.text}}</p>
-                            {% if review.review_images.all %}
-                                <div class="comment-images">
-                                    {% for image in review.review_images.all %}
-                                        <img src="{{ image.image.url }}" alt="" class="comment-img">
+                            </div>
+                            <div class="reply-comment-container">
+                                <div class="close-reply-container">
+                                    <i class="bi bi-x-lg close-reply"></i>
+                                </div>
+                                <div class="leave-comment">
+                                    <form class="reply-form" method='POST' enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent" value="{{ review.id }}" />
+                                        <div class="form-group">
+                                            <label for="text">Comment</label>
+                                            <textarea name="text" id="text" required>{{review.user.first_name}}, </textarea>
+                                        </div>
+                                        <div class="form-group images">
+                                            <label for="file-upload" class="custom-file-upload">
+                                                <i class="bi bi-upload"></i> Choose Files
+                                            </label>
+                                            <input type="file" id="file-upload" class='file-upload' name="file-upload" multiple />
+                                            <div id="file-names" class='file-names'></div>
+                                        </div>
+                                        <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="reply-comment">
+                                <a class="reply-button">Reply</a>
+                                {% if user == review.user %}
+                                    <form method='POST'>
+                                        {% csrf_token %}
+                                        <input type="hidden" name='comment_id' value="{{review.id}}">
+                                        <button type="submit" name='delete-comment' class='delete-comment-button'>delete</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+
+
+                            {% if review.get_children %}
+                                <div class="replies">
+                                    {% for reply in review.get_children %}
+                                        {% include "shop/comment_replies.html" with review=reply product=product %}
                                     {% endfor %}
                                 </div>
                             {% endif %}
+
                         </div>
-                        <div class="reply-comment-container">
-                            <div class="close-reply-container">
-                                <i class="bi bi-x-lg close-reply"></i>
-                            </div>
-                            <div class="leave-comment">
-                                <form class="reply-form" method='POST' enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="parent" value="{{ review.id }}" />
-                                    <div class="form-group">
-                                        <label for="text">Comment</label>
-                                        <textarea name="text" id="text" required>{{review.user.first_name}}, </textarea>
-                                    </div>
-                                    <div class="form-group images">
-                                        <label for="file-upload" class="custom-file-upload">
-                                            <i class="bi bi-upload"></i> Choose Files
-                                        </label>
-                                        <input type="file" id="file-upload" class='file-upload' name="file-upload" multiple />
-                                        <div id="file-names" class='file-names'></div>
-                                    </div>
-                                    <button type="submit" class="add-comment" name='add-reply'>Submit Reply</button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="reply-comment">
-                            <a class="reply-button">Reply</a>
-                            {% if user == review.user %}
-                                <form method='POST'>
-                                    {% csrf_token %}
-                                    <input type="hidden" name='comment_id' value="{{review.id}}">
-                                    <button type="submit" name='delete-comment' class='delete-comment-button'>delete</button>
-                                </form>
-                            {% endif %}
-                        </div>
-
-
-                        {% if review.get_children %}
-                            <div class="replies">
-                                {% for reply in review.get_children %}
-                                    {% include "shop/comment_replies.html" with review=reply product=product %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-
-                    </div>
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 <h3 style='font-weight:500'>No comments yet!</h3>
@@ -420,19 +422,30 @@
         </div>
 
         <div class="comments-pagination">
-            <a href="#" class="pagination-link active">
-                <span>1</span>
-            </a>
-            <a href="#" class="pagination-link">
-                <span>2</span>
-            </a>
-            <a href="#" class="pagination-link">
-                <span>3</span>
-            </a>
-            <span class="pagination-ellipsis">...</span>
-            <a href="#" class="pagination-link">
-                <span>24</span>
-            </a>
+            {% if not page_obj.number == 1 %}
+                <a href="?page=1#comment-section" class="pagination-link">1</a>
+            {% endif %}
+
+            {% if page_obj.number > 6 %}
+                <span class="pagination-ellipsis">...</span>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range%}
+                {% if page_obj.number == num%}
+                    <a href="#comment-section" class="pagination-link active">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' and num != 1 and num != page_obj.paginator.num_pages %}
+                    <a href="?page={{ num }}#comment-section" class="pagination-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+                    
+            {% if page_obj.number < page_obj.paginator.num_pages|add:'-5' %}
+                <span class="pagination-ellipsis">...</span>
+            {% endif %}
+
+            {% if not page_obj.number == page_obj.paginator.num_pages %}
+                <a href="?page={{ page_obj.paginator.num_pages }}#comment-section" class="pagination-link">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+            
         </div>
     </div>
     
