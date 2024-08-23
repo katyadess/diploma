@@ -406,7 +406,7 @@
 
 
                             {% if review.get_children %}
-                                <div class="replies">
+                                <div class="replies" style='padding-left: 1.5em;'>
                                     {% for reply in review.get_children %}
                                         {% include "shop/comment_replies.html" with review=reply product=product %}
                                     {% endfor %}

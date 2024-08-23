@@ -11,5 +11,6 @@ Add autofill for city and street
 сделать корзину,
 закончить страницу аккаунт, product_details
 добавить всем продуктам их рейтинг
-pagination for comments
+pagination for comments - done
 delete review function - done
+add view replies function
