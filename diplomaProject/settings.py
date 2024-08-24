@@ -172,13 +172,12 @@ STORAGES = {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
     },
 }
-# CART_SESSION_ID = 'cart'
+CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'katyadess.django@gmail.com'
-EMAIL_HOST_PASSWORD = 'mbej xuau jcli cgxv'
-# app-password - password for email
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False

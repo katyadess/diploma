@@ -1,0 +1,113 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/cart.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+<div class="main">
+
+    <h1 class='title'>Shopping Cart</h1>
+    <div class="cart-items">
+       
+        <div class="item">
+            <div class="cart-img-container">
+                <img class='cart-item-img' src="../../images/avene_cream.jpg">
+            </div>
+            <div class="info">
+
+                <div class="product-info">
+                    <div class="product-name">
+                        <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                        <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                    </div>
+                    <p class="price">$15.99</p> 
+                    <form class="update-form" action="" method="post">
+                        <input type="number" name="quantity" min="1" value="1" class="quantity-input">
+                        <input type="hidden" name="product_id">
+                    </form>
+                </div>
+
+                <div class="remove">
+                    <a href="#" ><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="cart-img-container">
+                <img class='cart-item-img' src="../../images/garnier_superfood_body_cream.jpg">
+            </div>
+            <div class="info">
+
+                <div class="product-info">
+                    <a href="product_details.html" class="product-link">
+                        <div class="product-name">
+                            <p>Round Lab 1025 Dokdo Foam Cleanser</p>
+                            <p class="full-desc">Sunscreen Eucerin SPF50 Advanced Hydration</p>
+                        </div>
+                    </a>
+                    <p class="price">$15.99</p> 
+                    <form class="update-form" action="" method="post">
+                        <input type="number" name="quantity" min="1" value="1" class="quantity-input">
+                        <input type="hidden" name="product_id">
+                    </form>
+                </div>
+
+                <div class="remove">
+                    <a href="#" ><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div class="max">
+            <p>Max quantity of {{product.name}} is {{product.stock}}</p>
+        </div>
+        
+        <div class="max">
+            <p>{{product.name}} is currently out of stock</p>
+        </div> -->
+        
+    </div>
+
+
+    <div class="cart-results">
+
+        <div class="total">
+            <h3>Total</h3>
+            <h3>$1000.78</h3>
+        </div>
+    
+        <div class="buy-btn-wrapper">
+            <!-- {% if out_of_stock%}
+            <button class='button'>
+                <a href="{% url "cart:cart_details" %}">
+                    Checkout
+                </a>
+            </button> -->
+            <!-- <p style="color: red;">Some items in your cart are out of stock.</p>
+            {% elif invalid_quantity %}
+            <button class='button'>
+                <a href="{% url "cart:cart_details" %}">
+                    Checkout
+                </a>
+            </button>
+            {% else %} -->
+            <button class='button'>
+                <!-- {% if user.is_authenticated %} -->
+                    <a href="{% url 'orders:order_create' %}">Checkout</a>
+                <!-- {% else %} -->
+                    <!-- <a href="{% url 'register' %}">Checkout</a> -->
+                <!-- {% endif %} -->
+            </button>
+            <!-- {% endif %}  -->
+        </div>
+        
+        <a href="" class='shop'>Continue Shopping</a>  
+        
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

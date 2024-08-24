@@ -1,8 +1,6 @@
 1. Formatting tel, city and street inputs
 Add autofill for city and street
 2. Add autosuggestions for search
-3. Add product detail page
-4. add account page
 
 
 <i class="fa-solid fa-heart"></i> - full heart
@@ -10,5 +8,3 @@ Add autofill for city and street
 
 сделать корзину,
 закончить страницу аккаунт, product_details
-добавить всем продуктам их рейтинг
-add view replies function
