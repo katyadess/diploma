@@ -1,5 +1,7 @@
-from django.db.models import F, Avg
+from django.db.models import F, Avg, Q
 from django.contrib import messages
+from cart.forms import *
+from cart.cart import Cart
 from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,11 +11,9 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
-from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -43,10 +43,20 @@ class MainPageView(View):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product) 
+        
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
             
         return redirect('shop:main')
     
     def get(self, request):   
+        cart = Cart(request)
         subscribe_form = SubscribeForm()
         brands = Brand.objects.all()
         categories = Category.objects.filter(parent__isnull=True)
@@ -68,7 +78,8 @@ class MainPageView(View):
             'brands': brands, 
             'new_arrivals': new_arrivals, 
             'subscribe_form': subscribe_form,
-            'category_products': category_products
+            'category_products': category_products,
+            'cart': cart
             }
         return render(request, 'shop/main.html', context)
 
@@ -119,6 +130,7 @@ class ProductListView(View):
     
     def get(self, request, category_slug=None):
         
+        cart = Cart(request)
         
         subscribe_form = SubscribeForm()
         
@@ -163,6 +175,7 @@ class ProductListView(View):
             'brands': brands,
             'subscribe_form': subscribe_form,
             'page_obj': page_obj,
+            'cart': cart,
         }
         
         return render(request, 'shop/product_list.html', context)
@@ -212,6 +225,7 @@ class NewArrivalsView(View):
     
     def get(self, request):
         
+        cart = Cart(request)
         
         subscribe_form = SubscribeForm()
         
@@ -251,6 +265,7 @@ class NewArrivalsView(View):
             'brands': brands,
             'subscribe_form': subscribe_form,
             'page_obj': page_obj,
+            'cart': cart
         }
         
         return render(request, 'shop/new_arrivals.html', context)
@@ -276,6 +291,9 @@ class SearchView(ListView):
         
         full_query_length = self.get_queryset().count()
         context['full_query_length'] = full_query_length
+        
+        cart = Cart(self.request)
+        context['cart'] = cart
         
         return context
   
@@ -352,7 +370,7 @@ class SearchView(ListView):
 class BrandsView(View):
     
     def get(self, request):
-        
+        cart = Cart(request)
         subscribe_form = SubscribeForm()
         categories = Category.objects.all()
         brands = Brand.objects.all()
@@ -371,7 +389,8 @@ class BrandsView(View):
             'categories':categories,
             'brands': brands,
             'category_brands': category_brands,
-            'subscribe_form': subscribe_form
+            'subscribe_form': subscribe_form,
+            'cart': cart
         }
         
         return render(request, 'shop/brands.html', context)
@@ -445,6 +464,7 @@ class BrandsProductView(View):
     
     def get(self, request, brand_slug=None):
         
+        cart = Cart(request)
         
         subscribe_form = SubscribeForm()
         
@@ -487,7 +507,8 @@ class BrandsProductView(View):
             'page_obj': page_obj,
             'brands': brands,
             'brand': brand,
-            'subscribe_form': subscribe_form
+            'subscribe_form': subscribe_form,
+            'cart': cart
         }
         
         return render(request, 'shop/brands_product_list.html', context)
@@ -501,6 +522,8 @@ class HelpView(TemplateView):
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        cart = Cart(self.request)
+        context['cart'] = cart
         
         return context
     
@@ -559,6 +582,8 @@ class ContactView(FormView):
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        cart = Cart(self.request)
+        context['cart'] = cart
         return context
     
     
@@ -634,6 +659,7 @@ def account(request):
     edit_phone_form = EditPhoneForm(instance=user_data)
     add_address_form = AddAddressForm()
     wishlist_products = request.user.wishlist.products.annotate(average_rating=Avg('reviews__rating'))
+    cart = Cart(request)
     
     context = {
         'categories': categories,
@@ -644,7 +670,8 @@ def account(request):
         'add_address_form': add_address_form,
         'addresses': addresses,
         'address_edit_forms': address_edit_forms,
-        'wishlist_products': wishlist_products
+        'wishlist_products': wishlist_products,
+        'cart': cart
     }
     
     return render(request, 'shop/account.html', context)
@@ -661,6 +688,7 @@ class MyPasswordChangeView(PasswordChangeView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
+        context['cart'] = Cart(self.request)
         return context
     
     def form_invalid(self, form):
@@ -689,6 +717,7 @@ class MyLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
+        context['cart'] = Cart(self.request)
         return context
     
     def form_invalid(self, form):
@@ -741,6 +770,7 @@ class RegisterView(FormView):
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        context['cart'] = Cart(self.request)
         return context
     
     
@@ -753,6 +783,7 @@ class ProductDetailsView(DetailView):
         context['categories'] = Category.objects.all()
         context['brands'] = Brand.objects.all()
         context['subscribe_form'] = SubscribeForm()
+        context['cart'] = Cart(self.request)
         product = self.get_object() 
         category = product.category
         brand = product.brand

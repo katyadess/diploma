@@ -12,9 +12,10 @@ class Cart:
     
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
+        current_price = str(product.price_new) if product.price_new else str(product.price)
+        print(current_price)
         if product_id not in self.cart:
-            price = str(product.price_new) if product.price_new else str(product.price)
-            self.cart[product_id] = {'quantity': 0, 'price': price}
+            self.cart[product_id] = {'quantity': 0, 'price': str(current_price)}
         
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
@@ -30,6 +31,10 @@ class Cart:
         
     
     def save(self):
+        
+        for item in self.cart.values():
+            item['price'] = str(item['price'])
+        
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
         
@@ -45,14 +50,17 @@ class Cart:
         for product in products:
             
             self.cart[str(product.id)]['product'] = product
-            self.cart[str(product.id)]['price'] = Decimal(product.price_new) if product.price_new else Decimal(product.price)
+            self.cart[str(product.id)]['price'] = str(product.price_new) if product.price_new else str(product.price)
     
             
         for item in self.cart.values():
-            # item['price'] = Decimal(item['price'])
+            item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
             yield item
     
+    def __contains__(self, product):
+        
+        return str(product.id) in self.cart
     
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())

@@ -54,7 +54,12 @@
                             </form>
                             <form method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                {% if product in cart %}
+                                    <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag-fill" STYLE='color:blueviolet'></i></button>
+                                {% else %}
+                                    <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag"></i></button>
+                                {% endif %}
                             </form>
 
                         </div>
@@ -141,7 +146,12 @@
                                     </form>
                                     <form method="POST" action="{% url "shop:main" %}">
                                         {% csrf_token %}
-                                        <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        {% if product in cart %}
+                                            <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag-fill" style='color:blueviolet'></i></button>
+                                        {% else %}
+                                            <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag"></i></button>
+                                        {% endif %}
                                     </form>
 
                                 </div>
