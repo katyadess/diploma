@@ -775,7 +775,7 @@ class ProductDetailsView(DetailView):
         brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
         comment_form = ProductReviewForm()
-        reviews = ProductReview.objects.filter(parent__isnull=True).order_by('-created_at')
+        reviews = ProductReview.objects.filter(parent__isnull=True, product=product).order_by('-created_at')
         
         paginator = Paginator(reviews, 4)
         page_number = self.request.GET.get('page')

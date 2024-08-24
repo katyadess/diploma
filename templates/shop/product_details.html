@@ -95,7 +95,7 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <p class="total-ratings">{{object.reviews.all|length}} <a href="#comment-section">reviews</a></p>
+                        <p class="total-ratings">{{object.reviews.all|length}} <a href="#comment-section">review{{ object.reviews.all|length|pluralize }}</a></p>
                     </div>
                 </div>
                 <div class="prod-prices">
