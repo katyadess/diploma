@@ -6,67 +6,69 @@
         <h2>New Arrivals</h2>
         <div class="items">
             {% for product in new_arrivals %}
-            <div class='item-product'>
-                <a href="{{ product.get_absolute_url }}">
-                    <div class="card">
-                        <div class="imgBx">
-                            <img src="{{product.main_image.url}}" alt="">
-                        </div>
-                        <div class="content">
-                            <div class="product-name">
-                                <p>{{product.name}}</p>
-                                <p class="full-desc">{{product.brief_description}}</p>
+                <div class='item-product'>
+                    <a href="{{ product.get_absolute_url }}">
+                        <div class="card">
+                            <div class="imgBx">
+                                <img src="{{product.main_image.url}}" alt="">
                             </div>
-                            <div class="price_rating">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                    <i class="bi bi-star"></i>
-                                    <p class="total-ratings">100</p>
+                            <div class="content">
+                                <div class="product-name">
+                                    <p>{{product.name}}</p>
+                                    <p class="full-desc">{{product.brief_description}}</p>
                                 </div>
-                                <div class="prod-price">
-                                    {% if product.price_new %}
-                                    <p class="price new">${{product.price_new}}</p>
-                                    <p class="price old">${{product.price}}</p>
-                                    {% else %}
-                                    <p class="price">${{product.price}}</p>
-                                    {% endif %}
+                                <div class="price_rating">
+                                    <div class="rating">
+                                        {% for i in '12345'|make_list %}
+                                            {% if forloop.counter <= product.average_rating %}
+                                                <i class="bi bi-star-fill"></i>
+                                            {% else %}
+                                                <i class="bi bi-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <p class="total-ratings">{{product.reviews.all|length}}</p>
+                                    </div>
+                                    <div class="prod-price">
+                                        {% if product.price_new %}
+                                        <p class="price new">${{product.price_new}}</p>
+                                        <p class="price old">${{product.price}}</p>
+                                        {% else %}
+                                        <p class="price">${{product.price}}</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-                {% if user.is_authenticated %}
-                    <div class="buttons">
+                    </a>
+                    {% if user.is_authenticated %}
+                        <div class="buttons">
 
-                        <form method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="product_id" value="{{ product.id }}">
-                            {% if product in user.wishlist.products.all %}
-                                <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
-                            {% else %}
-                                <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                            {% endif %}
-                        </form>
-                        <form method="POST">
-                            {% csrf_token %}
-                            <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                        </form>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                {% if product in user.wishlist.products.all %}
+                                    <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                {% else %}
+                                    <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                {% endif %}
+                            </form>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                            </form>
 
-                    </div>
-                {% else %}
-                    <div class="buttons">
-                        <form>
-                            <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
-                        </form>
-                        <form>
-                            <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
-                        </form>
-                    </div>
-                {% endif %}
-            </div>
+                        </div>
+                    {% else %}
+                        <div class="buttons">
+                            <form>
+                                <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                            </form>
+                            <form>
+                                <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
         <div class="btn">
@@ -91,67 +93,69 @@
                 </div>
                 <div class="items">
                     {% for product in products %}
-                    <div class='item-product'>
-                        <a href="{{ product.get_absolute_url }}">
-                            <div class="card">
-                                <div class="imgBx">
-                                    <img src="{{product.main_image.url}}" alt="">
-                                </div>
-                                <div class="content">
-                                    <div class="product-name">
-                                        <p>{{product.name}}</p>
-                                        <p class="full-desc">{{product.brief_description}}</p>
+                        <div class='item-product'>
+                            <a href="{{ product.get_absolute_url }}">
+                                <div class="card">
+                                    <div class="imgBx">
+                                        <img src="{{product.main_image.url}}" alt="">
                                     </div>
-                                    <div class="price_rating">
-                                        <div class="rating">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <p class="total-ratings">100</p>
+                                    <div class="content">
+                                        <div class="product-name">
+                                            <p>{{product.name}}</p>
+                                            <p class="full-desc">{{product.brief_description}}</p>
                                         </div>
-                                        <div class="prod-price">
-                                            {% if product.price_new %}
-                                            <p class="price new">${{product.price_new}}</p>
-                                            <p class="price old">${{product.price}}</p>
-                                            {% else %}
-                                            <p class="price">${{product.price}}</p>
-                                            {% endif %}
+                                        <div class="price_rating">
+                                            <div class="rating">
+                                                {% for i in '12345'|make_list %}
+                                                    {% if forloop.counter <= product.average_rating %}
+                                                        <i class="bi bi-star-fill"></i>
+                                                    {% else %}
+                                                        <i class="bi bi-star"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <p class="total-ratings">{{product.reviews.all|length}}</p>
+                                            </div>
+                                            <div class="prod-price">
+                                                {% if product.price_new %}
+                                                <p class="price new">${{product.price_new}}</p>
+                                                <p class="price old">${{product.price}}</p>
+                                                {% else %}
+                                                <p class="price">${{product.price}}</p>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                        {% if user.is_authenticated %}
-                            <div class="buttons">
+                            </a>
+                            {% if user.is_authenticated %}
+                                <div class="buttons">
 
-                                <form method="POST" action="{% url "shop:main" %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="product_id" value="{{ product.id }}">
-                                    {% if product in user.wishlist.products.all %}
-                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
-                                    {% else %}
-                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
-                                    {% endif %}
-                                </form>
-                                <form method="POST" action="{% url "shop:main" %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
-                                </form>
+                                    <form method="POST" action="{% url "shop:main" %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        {% if product in user.wishlist.products.all %}
+                                            <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                        {% else %}
+                                            <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                        {% endif %}
+                                    </form>
+                                    <form method="POST" action="{% url "shop:main" %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="form-btn btn-cart"><i class="bi bi-bag"></i></button>
+                                    </form>
 
-                            </div>
-                        {% else %}
-                            <div class="buttons">
-                                <form>
-                                    <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
-                                </form>
-                                <form>
-                                    <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
-                                </form>
-                            </div>
-                        {% endif %}
-                    </div>
+                                </div>
+                            {% else %}
+                                <div class="buttons">
+                                    <form>
+                                        <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                                    </form>
+                                    <form>
+                                        <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="btn">

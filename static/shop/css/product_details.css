@@ -379,8 +379,23 @@ img {
     width: 100%;
 }
 
+.toggle-replies {
+    margin-top: 1em;
+}
+
+.toggle-replies button {
+    color:#a6a2a2;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
 .replies {
     width: 100%;
+}
+
+.replies.open {
+    display: block;
 }
 
 .comment {

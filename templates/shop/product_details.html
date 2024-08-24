@@ -85,13 +85,17 @@
                     </div>
                     <div class="prod-rating">
                         <div class="stars">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
+                            <ul class="stars">
+                                {% for i in '12345'|make_list %}
+                                    {% if forloop.counter <= average_rating %}
+                                        <i class="bi bi-star-fill"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <p class="total-ratings">100 <a href="#comment-section">reviews</a></p>
+                        <p class="total-ratings">{{object.reviews.all|length}} <a href="#comment-section">reviews</a></p>
                     </div>
                 </div>
                 <div class="prod-prices">
@@ -403,6 +407,12 @@
                                     </form>
                                 {% endif %}
                             </div>
+
+                            {% if review.get_descendants|length > 0 %}
+                                <div class="toggle-replies">
+                                    <button>See replies ({{review.get_descendants|length}})</button>
+                                </div>
+                            {% endif %}
 
 
                             {% if review.get_children %}

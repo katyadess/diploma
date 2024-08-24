@@ -130,3 +130,18 @@ document.querySelectorAll('.delete-comment-button').forEach(button => {
         }
     });
 });
+
+
+toggleRepliesButtons = document.querySelectorAll('.toggle-replies button');
+toggleRepliesButtons.forEach(toggleReplyButton => {
+    const replies = toggleReplyButton.closest('.toggle-replies').nextElementSibling;
+    replies.style.display = 'none'
+    console.log(replies)
+    toggleReplyButton.addEventListener('click', () => {
+        if (replies.style.display === 'none') {
+            replies.style.display = 'block';
+        } else {
+            replies.style.display = 'none';
+        }
+    });
+})

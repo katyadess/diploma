@@ -126,12 +126,14 @@
                                     </div>
                                     <div class="price_rating">
                                         <div class="rating">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <p class="total-ratings">100</p>
+                                            {% for i in '12345'|make_list %}
+                                                {% if forloop.counter <= product.average_rating %}
+                                                    <i class="bi bi-star-fill"></i>
+                                                {% else %}
+                                                    <i class="bi bi-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <p class="total-ratings">{{product.reviews.all|length}}</p>
                                         </div>
                                         <div class="prod-price">
                                             {% if product.price_new %}

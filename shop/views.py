@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Avg
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models.functions import Coalesce
@@ -55,12 +55,12 @@ class MainPageView(View):
         
         new_arrivals = Product.objects.filter(
             created_at__month=now.month
-        ).order_by('-created_at')[:5]
+        ).annotate(average_rating=Avg('reviews__rating')).order_by('-created_at')[:5]
         
         category_products = {}
         for category in categories:
             descendants = category.get_descendants()
-            products = Product.objects.filter(category__in=descendants)
+            products = Product.objects.filter(category__in=descendants).annotate(average_rating=Avg('reviews__rating'))
             category_products[category] = products
             
         context = {
@@ -133,7 +133,7 @@ class ProductListView(View):
         price_max = self.request.GET.get('max_price', '1000')
         
         
-        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
+        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price')), average_rating=Avg('reviews__rating')
                 ).filter(category__in=all_categories)
         
         products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
@@ -226,7 +226,8 @@ class NewArrivalsView(View):
         now = timezone.now()
         
         products = Product.objects.annotate(
-            current_price=Coalesce('price_new', F('price'))
+            current_price=Coalesce('price_new', F('price')),
+            average_rating=Avg('reviews__rating')
         ).filter(created_at__month=now.month
         ).order_by('-created_at')
         
@@ -287,7 +288,8 @@ class SearchView(ListView):
         
 
         products = Product.objects.annotate(
-            current_price=Coalesce('price_new', F('price'))
+            current_price=Coalesce('price_new', F('price')),
+            average_rating=Avg('reviews__rating')
             ).filter(
             Q(name__icontains=query) | 
             Q(brief_description__icontains=query) | 
@@ -455,8 +457,10 @@ class BrandsProductView(View):
         price_max = request.GET.get('max_price', '1000')
         
         
-        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price'))
-                ).filter(brand=brand)
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price')),
+            average_rating=Avg('reviews__rating')
+            ).filter(brand=brand)
         
         products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
         
@@ -629,7 +633,8 @@ def account(request):
     edit_account_form = EditAccountForm(instance=request.user)
     edit_phone_form = EditPhoneForm(instance=user_data)
     add_address_form = AddAddressForm()
-        
+    wishlist_products = request.user.wishlist.products.annotate(average_rating=Avg('reviews__rating'))
+    
     context = {
         'categories': categories,
         'brands': brands,
@@ -639,6 +644,7 @@ def account(request):
         'add_address_form': add_address_form,
         'addresses': addresses,
         'address_edit_forms': address_edit_forms,
+        'wishlist_products': wishlist_products
     }
     
     return render(request, 'shop/account.html', context)
@@ -750,6 +756,14 @@ class ProductDetailsView(DetailView):
         product = self.get_object() 
         category = product.category
         brand = product.brand
+        
+        
+        average_rating = product.reviews.aggregate(Avg('rating'))['rating__avg']
+        if average_rating is None:
+            average_rating = 0
+        
+        context['average_rating'] = round(average_rating)
+        
         breadcrumbs = [{'name': 'Main', 'url': reverse('shop:main')}]
         for parent in category.get_full_breadcrumb_path():
             breadcrumbs.append({'name': parent.name, 'url': parent.get_absolute_url()})
@@ -761,7 +775,7 @@ class ProductDetailsView(DetailView):
         brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
         category_products = Product.objects.filter(category=category).exclude(id=product.id)
         comment_form = ProductReviewForm()
-        reviews = ProductReview.objects.filter(parent__isnull=True)
+        reviews = ProductReview.objects.filter(parent__isnull=True).order_by('-created_at')
         
         paginator = Paginator(reviews, 4)
         page_number = self.request.GET.get('page')
