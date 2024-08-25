@@ -10,3 +10,4 @@ Add autofill for city and street
 закончить страницу аккаунт, product_details
 
 red color = #ff5252
+do Cart Persistence on Logout

@@ -2,18 +2,10 @@ from shop.models import *
 from shop.forms import *
 from .forms import *
 from .cart import *
-from django.db.models import F, Avg
 from django.contrib import messages
-from django.utils import timezone
-from django.db.models.functions import Coalesce
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
-from django.views.generic import ListView, TemplateView, FormView, DetailView
+from django.shortcuts import redirect
+from django.views.generic import TemplateView
 from django.urls import reverse_lazy
-from django.db.models import Q
-from django.core.paginator import Paginator
-from django.contrib.auth import logout, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 

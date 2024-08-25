@@ -88,7 +88,15 @@ const urlParams = new URLSearchParams(window.location.search);
 const showSection = urlParams.get('show');
 
 if (showSection) {
-    const targetId = showSection === 'favourites' ? '4' : showSection; 
+    let targetId;
+
+    if (showSection === 'favourites') {
+        targetId = '4'; 
+    } else if (showSection === 'orders') {
+        targetId = '3';
+    } else {
+        targetId = showSection;
+    }
     const targetElement = document.getElementById(targetId);
 
     if (targetElement) {

@@ -7,7 +7,7 @@
 {% block content %}
 <div class="main">
 
-    <h1 class='title'>Shopping Cart</h1>
+    <h1 class='title'>Your Shopping Cart</h1>
     <div class="cart-items">
     {% for item in cart %}
         {% with product=item.product %}
@@ -86,7 +86,7 @@
                 </button>
             {% else %}
                 <button class='button'>
-                        <a href="{% url "shop:main" %}">Checkout</a>
+                    <a href="{% url "orders:order" %}">Checkout</a>
                 </button>
             {% endif %}
         </div>
