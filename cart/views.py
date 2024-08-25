@@ -25,6 +25,13 @@ User = get_user_model()
 class CartView(LoginRequiredMixin, TemplateView):
     template_name = 'cart/cart.html'
     
+    
+    def dispatch(self, request, *args, **kwargs):
+        cart = Cart(request)
+        if len(cart) == 0:
+            return redirect(reverse_lazy('shop:main'))
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
@@ -66,8 +73,18 @@ class CartView(LoginRequiredMixin, TemplateView):
             cart = Cart(self.request)
             if product in cart:
                 cart.remove(product)
+                if len(cart) == 0:
+                    return redirect('shop:main')
             else:
                 cart.add(product)
+        else:
+            product_id = request.POST.get('product_id')
+            quantity = int(request.POST.get('quantity'))
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if quantity > 0:
+                cart.add(product=product, quantity=quantity, update_quantity=True)
+                
         
         return redirect('cart:cart')
 

@@ -57,9 +57,13 @@
 }
 
 .item {
+    padding: 1rem 2rem;
+}
+
+.item .container {
+    width: 100%;
     display: flex;
     align-items: center;
-    padding: 1rem 2rem;
 }
 
 .item:not(:last-of-type) {
@@ -68,6 +72,13 @@
 
 .info {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.product-info .post-forms {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -141,12 +152,17 @@
 }
 
 @media (min-width: 900px) {
+
+    .info {
+        width: 100%;
+        
+    }
     
     .product-info {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 70%;
+        width: 80%;
         margin-left: 1em;
         justify-content: space-between;
     }

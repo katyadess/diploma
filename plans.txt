@@ -8,3 +8,5 @@ Add autofill for city and street
 
 сделать корзину,
 закончить страницу аккаунт, product_details
+
+red color = #ff5252

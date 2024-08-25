@@ -100,11 +100,15 @@
                 </div>
                 <div class="prod-prices">
                     <div class="prices">
-                        {% if product.price_new %}
-                        <p class="price new">${{product.price_new}}</p>
-                        <p class="price old">${{product.price}}</p>
+                        {% if product.stock > 0 %}
+                            {% if product.price_new %}
+                            <p class="price new">${{product.price_new}}</p>
+                            <p class="price old">${{product.price}}</p>
+                            {% else %}
+                            <p class="price">${{product.price}}</p>
+                            {% endif %}
                         {% else %}
-                        <p class="price">${{product.price}}</p>
+                            <p class="out-of-stock">Out of Stock</p>
                         {% endif %}
                     </div>
                     <div class="add-to-favourite">
@@ -126,9 +130,16 @@
                     </div>
                 </div>
                 <div class="buy-notify-btn-wrapper">
-                    <p class="out-of-stock">Out of Stock</p>
-                    <!-- <button class="add-to-cart">Add to Cart</button> -->
-                    <button class="notify">Notify me when in stock</button> 
+                    {% if product.stock > 0 %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="number" name="quantity" min="1" value="1" class="quantity-input" style='display:none'>
+                            <button type='submit' class="notify" name='toggle-cart'>Add to Cart</button>
+                        </form>
+                    {% else %}
+                        <button class="notify">Notify me when in stock</button> 
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -12,48 +12,53 @@
     {% for item in cart %}
         {% with product=item.product %}
             <div class="item">
-                <div class="cart-img-container">
-                    <img class='cart-item-img' src="{{product.main_image.url}}">
-                </div>
-                <div class="info">
-
-                    <div class="product-info">
-                        <div class="product-name">
-                            <p>{{product.name}}</p>
-                            <p class="full-desc">{{product.brief_description}}</p>
-                        </div>
-                        <div class="prices">
-                            {% if product.price_new %}
-                            <p class="price">${{product.price_new}}</p>
+                <div class="container">
+                    <div class="cart-img-container">
+                        <img class='cart-item-img' src="{{product.main_image.url}}">
+                    </div>
+                    <div class="info">
+    
+                        <div class="product-info">
+                            <div class="product-name">
+                                <p>{{product.name}}</p>
+                                <p class="full-desc">{{product.brief_description}}</p>
+                            </div>
+                            {% if product.stock > 0 %}
+                                <div class="prices">
+                                    <p class="price">${{item.total_price}}</p>
+                                </div>
+    
+                                <div class="post-forms">
+                                    <form class="update-form" action="{% url "cart:cart" %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" min="1" value="{{item.quantity}}" class="quantity-input">
+                                        <input type="hidden" name="product_id" value="{{product.id}}">
+                                    </form>
+                                </div>
                             {% else %}
-                            <p class="price">${{product.price}}</p>
+                                <p style='color: #ff5252'>Out of stock</p>
                             {% endif %}
+                            
                         </div>
-                        <form class="update-form" action="{% url "cart:cart" %}" method="post">
-                            <input type="number" name="quantity" min="1" value="1" class="quantity-input">
-                            <input type="hidden" name="product_id" value="{{product.id}}">
-                        </form>
-                    </div>
-
-                    <div class="remove">
-                        <form action="{% url "cart:cart" %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="product_id" value="{{product.id}}">
-                            <button type='submit' name='toggle-cart'><i class="bi bi-trash"></i></button>
-                        </form>
+                        <div class="remove">
+                            <form action="{% url "cart:cart" %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{product.id}}">
+                                <button type='submit' name='toggle-cart' style='border: none; background: transparent; cursor:pointer; font-size: 1.1rem;'><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+    
                     </div>
                 </div>
+                {% if item.quantity >= product.stock and product.stock > 0 %}
+                    <div class="max">
+                        <p>Max quantity of {{product.name}} is {{product.stock}}</p>
+                    </div>
+                {% endif %}
             </div>
         {% endwith %}
     {% endfor %}  
         
-    <!-- <div class="max">
-        <p>Max quantity of {{product.name}} is {{product.stock}}</p>
-    </div>
-    
-    <div class="max">
-        <p>{{product.name}} is currently out of stock</p>
-    </div> -->
         
     </div>
 
@@ -66,28 +71,24 @@
         </div>
     
         <div class="buy-btn-wrapper">
-            <!-- {% if out_of_stock%}
-            <button class='button'>
-                <a href="{% url "cart:cart_details" %}">
-                    Checkout
-                </a>
-            </button> -->
-            <!-- <p style="color: red;">Some items in your cart are out of stock.</p>
+            {% if out_of_stock%}
+                <button class='button'>
+                    <a href="{% url "cart:cart" %}">
+                        Checkout
+                    </a>
+                </button>   
+                <p style="color: red; margin-top: .5em">Some items in your cart are out of stock.</p>
             {% elif invalid_quantity %}
-            <button class='button'>
-                <a href="{% url "cart:cart_details" %}">
-                    Checkout
-                </a>
-            </button>
-            {% else %} -->
-            <button class='button'>
-                <!-- {% if user.is_authenticated %} -->
-                    {% comment %} <a href="{% url 'orders:order_create' %}">Checkout</a> {% endcomment %}
-                <!-- {% else %} -->
-                    <!-- <a href="{% url 'register' %}">Checkout</a> -->
-                <!-- {% endif %} -->
-            </button>
-            <!-- {% endif %}  -->
+                <button class='button'>
+                    <a href="{% url "cart:cart" %}">
+                        Checkout
+                    </a>
+                </button>
+            {% else %}
+                <button class='button'>
+                        <a href="{% url "shop:main" %}">Checkout</a>
+                </button>
+            {% endif %}
         </div>
         
         <a href="{% url "shop:main" %}" class='shop'>Continue Shopping</a>  
@@ -98,4 +99,5 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="{% static "cart/js/cart.js" %}"></script>
 {% endblock scripts %}

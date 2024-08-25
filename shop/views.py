@@ -64,13 +64,22 @@ class MainPageView(View):
         now = timezone.now()
         
         new_arrivals = Product.objects.filter(
-            created_at__month=now.month
-        ).annotate(average_rating=Avg('reviews__rating')).order_by('-created_at')[:5]
+            created_at__month=now.month,
+            stock__gt=0,
+            is_available=True
+        ).annotate(
+            average_rating=Avg('reviews__rating')
+        ).order_by('-created_at')[:5]
         
         category_products = {}
         for category in categories:
             descendants = category.get_descendants()
-            products = Product.objects.filter(category__in=descendants).annotate(average_rating=Avg('reviews__rating'))
+            products = Product.objects.filter(
+                category__in=descendants,
+                stock__gt=0
+            ).annotate(
+                average_rating=Avg('reviews__rating')
+            )
             category_products[category] = products
             
         context = {
@@ -124,6 +133,15 @@ class ProductListView(View):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+                
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
     
         return redirect(redirect_url)
         
@@ -145,10 +163,19 @@ class ProductListView(View):
         price_max = self.request.GET.get('max_price', '1000')
         
         
-        products = Product.objects.annotate(current_price=Coalesce('price_new', F('price')), average_rating=Avg('reviews__rating')
-                ).filter(category__in=all_categories)
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price')), 
+            average_rating=Avg('reviews__rating')
+            ).filter(
+                category__in=all_categories,
+                stock__gt=0,
+                is_available=True
+            )
         
-        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        products = products.filter(
+            current_price__gte=price_min, 
+            current_price__lte=price_max
+        )
         
         
         sort_by_value = self.request.GET.get('sort_by', 'default')
@@ -219,6 +246,15 @@ class NewArrivalsView(View):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+        
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
             
         return redirect(redirect_url)
         
@@ -242,10 +278,16 @@ class NewArrivalsView(View):
         products = Product.objects.annotate(
             current_price=Coalesce('price_new', F('price')),
             average_rating=Avg('reviews__rating')
-        ).filter(created_at__month=now.month
+        ).filter(
+            created_at__month=now.month,
+            stock__gt=0,
+            is_available=True
         ).order_by('-created_at')
         
-        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        products = products.filter(
+            current_price__gte=price_min, 
+            current_price__lte=price_max
+        )
         
         
         sort_by_value = self.request.GET.get('sort_by', 'default')
@@ -311,9 +353,15 @@ class SearchView(ListView):
             ).filter(
             Q(name__icontains=query) | 
             Q(brief_description__icontains=query) | 
-            Q(brand__name__icontains=query))
+            Q(brand__name__icontains=query),
+            stock__gt=0,
+            is_available=True
+        )
         
-        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        products = products.filter(
+            current_price__gte=price_min, 
+            current_price__lte=price_max
+        )
         
         if sort_by_value == 'lowest_price':
             products = products.order_by('current_price')
@@ -364,6 +412,15 @@ class SearchView(ListView):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+                
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
     
         return redirect(redirect_url)
     
@@ -457,6 +514,15 @@ class BrandsProductView(View):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+                
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
             
     
         return redirect(redirect_url)
@@ -480,9 +546,15 @@ class BrandsProductView(View):
         products = Product.objects.annotate(
             current_price=Coalesce('price_new', F('price')),
             average_rating=Avg('reviews__rating')
-            ).filter(brand=brand)
+            ).filter(
+                brand=brand,
+                stock__gt=0,
+                is_available=True
+            )
         
-        products = products.filter(current_price__gte=price_min, current_price__lte=price_max)
+        products = products.filter(
+            current_price__gte=price_min, 
+            current_price__lte=price_max)
         
         sort_by_value = self.request.GET.get('sort_by', 'default')
         if sort_by_value == 'lowest_price':
@@ -649,6 +721,15 @@ def account(request):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+                
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
         
         return redirect('shop:account')
         
@@ -658,7 +739,9 @@ def account(request):
     edit_account_form = EditAccountForm(instance=request.user)
     edit_phone_form = EditPhoneForm(instance=user_data)
     add_address_form = AddAddressForm()
-    wishlist_products = request.user.wishlist.products.annotate(average_rating=Avg('reviews__rating'))
+    wishlist_products = request.user.wishlist.products.annotate(
+        average_rating=Avg('reviews__rating')
+    )
     cart = Cart(request)
     
     context = {
@@ -778,6 +861,7 @@ class ProductDetailsView(DetailView):
     model = Product
     template_name = 'shop/product_details.html'
     
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
@@ -803,10 +887,25 @@ class ProductDetailsView(DetailView):
         brand_breadcrumbs = [{'name': 'Brands', 'url': reverse('shop:product_brands')},
                        {'name': brand.name, 'url': brand.get_absolute_url(), 'class': 'active'}]
         
-        brand_products = Product.objects.filter(brand=brand).exclude(id=product.id)
-        category_products = Product.objects.filter(category=category).exclude(id=product.id)
+        brand_products = Product.objects.filter(
+            brand=brand,
+            is_available=True,
+            stock__gt=0
+        ).exclude(
+            id=product.id
+        )
+        category_products = Product.objects.filter(
+            category=category,
+            is_available=True,
+            stock__gt=0
+        ).exclude(
+            id=product.id
+        )
         comment_form = ProductReviewForm()
-        reviews = ProductReview.objects.filter(parent__isnull=True, product=product).order_by('-created_at')
+        reviews = ProductReview.objects.filter(
+            parent__isnull=True,
+            product=product
+        ).order_by('-created_at')
         
         paginator = Paginator(reviews, 4)
         page_number = self.request.GET.get('page')
@@ -817,7 +916,6 @@ class ProductDetailsView(DetailView):
         context['brand_products'] = brand_products
         context['category_products'] = category_products
         context['comment_form'] = comment_form
-        # context['reviews'] = reviews
         context['page_obj'] = page_obj
         
         return context
@@ -845,6 +943,14 @@ class ProductDetailsView(DetailView):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+                
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            cart.add(product)
+                
+                
                 
         elif 'add-comment' in request.POST:
             comment_form = ProductReviewForm(request.POST)

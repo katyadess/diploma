@@ -68,10 +68,16 @@
                             {% endif %}
                         </li> 
                         <li class="nav-item cart">
-                            <a href="{% url "cart:cart" %}" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
-                            <span class='badge'>
-                                2
-                            </span>
+                            {% if cart|length > 0 %}
+                                <a href="{% url "cart:cart" %}" class="nav-link position-relative"><i class="bi bi-bag"></i></a>
+                            {% else %}
+                                <p class='nav-link position-relative'><i class="bi bi-bag"></i></p>
+                            {% endif %}
+                            {% if cart|length > 0 %}
+                                <span class='badge'>
+                                    {{cart|length}}
+                                </span>
+                            {% endif %}
                         </li>
                     {% else %}
                         <li class="nav-item person">
