@@ -2,6 +2,7 @@ from django.db.models import F, Avg, Q
 from django.contrib import messages
 from cart.forms import *
 from cart.cart import Cart
+from orders.models import *
 from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
@@ -668,8 +669,6 @@ def account(request):
     address_edit_forms = {}
     for address in addresses:
         address_edit_forms[address] = EditAddressForm(instance=address)
-      
-    print(address_edit_forms)  
     
     if request.method == 'POST':
         
@@ -743,6 +742,15 @@ def account(request):
         average_rating=Avg('reviews__rating')
     )
     cart = Cart(request)
+    orders = Order.objects.filter(address__user=request.user)
+    order_total_price = {}
+
+    for order in orders:
+        order_items = order.items.all()
+        total_cost = sum(item.get_cost() for item in order_items)
+        order_total_price[order] = total_cost
+
+    filter_orders = request.GET.get('filter-orders', 'all')
     
     context = {
         'categories': categories,
@@ -754,7 +762,9 @@ def account(request):
         'addresses': addresses,
         'address_edit_forms': address_edit_forms,
         'wishlist_products': wishlist_products,
-        'cart': cart
+        'cart': cart,
+        'orders': orders,
+        'order_total_price': order_total_price,
     }
     
     return render(request, 'shop/account.html', context)

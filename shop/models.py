@@ -128,7 +128,12 @@ class Address(models.Model):
         verbose_name_plural = 'Addresses'
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.city}, {self.street}"
+        return f"""
+    \n{self.first_name}\n
+    \n{self.last_name}\n
+    \n{self.city}\n 
+    \n{self.street}\n
+    """
     
     
 class Subscriber(models.Model):

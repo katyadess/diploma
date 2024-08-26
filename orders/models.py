@@ -35,7 +35,7 @@ class Order(models.Model):
         
         
     def __str__(self) -> str:
-        return f'order by {self.id}'
+        return f'order № {self.id}'
     
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())

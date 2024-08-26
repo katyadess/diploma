@@ -92,7 +92,7 @@
 }
 
 .form-group {
-    display: flex;
+    display: flex; 
     flex-direction: column;
     position: relative;
 }

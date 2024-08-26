@@ -71,7 +71,10 @@ class CartView(LoginRequiredMixin, TemplateView):
                 cart.add(product)
         else:
             product_id = request.POST.get('product_id')
-            quantity = int(request.POST.get('quantity'))
+            try:
+                quantity = int(request.POST.get('quantity'))
+            except ValueError:
+                return redirect('orders:order')
             product = Product.objects.get(id=product_id)
             cart = Cart(self.request)
             if quantity > 0:
