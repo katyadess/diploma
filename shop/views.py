@@ -741,6 +741,14 @@ def account(request):
                 
             return redirect(f'{request.path}?show=favourites')
         
+        elif 'cancel-order' in request.POST:
+            order_id = request.POST.get('order_id')
+            order = Order.objects.get(id=order_id)
+            order.status = 'canceled'
+            order.save()
+            messages.success(request, "You successfully canceled your order.")
+            return redirect(f'{request.path}?show=orders')
+        
         return redirect(f'{request.path}')
         
     categories = Category.objects.all()

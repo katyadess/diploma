@@ -12,5 +12,3 @@ do button when product is not in stock
 
 red color = #ff5252
 do Cart Persistence on Logout
-
-сделать фильтрацию заказов

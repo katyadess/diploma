@@ -126,4 +126,12 @@ document.querySelectorAll('.delete-button').forEach(button => {
     })
 })
 
+document.querySelectorAll('.cancel-order-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (!confirm('Are you sure you want to cancel this order?')) {
+            e.preventDefault();
+        }
+    })
+})
+
     

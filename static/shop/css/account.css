@@ -533,6 +533,17 @@
     }
 }
 
+.cancel-order-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.cancel-order-form {
+    padding:0 10px;
+    text-align: end;
+}
+
 
 @media (min-width: 600px) {
     .main-menu {

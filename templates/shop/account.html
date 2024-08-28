@@ -258,6 +258,15 @@
                                     <p class="total-sum">${{total_price}}</p>
                                 </div>
                             </div>
+                            {% if order.status == 'pending' or order.status == 'processing' %}
+                                <div class="cancel-order-div">
+                                    <form method="POST" action='{% url "shop:account" %}' class='cancel-order-form'>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                                        <button type="submit" name="cancel-order" class='cancel-order-button'><i class="bi bi-trash"></i></button>    
+                                    </form>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div> 
