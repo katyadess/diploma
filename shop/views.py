@@ -1,5 +1,6 @@
 from django.db.models import F, Avg, Q
 from django.contrib import messages
+from datetime import timedelta
 from cart.forms import *
 from cart.cart import Cart
 from orders.models import *
@@ -698,6 +699,8 @@ def account(request):
                 new_address = add_address_form.save(commit=False)
                 new_address.user = request.user
                 new_address.save()
+                
+                return redirect(f'{request.path}?show=addresses')
             
         elif 'edit-address' in request.POST:
             address_id = request.POST.get('address_id')
@@ -705,12 +708,16 @@ def account(request):
             edit_address_form = EditAddressForm(request.POST, instance=address)
             if edit_address_form.is_valid():
                 edit_address_form.save()
+                
+                return redirect(f'{request.path}?show=addresses')
             
         elif 'delete-address' in request.POST:
             address_id = request.POST.get('address_id')
             if address_id:
                 address = get_object_or_404(Address, id=address_id, user=request.user)
                 address.delete()
+                
+                return redirect(f'{request.path}?show=addresses')
             
         elif 'toggle_wishlist' in request.POST:
             product_id = request.POST.get('product_id')
@@ -720,6 +727,8 @@ def account(request):
                 wishlist.products.remove(product)
             else:
                 wishlist.products.add(product)
+            
+            return redirect(f'{request.path}?show=favourites')
                 
         elif 'toggle-cart' in request.POST:
             product_id = request.POST.get('product_id')
@@ -729,8 +738,10 @@ def account(request):
                 cart.remove(product)
             else:
                 cart.add(product, update_quantity=True)
+                
+            return redirect(f'{request.path}?show=favourites')
         
-        return redirect('shop:account')
+        return redirect(f'{request.path}')
         
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -743,6 +754,31 @@ def account(request):
     )
     cart = Cart(request)
     orders = Order.objects.filter(address__user=request.user)
+    
+    now = timezone.now()
+    
+    filter_orders = request.GET.get('filter_orders', 'all')
+    if filter_orders == 'this-month':
+        start_date = now.replace(day=1)
+        orders = orders.filter(created__gte=start_date)
+    elif filter_orders == 'last-month':
+        first_day_of_current_month = now.replace(day=1)
+        last_month = first_day_of_current_month - timedelta(days=1)
+        start_date = last_month.replace(day=1)
+        end_date = first_day_of_current_month - timedelta(seconds=1)
+        orders = orders.filter(created__gte=start_date, created__lte=end_date)
+    elif filter_orders == 'this-year':
+        start_date = now.replace(month=1, day=1)
+        orders = orders.filter(created__gte=start_date)
+    elif filter_orders == 'last-year': 
+        first_day_of_current_year = now.replace(month=1, day=1)
+        last_year = first_day_of_current_year - timedelta(days=1)
+        start_date = last_year.replace(month=1, day=1)
+        end_date = first_day_of_current_year - timedelta(seconds=1)
+        orders = orders.filter(created__gte=start_date, created__lte=end_date)
+    else:
+        orders = orders.order_by('-created')
+    
     order_total_price = {}
 
     for order in orders:
@@ -750,8 +786,8 @@ def account(request):
         total_cost = sum(item.get_cost() for item in order_items)
         order_total_price[order] = total_cost
 
-    filter_orders = request.GET.get('filter-orders', 'all')
     
+     
     context = {
         'categories': categories,
         'brands': brands,

@@ -6,8 +6,11 @@ Add autofill for city and street
 <i class="fa-solid fa-heart"></i> - full heart
 <i class="bi bi-bag-fill"></i> - full bag
 
-сделать корзину,
 закончить страницу аккаунт, product_details
+
+do button when product is not in stock
 
 red color = #ff5252
 do Cart Persistence on Logout
+
+сделать фильтрацию заказов

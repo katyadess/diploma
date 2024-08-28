@@ -22,7 +22,7 @@ class Order(models.Model):
         (FAILED, 'failed'),
     ]
     
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
+    address = models.ForeignKey(Address, on_delete=models.SET_DEFAULT, related_name='orders', default='address')
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, default=PENDING, max_length=50)
     updated = models.DateTimeField(auto_now=True)

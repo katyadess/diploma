@@ -73,31 +73,25 @@ class CreateOrderView(LoginRequiredMixin, TemplateView):
                 cart.add(product)
         
         elif 'create-order' in request.POST:
+            
             cart = Cart(self.request)
             order_form = OrderForm(self.request.POST, user=self.request.user)
             if order_form.is_valid() and order_form.cleaned_data.get('address'):
                 
-                not_in_stock = False
+                address = order_form.cleaned_data.get('address')
+                order_form.instance.address = address
+                order = order_form.save()
                 for item in cart:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item['product'],
+                        price=item['price'],
+                        quantity=item['quantity']
+                    )
                     product = item['product']
-                    if product.stock < item['quantity']:
-                        not_in_stock = True
-                        break
-                if not not_in_stock:
-                    address = order_form.cleaned_data.get('address')
-                    order_form.instance.address = address
-                    order = order_form.save()
-                    for item in cart:
-                        OrderItem.objects.create(
-                            order=order,
-                            product=item['product'],
-                            price=item['price'],
-                            quantity=item['quantity']
-                        )
-                        product = item['product']
-                        product.stock -= item['quantity']
-                        product.save()  
-                    
+                    product.stock -= item['quantity']
+                    product.save()  
+                
                     cart.clear()
                     messages.success(request, "Your order was successfully submited!")
                     return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
@@ -122,31 +116,28 @@ class CreateOrderView(LoginRequiredMixin, TemplateView):
                 order_form.instance.address = address
                 
                 if order_form.is_valid():
-                    not_in_stock = False
+                
+                    order = order_form.save()
                     for item in cart:
+                        OrderItem.objects.create(
+                            order=order,
+                            product=item['product'],
+                            price=item['price'],
+                            quantity=item['quantity']
+                        )
                         product = item['product']
-                        if product.stock < item['quantity']:
-                            not_in_stock = True
-                            break
-                    if not not_in_stock:
-                        order = order_form.save()
-                        for item in cart:
-                            OrderItem.objects.create(
-                                order=order,
-                                product=item['product'],
-                                price=item['price'],
-                                quantity=item['quantity']
-                            )
-                            product = item['product']
-                            product.stock -= item['quantity']
-                            product.save()  
-                        
-                        cart.clear()
-                        messages.success(request, "Your order was successfully submited!")
-                        return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
-            else:               
+                        product.stock -= item['quantity']
+                        product.save()  
+                    
+                    cart.clear()
+                    messages.success(request, "Your order was successfully submited!")
+                    return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
+            else: 
+                              
                 messages.error(request, "Invalid form")
+                
         else:
+            
             product_id = request.POST.get('product_id')
             try:
                 quantity = int(request.POST.get('quantity'))

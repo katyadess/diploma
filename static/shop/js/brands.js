@@ -11,7 +11,7 @@ customSelect.addEventListener('click', () => {
     chevron.classList.toggle('bi-chevron-up', isPopupVisible);
     chevron.classList.toggle('bi-chevron-down', !isPopupVisible);
 }); 
-
+ 
 customSelectItems.forEach(item => {
     item.addEventListener('click', () => {
         customSelectValue.textContent = item.textContent;

@@ -9,10 +9,10 @@
         
     <div class="sidebar-menu">
     
-        <p data-rel="1" class="nav-link active"><a href="#account-info">Account Information</a></p>
-        <p data-rel="2" class="nav-link"><a href="#addresses">Addresses</a></p>  
-        <p data-rel="3" class="nav-link"><a href="#order-history">Order History</a></p>
-        <p data-rel="4" class="nav-link"><a href="#favorites">My Favourites</a></p>
+        <p data-rel="1" class="nav-link active"><a>Account Information</a></p>
+        <p data-rel="2" class="nav-link"><a href="?show=addresses">Addresses</a></p>  
+        <p data-rel="3" class="nav-link"><a href="?show=orders">Order History</a></p>
+        <p data-rel="4" class="nav-link"><a href="?show=favourites">My Favourites</a></p>
 
 
         <a href="{% url "shop:shop_logout" %}" class="log-out-link">Log out</a>
@@ -111,7 +111,7 @@
                                 </div>
 
                                 <div>
-                                    <form action="{% url 'shop:account' %}" method="POST" class='delete-address-form'>
+                                    <form action="{% url 'shop:account' %}?show=addresses" method="POST" class='delete-address-form'>
                                         {% csrf_token %}
                                         <input type="hidden" name="address_id" value="{{ address.id }}">
                                         
@@ -166,26 +166,36 @@
 
         <div id="3" class="sub-section">
             <h2 class="section-heading">My Orders</h2>
-            {% if orders %}
-                <form method="get" action="{% url "shop:account" %}" class="filter-orders-form">
-                    <div class="custom-select-container">
-                        <div class="custom-select">
-                            <div class="custom-select__value-wrap">
-                                <div class="custom-select__value">
-                                    All
-                                </div>
-                                <i class="bi bi-chevron-down"></i>
+            <form method="get" action="{% url "shop:account" %}" class="filter-orders-form">
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                {% if request.GET.filter_orders %}
+                                {% if request.GET.filter_orders == 'this-month' %} This Month
+                                {% elif request.GET.filter_orders == 'last-month' %} Last Month
+                                {% elif request.GET.filter_orders == 'this-year' %} This Year
+                                {% elif request.GET.filter_orders == 'last-year' %} Last Year
+                                {% else %} All
+                                {% endif %}
+                                {% else %} 
+                                All 
+                                {% endif %}
                             </div>
-                            <div class="custom-select__popup">
-                                <div data-value="1" class="custom-select__item">This Month</div>
-                                <div data-value="2" class="custom-select__item">Last Month</div>
-                                <div data-value="3" class="custom-select__item">This Year</div>
-                                <div data-value="4" class="custom-select__item">Last Year</div>
-                            </div> 
+                            <i class="bi bi-chevron-down"></i>
                         </div>
-                        <input type="hidden" name="filter-orders" id="filter-orders">
+                        <div class="custom-select__popup">
+                            <div class="custom-select__item">All</div>
+                            <div class="custom-select__item">This Month</div>
+                            <div class="custom-select__item">Last Month</div>
+                            <div class="custom-select__item">This Year</div>
+                            <div class="custom-select__item">Last Year</div>
+                        </div> 
                     </div>
-                </form>
+                    <input type="hidden" name="filter_orders" id="filter_orders">
+                </div>
+            </form>
+            {% if orders %}
 
                 <div class="orders">
                     {% for order, total_price in order_total_price.items %}
@@ -250,7 +260,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>    
+                </div> 
+            {% elif request.GET.filter_orders and orders|length == 0 %}   
+                <p>No orders during this period.</p>
             {% else %}
                 <p>You have no orders yet!</p>
                 <p><a href="{% url "shop:main" %}" style='color:blueviolet'>Go shopping</a></p>

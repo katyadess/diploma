@@ -13,6 +13,7 @@ navLinks.forEach(link => {
 
         const url = new URL(window.location.href);
         url.searchParams.delete('show');
+        url.searchParams.delete('filter_orders')
         history.replaceState({}, '', url);
 
     });
@@ -32,8 +33,9 @@ const customSelect = document.querySelector('.custom-select');
 const customSelectValue = customSelect.querySelector('.custom-select__value');
 const customSelectPopup = customSelect.querySelector('.custom-select__popup');
 const customSelectItems = customSelectPopup.querySelectorAll('.custom-select__item');
-const hiddenInput = document.getElementById('selected-value');
+const filterOrdersForm = document.querySelector('.filter-orders-form')
 const chevron = customSelect.querySelector('.bi-chevron-down');
+const filterOrdersInput = filterOrdersForm.querySelector('input[name="filter_orders"]')
 
 customSelect.addEventListener('click', () => {
     const isPopupVisible = customSelectPopup.classList.toggle('show');
@@ -43,11 +45,16 @@ customSelect.addEventListener('click', () => {
 
 customSelectItems.forEach(item => {
     item.addEventListener('click', () => {
-        const value = item.getAttribute('data-value');
         customSelectValue.textContent = item.textContent;
-        hiddenInput.value = value;
         chevron.classList.remove('bi-chevron-up');
         chevron.classList.add('bi-chevron-down');
+        filterOrdersInput.value = item.textContent.toLowerCase().replace(' ', '-'); 
+        
+        const url = new URL(window.location.href);
+        url.searchParams.set('filter_orders', filterOrdersInput.value);
+        url.searchParams.set('show', 'orders');
+        window.location.href = url.toString();
+        // filterOrdersForm.submit()
     });
     customSelectPopup.classList.remove('show');
 });
@@ -90,7 +97,7 @@ const showSection = urlParams.get('show');
 if (showSection) {
     
     let targetId;
-
+ 
     if (showSection === 'favourites') {
         targetId = '4'; 
     } else if (showSection === 'orders') {
@@ -108,8 +115,6 @@ if (showSection) {
 
         document.querySelector(`.sidebar-menu .nav-link[data-rel="${targetId}"]`).classList.add('active');
         targetElement.classList.add('active');
-        
-        targetElement.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -120,3 +125,5 @@ document.querySelectorAll('.delete-button').forEach(button => {
         }
     })
 })
+
+    
