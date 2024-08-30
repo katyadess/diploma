@@ -840,7 +840,15 @@ class MyPasswordChangeView(PasswordChangeView):
     
 class MyLogoutView(View):
      def get(self, request):
+         
+        import copy
+    
+     
+        cart = copy.deepcopy(Cart(request).cart)
         logout(request)
+        session = request.session
+        session[settings.CART_SESSION_ID] = cart
+        session.modified = True
         return redirect('shop:main')
         
       
