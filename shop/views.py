@@ -840,9 +840,7 @@ class MyPasswordChangeView(PasswordChangeView):
     
 class MyLogoutView(View):
      def get(self, request):
-        cart = request.session.get('cart')
         logout(request)
-        request.session['cart'] = cart
         return redirect('shop:main')
         
       
