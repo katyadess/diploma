@@ -715,7 +715,22 @@ def account(request):
             address_id = request.POST.get('address_id')
             if address_id:
                 address = get_object_or_404(Address, id=address_id, user=request.user)
-                address.delete()
+                orders_with_address = Order.objects.filter(address=address)
+                
+                if orders_with_address.filter(status__in=[Order.SENT, Order.DELIVERED]).exists():
+                    messages.error(request, "Cannot delete address because there are orders that have already been sent or delivered.")
+                else:
+                    orders_to_update = orders_with_address.exclude(
+                        status__in=[
+                            Order.SENT, 
+                            Order.DELIVERED, 
+                            Order.COMPLETED, 
+                        ]
+                    )
+                    
+                    orders_to_update.update(status=Order.FAILED)
+                    
+                    address.delete()
                 
                 return redirect(f'{request.path}?show=addresses')
             
