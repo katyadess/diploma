@@ -1,5 +1,6 @@
 from django.db import models
 from shop.models import *
+from django.conf import settings
 # Create your models here.
 
 class Order(models.Model):
@@ -22,7 +23,8 @@ class Order(models.Model):
         (FAILED, 'failed'),
     ]
     
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='orders', blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, default=PENDING, max_length=50)
     updated = models.DateTimeField(auto_now=True)

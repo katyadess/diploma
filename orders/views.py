@@ -80,7 +80,9 @@ class CreateOrderView(LoginRequiredMixin, TemplateView):
                 
                 address = order_form.cleaned_data.get('address')
                 order_form.instance.address = address
-                order = order_form.save()
+                order = order_form.save(commit=False)
+                order.user = request.user
+                order.save()
                 for item in cart:
                     OrderItem.objects.create(
                         order=order,
@@ -115,23 +117,6 @@ class CreateOrderView(LoginRequiredMixin, TemplateView):
             
                 order_form.instance.address = address
                 
-                if order_form.is_valid():
-                
-                    order = order_form.save()
-                    for item in cart:
-                        OrderItem.objects.create(
-                            order=order,
-                            product=item['product'],
-                            price=item['price'],
-                            quantity=item['quantity']
-                        )
-                        product = item['product']
-                        product.stock -= item['quantity']
-                        product.save()  
-                    
-                    cart.clear()
-                    messages.success(request, "Your order was successfully submited!")
-                    return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
             else: 
                               
                 messages.error(request, "Invalid form")
