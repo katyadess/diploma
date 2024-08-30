@@ -664,7 +664,7 @@ class ContactView(FormView):
 @login_required
 def account(request):
     user_data = get_object_or_404(UserData, user=request.user)  
-    addresses = Address.objects.filter(user=request.user)          
+    addresses = Address.objects.filter(user=request.user, is_archived=False)          
     
     
     address_edit_forms = {}
@@ -730,7 +730,8 @@ def account(request):
                     
                     orders_to_update.update(status=Order.FAILED)
                     
-                    address.delete()
+                    address.is_archived = True
+                    address.save()
                 
                 return redirect(f'{request.path}?show=addresses')
             
@@ -761,7 +762,7 @@ def account(request):
             order = Order.objects.get(id=order_id)
             order.status = 'canceled'
             order.save()
-            messages.success(request, "You successfully canceled your order.")
+            messages.success(request, "The order was canceled")
             return redirect(f'{request.path}?show=orders')
         
         return redirect(f'{request.path}')
@@ -776,7 +777,7 @@ def account(request):
         average_rating=Avg('reviews__rating')
     )
     cart = Cart(request)
-    orders = Order.objects.filter(address__user=request.user)
+    orders = Order.objects.filter(user=request.user)
     
     now = timezone.now()
     

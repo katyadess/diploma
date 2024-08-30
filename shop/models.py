@@ -122,6 +122,7 @@ class Address(models.Model):
     phone_number = models.CharField(max_length=20)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
+    is_archived = models.BooleanField(default=False)
     
     class Meta:
         verbose_name = 'Address'

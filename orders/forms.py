@@ -15,7 +15,7 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
-        self.fields['address'].queryset = Address.objects.filter(user=user)
+        self.fields['address'].queryset = Address.objects.filter(user=user, is_archived=False)
         self.fields['address'].empty_label = None
         
         default_address = self.fields['address'].queryset.first()
