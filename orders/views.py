@@ -94,9 +94,9 @@ class CreateOrderView(LoginRequiredMixin, TemplateView):
                     product.stock -= item['quantity']
                     product.save()  
                 
-                    cart.clear()
-                    messages.success(request, "Your order was successfully submited!")
-                    return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
+                cart.clear()
+                messages.success(request, "Your order was successfully submited!")
+                return HttpResponseRedirect(f'{reverse('shop:account')}?show=orders')
             
             elif not order_form.is_valid() and not order_form.cleaned_data.get('address'):
                 

@@ -12,5 +12,5 @@ do button when product is not in stock
 
 red color = #ff5252
 do Cart Persistence on Logout
-возвращать количество продуктов обратно в сток в случае отмены заказа
-при удалении адреса помечать заказы с этим адрессом проваленными
+возвращать количество продуктов обратно в сток в случае недоставки заказа
+create task schedulers for order statuses

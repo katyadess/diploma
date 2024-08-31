@@ -728,7 +728,15 @@ def account(request):
                         ]
                     )
                     
-                    orders_to_update.update(status=Order.FAILED)
+                    for order in orders_to_update:
+                        order.status = Order.FAILED
+                        order.save()
+                        
+                        for item in order.items.all():
+                            product = item.product
+                            product.stock += item.quantity
+                            product.save()
+                    
                     
                     address.is_archived = True
                     address.save()
@@ -760,9 +768,17 @@ def account(request):
         elif 'cancel-order' in request.POST:
             order_id = request.POST.get('order_id')
             order = Order.objects.get(id=order_id)
+            
+            if order.status != 'canceled':
+                order_items = order.items.all()
+                for item in order_items:
+                    product = item.product
+                    product.stock += item.quantity
+                    product.save()
+                    
             order.status = 'canceled'
             order.save()
-            messages.success(request, "The order was canceled")
+            messages.success(request, "The order was canceled.")
             return redirect(f'{request.path}?show=orders')
         
         return redirect(f'{request.path}')
