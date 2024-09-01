@@ -89,6 +89,8 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+        
+
 
 class ProductReview(MPTTModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -148,7 +150,20 @@ class Subscriber(models.Model):
     class Meta:
         verbose_name = 'Subscriber'
         verbose_name_plural = 'Subscribers'
+        
+        
+class NotificationSubscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    notified = models.BooleanField(default=False) 
     
+    class Meta:
+        unique_together = ('user', 'product')
+        verbose_name = 'Notification'
+        verbose_name_plural = 'Notifications'
+        
+    def __str__(self) -> str:
+        return f'{self.user} notify about {self.product.name}' 
 
 class WishList(models.Model):
     

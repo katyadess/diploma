@@ -1078,5 +1078,18 @@ class ProductDetailsView(DetailView):
             comment_id = request.POST.get('comment_id')
             review = get_object_or_404(ProductReview, id=comment_id)
             review.delete()
-                
+            
+        elif 'notify' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            notification, created = NotificationSubscription.objects.get_or_create(
+                user=request.user,
+                product=product
+            )
+            
+            if created:
+                messages.success(request, 'You will be notified when this product is back in stock.')
+            else:
+                messages.info(request, 'You are already subscribed for notifications for this product.')    
+                     
         return redirect(f'{request.path}')

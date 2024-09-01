@@ -45,7 +45,7 @@ class SubscribeForm(forms.ModelForm):
         body = f"You successfully subscribed to our newsletter!"
         from_email = 'katyadess.django@gmail.com'
         to_email = [email]
-        
+         
         email_message = EmailMessage(subject, body, from_email, to_email)
         email_message.send()
         

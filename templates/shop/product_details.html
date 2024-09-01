@@ -138,7 +138,11 @@
                             <button type='submit' class="notify" name='toggle-cart'>Add to Cart</button>
                         </form>
                     {% else %}
-                        <button class="notify">Notify me when in stock</button> 
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class='notify' name='notify'>Notify me when in stock</button>
+                        </form>
                     {% endif %}
                 </div>
             </div>
