@@ -63,10 +63,10 @@ class MainPageView(View):
         brands = Brand.objects.all()
         categories = Category.objects.filter(parent__isnull=True)
         
-        now = timezone.now()
+        # now = timezone.now()
         
         new_arrivals = Product.objects.filter(
-            created_at__month=now.month,
+            # created_at__month=now.month,
             stock__gt=0,
             is_available=True
         ).annotate(
@@ -276,12 +276,13 @@ class NewArrivalsView(View):
         
         
         now = timezone.now()
+        time_range = now - timedelta(days=90)
         
         products = Product.objects.annotate(
             current_price=Coalesce('price_new', F('price')),
             average_rating=Avg('reviews__rating')
         ).filter(
-            created_at__month=now.month,
+            created_at__gte=time_range,
             stock__gt=0,
             is_available=True
         ).order_by('-created_at')
