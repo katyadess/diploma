@@ -10,5 +10,4 @@ Add autofill for city and street
 
 red color = #ff5252
 do Cart Persistence on Logout
-create task schedulers for order statuses
-create forgot password functionality
+
