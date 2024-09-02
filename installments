@@ -3,3 +3,7 @@ mptt,
 boto3
 django-storages,
 django-environ 
+celery
+django-celery-results
+redis
+django-celery-beat

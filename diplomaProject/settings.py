@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     'orders',
     'mptt',
     'users',
-    'storages',
+    'storages', 
+    'django_celery_results',
+    'django_celery_beat'
+    
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -182,3 +185,18 @@ EMAIL_HOST_USER = 'katyadess.django@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+# CELERY SETTINGS
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Kiev'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY BEAT SETTINGS
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

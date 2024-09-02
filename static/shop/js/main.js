@@ -51,12 +51,12 @@ if (notSignedInElement) {
             document.body.classList.remove('no-scroll');
         });
         
-        document.addEventListener('click', (e) => {
-            if (!loginContainer.contains(e.target) && !openLoginContainer.contains(e.target)) {
-                loginContainer.classList.remove('open');
-                document.body.classList.remove('no-scroll');
-            }
-        });
+        // document.addEventListener('click', (e) => {
+        //     if (!loginContainer.contains(e.target)) {
+        //         loginContainer.classList.remove('open');
+        //         document.body.classList.remove('no-scroll');
+        //     }
+        // });
     })
     // const openLoginContainer = notSignedInElement
 

@@ -1,6 +1,7 @@
 from django.db.models import F, Avg, Q
 from django.contrib import messages
 from datetime import timedelta
+from .tasks import *
 from cart.forms import *
 from cart.cart import Cart
 from orders.models import *
@@ -163,6 +164,7 @@ class ProductListView(View):
             
         price_min = self.request.GET.get('min_price', '3')
         price_max = self.request.GET.get('max_price', '1000')
+        
         
         
         products = Product.objects.annotate(
