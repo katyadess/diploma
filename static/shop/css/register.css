@@ -30,3 +30,22 @@
 .register-button:hover {
     opacity: 85%;
 }
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.phone-prefix {
+    margin-right: 0px; 
+    margin-bottom: 2.5px;
+    font-size: 18px;
+}
+
+input[type="text"], input[type="tel"] {
+    height: 34px;
+    /* padding: 0 8px;  */
+    padding-left: 5px;
+    font-size: 16px; 
+}

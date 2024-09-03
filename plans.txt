@@ -8,4 +8,3 @@ Add autofill for city and street
 
 red color = #ff5252
 do Cart Persistence on Logout
-delete account func

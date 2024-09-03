@@ -11,7 +11,7 @@
         <div class="name">
             <div class="form-group">
                 <label for="first-name">First Name*</label>
-                {{form.first_name}}
+                {{form.first_name}} 
             </div>
             <div class="form-group">
                 <label for="last-name">Last Name*</label>
@@ -20,7 +20,10 @@
         </div>
         <div class="form-group">
             <label for="phone">Phone Number*</label>
-            {{form.telephone}}
+            <div class="input-container">
+                <p class='phone-prefix'>+38</p>
+                {{form.telephone}}
+            </div>
         </div>
         <div class="form-group">
             <label for="email">E-mail*</label>
@@ -42,3 +45,7 @@
     </form>
 </div>
 {% endblock content %}
+{% block scripts %}
+<script src="{% static "shop/js/register.js" %}"></script>
+{% endblock scripts %}
+

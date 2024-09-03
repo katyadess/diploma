@@ -114,7 +114,7 @@ class RegisterForm(UserCreationForm):
             'id': 'phone', 
             'name': 'phone',
             'type': 'tel',
-            'pattern': r'^\+?3?8?(0[\s\.-]\d{2}[\s\.-]\d{3}[\s\.-]\d{2}[\s\.-]\d{2})$'
+            'onkeydown': "phoneNumberFormatter()",
         }), 
         required=True
     )
