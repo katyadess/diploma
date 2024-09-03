@@ -24,3 +24,4 @@ def check_stock_and_notify(sender, instance, **kwargs):
                 n.delete()
             except Exception as e:
                 print(f"Failed to send email to {n.user.email}: {e}")
+                

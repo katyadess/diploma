@@ -784,6 +784,17 @@ def account(request):
             messages.success(request, "The order was canceled.")
             return redirect(f'{request.path}?show=orders')
         
+        elif 'delete-acc' in request.POST:
+            user_delete_form = UserDeleteForm(request.POST, instance=request.user)
+            if user_delete_form.is_valid():
+                
+                user = request.user
+                logout(request)
+                user.delete()
+            else:
+                print('invalid')
+            # return redirect('main')
+            
         return redirect(f'{request.path}')
         
     categories = Category.objects.all()
@@ -792,11 +803,13 @@ def account(request):
     edit_account_form = EditAccountForm(instance=request.user)
     edit_phone_form = EditPhoneForm(instance=user_data)
     add_address_form = AddAddressForm()
-    wishlist_products = request.user.wishlist.products.annotate(
+    wishlist, created = WishList.objects.get_or_create(user=request.user)
+    wishlist_products = wishlist.products.annotate(
         average_rating=Avg('reviews__rating')
     )
     cart = Cart(request)
     orders = Order.objects.filter(user=request.user)
+    user_delete_form = UserDeleteForm(instance=request.user)
     
     now = timezone.now()
     
@@ -844,6 +857,7 @@ def account(request):
         'cart': cart,
         'orders': orders,
         'order_total_price': order_total_price,
+        'user_delete_form': user_delete_form,
     }
     
     return render(request, 'shop/account.html', context)

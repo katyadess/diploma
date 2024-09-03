@@ -3,7 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 
-# Create your models here.
+# Create your models here. 
 
 
 class Category(MPTTModel):

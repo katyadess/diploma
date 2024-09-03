@@ -113,7 +113,8 @@ class RegisterForm(UserCreationForm):
         widget=forms.TextInput(attrs={
             'id': 'phone', 
             'name': 'phone',
-            'type': 'tel'
+            'type': 'tel',
+            'pattern': r'^\+?3?8?(0[\s\.-]\d{2}[\s\.-]\d{3}[\s\.-]\d{2}[\s\.-]\d{2})$'
         }), 
         required=True
     )
@@ -235,3 +236,9 @@ class ReviewImageForm(forms.ModelForm):
     class Meta:
         model = ReviewImage
         fields = ['image']
+        
+        
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = []

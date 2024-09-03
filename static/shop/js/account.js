@@ -126,6 +126,15 @@ document.querySelectorAll('.delete-button').forEach(button => {
     })
 })
 
+
+deleteAccButton = document.querySelector('.delete-acc');
+
+deleteAccButton.addEventListener('click', (e) => {
+    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        e.preventDefault();
+    }
+})
+
 document.querySelectorAll('.cancel-order-button').forEach(button => {
     button.addEventListener('click', (e) => {
         if (!confirm('Are you sure you want to cancel this order?')) {

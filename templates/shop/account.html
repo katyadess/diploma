@@ -52,6 +52,12 @@
             <p>To change the password click <a class="password-link" href="{% url "shop:change_password" %}">this link</a></p>
 
             <a href="{% url "shop:shop_logout" %}" class="log-out-link">Log out</a>
+            
+            <form method='POST'>
+                {% csrf_token %}
+                {{user_delete_form.as_p}}
+                <button style='border:none; background: transparent; cursor: pointer; color: #ff5252' name="delete-acc" type='submit'>Delete Account</button>
+            </form>
 
         </div>
 

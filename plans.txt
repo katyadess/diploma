@@ -6,8 +6,6 @@ Add autofill for city and street
 <i class="fa-solid fa-heart"></i> - full heart
 <i class="bi bi-bag-fill"></i> - full bag
 
-закончить страницу аккаунт
-
 red color = #ff5252
 do Cart Persistence on Logout
-
+delete account func
