@@ -790,7 +790,7 @@ def account(request):
                 
                 user = request.user
                 if not user.is_superuser and not user.is_staff:
-                    logout(request)
+                    # logout(request)
                     user.delete()
                 else:
                     messages.warning(request, 'You cannot delete user this way')
