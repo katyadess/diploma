@@ -789,8 +789,11 @@ def account(request):
             if user_delete_form.is_valid():
                 
                 user = request.user
-                logout(request)
-                user.delete()
+                if not user.is_superuser and not user.is_staff:
+                    logout(request)
+                    user.delete()
+                else:
+                    messages.warning(request, 'You cannot delete user this way')
             else:
                 print('invalid')
             # return redirect('main')
