@@ -8,3 +8,9 @@ Add autofill for city and street
 
 red color = #ff5252
 do Cart Persistence on Logout
+
+
+
+celery -A diplomaProject beat -l info - start celery beat
+
+celery -A diplomaProject.celery worker --pool=solo -l info - start celery

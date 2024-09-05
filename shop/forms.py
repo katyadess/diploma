@@ -163,7 +163,8 @@ class EditPhoneForm(forms.ModelForm):
             'telephone': forms.TextInput(attrs= {
                 'id': 'phone', 
                 'name': 'phone',
-                'type': 'tel'
+                'type': 'tel',
+                'onkeydown': "phoneNumberFormatter()",
             })
         }
         
@@ -173,7 +174,8 @@ class AddAddressForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
             'id': 'phone', 
             'name': 'phone',
-            'type': 'tel'
+            'type': 'tel',
+            'onkeydown': "phoneNumberFormatter()",
         }), 
         required=True
     ) 
@@ -188,7 +190,8 @@ class EditAddressForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
             'id': 'phone', 
             'name': 'phone',
-            'type': 'tel'
+            'type': 'tel',
+            'onkeydown': "phoneNumberFormatter()",
         }), 
         required=True
     ) 
