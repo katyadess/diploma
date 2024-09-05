@@ -1,15 +1,7 @@
-1. Formatting tel, city and street inputs
-Add autofill for city and street
-2. Add autosuggestions for search
-
-
 <i class="fa-solid fa-heart"></i> - full heart
 <i class="bi bi-bag-fill"></i> - full bag
 
 red color = #ff5252
-do Cart Persistence on Logout
-
-
 
 celery -A diplomaProject beat -l info - start celery beat
 
