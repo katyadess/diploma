@@ -1,0 +1,209 @@
+{% extends "shop/base.html" %}
+{% block css_links %}
+{% load static %}
+<link rel="stylesheet" href="{% static "shop/css/product_list.css" %}">
+<link rel="stylesheet" href="{% static "shop/css/brands.css" %}">
+{% endblock css_links %}
+
+{% block content %}
+
+<section class="sort-section">
+
+    <div class="filters">
+        <div class="sort-container filter-price">
+            <div class="name">Filter by:</div>
+            <div class="custom-filter__value-wrap"> 
+                <div class="custom-filter__value">
+                    Price, $
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <div class="price-range">
+                    <form class="price-form" method='GET' action='{{category.get_absolute_url}}'>
+                        {% if request.GET.sort_by %}
+                            <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                        {% endif %}
+                        
+                        <div class="price-input">
+                            <div class="field">
+                                <input type="number" name="min_price" id="input-min" class="input-min" value="{% if request.GET.min_price %}{{request.GET.min_price}}{% else %}3{% endif %}" min='3' max='1000'>
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="field">
+                                <input type="number" name="max_price" id="input-max" class="input-max" value="{% if request.GET.max_price %}{{request.GET.max_price}}{% else %}1000{% endif %}" max='1000' min='3'>
+                            </div>
+                        </div>
+                        
+                        <div class="btn-wrapper">
+                            <button class="filter-button" type='submit'>Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="sort-container sort-price">
+            <div class="name">Sort by:</div>
+            <form method="get" action="{{category.get_absolute_url}}" class="form">
+                {% if request.GET.min_price or request.GET.max_price %}
+                    <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+                    <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">        
+                {% endif %}        
+                <div class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="custom-select__value-wrap">
+                            <div class="custom-select__value">
+                                {% if request.GET.sort_by %}
+                                    {% if request.GET.sort_by == 'lowest_price' %} Lowest Price
+                                    {% elif request.GET.sort_by == 'highest_price' %} Highest Price
+                                    {% else %} Default
+                                    {% endif %}
+                                {% else %} Default {% endif %}
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
+                        </div>
+                        <div class="custom-select__popup">
+                            <div class="custom-select__item">Default</div>
+                            <div class="custom-select__item">Lowest Price</div>
+                            <div class="custom-select__item">Highest Price</div>
+                        </div> 
+                    </div>
+                    
+                    <input type="hidden" name="sort_by">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="selected-filters">
+        {% if request.GET.min_price or request.GET.max_price %}
+        <div class="selected-filter__item">
+            <p>{{request.GET.min_price}}$ - {{request.GET.max_price}}$</p>    
+            <a class="remove-filter" style='color:black' href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}"><i class="bi bi-x-lg"></i></a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<main class="main">
+
+    <div class="products" id='products-section'>
+        <h2>Discounted Products</h2>
+        {% if page_obj %}
+            <div class="items">
+                {% for product in page_obj %}
+                    <div class='item-product'>
+                        <a href="{{ product.get_absolute_url }}">
+                            <div class="card">
+                                <div class="imgBx">
+                                    <img src="{{product.main_image.url}}" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="product-name">
+                                        <p>{{product.name}}</p>
+                                        <p class="full-desc">{{product.brief_description}}</p>
+                                    </div>
+                                    <div class="price_rating">
+                                        <div class="rating">
+                                            {% for i in '12345'|make_list %}
+                                                {% if forloop.counter <= product.average_rating %}
+                                                    <i class="bi bi-star-fill"></i>
+                                                {% else %}
+                                                    <i class="bi bi-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <p class="total-ratings">{{product.reviews.all|length}}</p>
+                                        </div>
+                                        <div class="prod-price">
+                                            {% if product.price_new %}
+                                            <p class="price new">${{product.price_new}}</p>
+                                            <p class="price old">${{product.price}}</p>
+                                            {% else %}
+                                            <p class="price">${{product.price}}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% if user.is_authenticated %}
+                            <div class="buttons">
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in user.wishlist.products.all %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites full-heart"><i class="fa fa-heart"></i></button>
+                                    {% else %}
+                                        <button type="submit" name="toggle_wishlist" class="form-btn btn-favorites"><i class="fa fa-heart-o"></i></button>
+                                    {% endif %}
+                                </form>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    {% if product in cart %}
+                                        <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag-fill" STYLE='color:blueviolet'></i></button>
+                                    {% else %}
+                                        <button type="submit" class="form-btn btn-cart" name='toggle-cart'><i class="bi bi-bag"></i></button>
+                                    {% endif %}
+                                </form>
+
+                            </div>
+                        {% else %}
+                            <div class="buttons">
+                                <form>
+                                    <p class="form-btn btn-favorites not-signed-in"><i class="fa fa-heart-o"></i></p>
+                                </form>
+                                <form>
+                                    <p class="form-btn btn-cart not-signed-in"><i class="bi bi-bag"></i></p>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if page_obj.has_next %}   
+            <div class="btn">
+                <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.next_page_number }}#products-section">
+                    <button>Load more</button>
+                </a>
+            </div>
+            {% endif %}
+        {% else %}
+            <p>No items found</p>
+        {% endif %}
+    </div>
+
+</main>
+
+<div class="pagination">
+
+    {% if not page_obj.number == 1 %}
+        <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page=1#products-section" class="pagination-link">1</a>
+    {% endif %}
+
+    {% if page_obj.number > 6 %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range%}
+        {% if page_obj.number == num%}
+            <a href="#products-section" class="pagination-link active">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' and num != 1 and num != page_obj.paginator.num_pages %}
+            <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ num }}#products-section" class="pagination-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+            
+    {% if page_obj.number < page_obj.paginator.num_pages|add:'-5' %}
+        <span class="pagination-ellipsis">...</span>
+    {% endif %}
+
+    {% if not page_obj.number == page_obj.paginator.num_pages %}
+        <a href="?{% if request.GET.sort_by %}sort_by={{ request.GET.sort_by }}&{% endif %}{% if request.GET.min_price %}min_price={{ request.GET.min_price }}&{% endif %}{% if request.GET.max_price %}max_price={{ request.GET.max_price }}&{% endif %}page={{ page_obj.paginator.num_pages }}#products-section" class="pagination-link">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+    
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src='{% static "shop/js/product_list.js" %}'></script>
+{% endblock scripts %}

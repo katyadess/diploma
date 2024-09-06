@@ -64,15 +64,19 @@ class MainPageView(View):
         brands = Brand.objects.all()
         categories = Category.objects.filter(parent__isnull=True)
         
-        # now = timezone.now()
         
-        new_arrivals = Product.objects.filter(
-            # created_at__month=now.month,
+        new_arrivals = Product.objects.filter(     
             stock__gt=0,
             is_available=True
         ).annotate(
             average_rating=Avg('reviews__rating')
-        ).order_by('-created_at')[:5]
+        ).order_by('-created_at')[:10]
+        
+        discount_products = Product.objects.filter(
+            stock__gt=0,
+            is_available=True,
+            price_new__isnull=False
+        )[:10]
         
         category_products = {}
         for category in categories:
@@ -82,13 +86,14 @@ class MainPageView(View):
                 stock__gt=0
             ).annotate(
                 average_rating=Avg('reviews__rating')
-            )
+            )[:20]
             category_products[category] = products
             
         context = {
             'categories': categories, 
             'brands': brands, 
             'new_arrivals': new_arrivals, 
+            'discount_products': discount_products,
             'subscribe_form': subscribe_form,
             'category_products': category_products,
             'cart': cart
@@ -316,7 +321,112 @@ class NewArrivalsView(View):
         }
         
         return render(request, 'shop/new_arrivals.html', context)
-  
+ 
+ 
+class DiscountProductsView(View):
+    
+    def post(self, request):
+        
+        sort_by_value = self.request.GET.get('sort_by')
+        price_min = self.request.GET.get('min_price')
+        price_max = self.request.GET.get('max_price')
+        page = self.request.GET.get('page')
+        
+        redirect_url = f'{request.path}?'
+        
+        if sort_by_value:
+            redirect_url += f'sort_by={sort_by_value}&'
+            
+        if price_min or price_max:
+            redirect_url += f'min_price={price_min}&max_price={price_max}&'
+        
+        if page:
+            redirect_url += f'page={page}&'
+        
+        if 'subscribe' in request.POST:
+            
+            subscribe_form = SubscribeForm(request.POST)
+            if subscribe_form.is_valid():
+                subscribe_form.send_email()
+                subscribe_form.save()
+                messages.success(request, "You have successfully subscribed to our newsletter!")
+            else:
+                messages.info(request, "Invalid email or you had already subscribed to our newsletter.")
+        
+        
+        if 'toggle_wishlist' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            wishlist, created = WishList.objects.get_or_create(user=request.user)
+            if product in wishlist.products.all():
+                wishlist.products.remove(product)
+            else:
+                wishlist.products.add(product)
+        
+        elif 'toggle-cart' in request.POST:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            cart = Cart(self.request)
+            if product in cart:
+                cart.remove(product)
+            else:
+                cart.add(product, update_quantity=True)
+            
+        return redirect(redirect_url)
+        
+    
+    def get(self, request):
+        
+        cart = Cart(request)
+        
+        subscribe_form = SubscribeForm()
+        
+        brands = Brand.objects.all()
+        categories = Category.objects.all()
+        
+            
+        price_min = self.request.GET.get('min_price', '3')
+        price_max = self.request.GET.get('max_price', '1000')
+        
+        
+        products = Product.objects.annotate(
+            current_price=Coalesce('price_new', F('price')),
+            average_rating=Avg('reviews__rating')
+        ).filter(
+            price_new__isnull=False,
+            stock__gt=0,
+            is_available=True
+        ).order_by('-created_at')
+        
+        products = products.filter(
+            current_price__gte=price_min, 
+            current_price__lte=price_max
+        )
+        
+        
+        sort_by_value = self.request.GET.get('sort_by', 'default')
+        if sort_by_value == 'lowest_price':
+            products = products.order_by('current_price', '-created_at')
+        elif sort_by_value == 'highest_price':
+            products = products.order_by('-current_price', '-created_at')
+        else:
+            products = products.order_by('-created_at')
+
+        paginator = Paginator(products, 4)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+            
+        context = {
+            'categories':categories,
+            'brands': brands,
+            'subscribe_form': subscribe_form,
+            'page_obj': page_obj,
+            'cart': cart
+        }
+        
+        return render(request, 'shop/discount_products.html', context)
+ 
+ 
 
 class SearchView(ListView):
     
