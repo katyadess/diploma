@@ -837,7 +837,8 @@ def account(request):
                         status__in=[
                             Order.SENT, 
                             Order.DELIVERED, 
-                            Order.COMPLETED, 
+                            Order.COMPLETED,
+                            Order.CANCELED 
                         ]
                     )
                     

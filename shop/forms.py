@@ -158,7 +158,7 @@ class EditAccountForm(UserChangeForm):
 class EditPhoneForm(forms.ModelForm):
     class Meta:
         model = UserData
-        fields = ['telephone']
+        fields = ['telephone'] 
         widgets = {
             'telephone': forms.TextInput(attrs= {
                 'id': 'phone', 
