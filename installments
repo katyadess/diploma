@@ -1,9 +1,9 @@
 Pillow,
-mptt,
+pip install django-mptt,
 boto3
 django-storages,
 django-environ 
 celery
-django-celery-results
-redis
-django-celery-beat
+pip install django-celery-results
+pip install redis
+pip install django-celery-beat 

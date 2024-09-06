@@ -8,7 +8,7 @@ def update_pending_to_processing(self):
     
     now = timezone.now()
     
-    processing_period = timedelta(minutes=10)
+    processing_period = timedelta(minutes=1)
     
     orders_to_update = Order.objects.filter(
         status=Order.PENDING,
@@ -26,7 +26,7 @@ def update_pending_to_processing(self):
 def update_processing_to_sent(self):
     now = timezone.now()
     
-    processing_period = timedelta(minutes=20)
+    processing_period = timedelta(minutes=2)
 
     orders_to_update = Order.objects.filter(
         status=Order.PROCESSING,
@@ -44,7 +44,7 @@ def update_processing_to_sent(self):
 def update_sent_to_delivered(self):
     now = timezone.now()
     
-    sent_period = timedelta(minutes=40)
+    sent_period = timedelta(minutes=4)
 
     orders_to_update = Order.objects.filter(
         status=Order.SENT,
@@ -61,7 +61,7 @@ def update_sent_to_delivered(self):
 def update_delivered_to_completed(self):
     now = timezone.now()
     
-    delivered_period = timedelta(hours=1)
+    delivered_period = timedelta(minutes=5)
 
     orders_to_update = Order.objects.filter(
         status=Order.DELIVERED,

@@ -819,22 +819,22 @@ def account(request):
     filter_orders = request.GET.get('filter_orders', 'all')
     if filter_orders == 'this-month':
         start_date = now.replace(day=1)
-        orders = orders.filter(created__gte=start_date)
+        orders = orders.filter(created__gte=start_date).order_by('-created')
     elif filter_orders == 'last-month':
         first_day_of_current_month = now.replace(day=1)
         last_month = first_day_of_current_month - timedelta(days=1)
         start_date = last_month.replace(day=1)
         end_date = first_day_of_current_month - timedelta(seconds=1)
-        orders = orders.filter(created__gte=start_date, created__lte=end_date)
+        orders = orders.filter(created__gte=start_date, created__lte=end_date).order_by('-created')
     elif filter_orders == 'this-year':
         start_date = now.replace(month=1, day=1)
-        orders = orders.filter(created__gte=start_date)
+        orders = orders.filter(created__gte=start_date).order_by('-created')
     elif filter_orders == 'last-year': 
         first_day_of_current_year = now.replace(month=1, day=1)
         last_year = first_day_of_current_year - timedelta(days=1)
         start_date = last_year.replace(month=1, day=1)
         end_date = first_day_of_current_year - timedelta(seconds=1)
-        orders = orders.filter(created__gte=start_date, created__lte=end_date)
+        orders = orders.filter(created__gte=start_date, created__lte=end_date).order_by('-created')
     else:
         orders = orders.order_by('-created')
     
